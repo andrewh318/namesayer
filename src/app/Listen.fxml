@@ -2,7 +2,9 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXListView?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -11,12 +13,12 @@
    <children>
       <HBox alignment="CENTER_LEFT" prefHeight="59.0" prefWidth="1024.0" style="-fx-background-color: #E8EAEA;">
          <children>
-            <Label alignment="CENTER" prefHeight="30.0" prefWidth="486.0" text="All Names A-Z" textFill="#157766">
+            <Label alignment="CENTER" prefHeight="30.0" prefWidth="261.0" text="All Playlists" textFill="#157766">
                <font>
                   <Font size="20.0" />
                </font>
             </Label>
-            <Label alignment="CENTER" prefHeight="30.0" prefWidth="261.0" text="Recordings" textFill="#157766">
+            <Label alignment="CENTER" prefHeight="30.0" prefWidth="486.0" text="All Names A-Z" textFill="#157766">
                <font>
                   <Font size="20.0" />
                </font>
@@ -29,34 +31,33 @@
          </children></HBox>
       <HBox prefHeight="597.0" prefWidth="1024.0">
          <children>
-            <VBox prefHeight="548.0" prefWidth="485.0" style="-fx-background-color: #DFDFDF;">
-               <children>
-                  <JFXListView fx:id="_allNamesList" onKeyPressed="#onDatabaseNameClicked" onMouseClicked="#onDatabaseNameClicked" prefHeight="560.0" prefWidth="485.0" style="-fx-background-color: #DFDFDF;" />
-                  <HBox alignment="CENTER" prefHeight="93.0" prefWidth="485.0">
-                     <children>
-                        <Label text="Total Names: 200" textFill="#157766">
-                           <font>
-                              <Font size="20.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </HBox>
-               </children>
-            </VBox>
             <VBox prefHeight="548.0" prefWidth="265.0" style="-fx-background-color: #E9E9EA;">
                <children>
-                  <JFXListView fx:id="_recordings" prefHeight="534.0" prefWidth="265.0" style="-fx-background-color: #E9E9EA;" />
+                  <JFXListView prefHeight="534.0" prefWidth="265.0" style="-fx-background-color: #E9E9EA;" />
                   <HBox alignment="CENTER" prefHeight="66.0" prefWidth="265.0" spacing="20.0">
                      <children>
-                        <JFXButton fx:id="_addButton" onAction="#onAddToPlaylistClicked" prefHeight="39.0" prefWidth="95.0" style="-fx-background-color: #157766;" text="Add" textFill="WHITE">
+                        <JFXButton prefHeight="39.0" prefWidth="120.0" style="-fx-background-color: #157766;" text="New Playlist" textFill="WHITE">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </JFXButton>
-                        <JFXButton prefHeight="39.0" prefWidth="95.0" style="-fx-background-color: #157766;" text="Flag" textFill="WHITE">
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+            <VBox prefHeight="548.0" prefWidth="485.0" style="-fx-background-color: #DFDFDF;">
+               <children>
+                  <JFXListView fx:id="_allNamesList" prefHeight="560.0" prefWidth="485.0" style="-fx-background-color: #DFDFDF;" />
+                  <HBox alignment="CENTER" prefHeight="93.0" prefWidth="485.0">
+                     <children>
+                        <TextField prefHeight="39.0" prefWidth="331.0" />
+                        <JFXButton fx:id="_addButton" onAction="#onAddButtonClicked" prefHeight="37.0" prefWidth="95.0" style="-fx-background-color: #157766;" text="Add" textFill="WHITE">
                            <font>
                               <Font size="16.0" />
                            </font>
+                           <HBox.margin>
+                              <Insets left="20.0" />
+                           </HBox.margin>
                         </JFXButton>
                      </children>
                   </HBox>

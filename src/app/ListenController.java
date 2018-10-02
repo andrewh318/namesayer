@@ -12,8 +12,6 @@ public class ListenController {
     private JFXListView _allNamesList;
     @FXML
     private JFXListView _playlist;
-    @FXML
-    private JFXListView _recordings;
 
     @FXML
     private JFXButton _addButton;
@@ -25,6 +23,7 @@ public class ListenController {
         _model = new NamesModel();
         _model.setUp();
         setUpListBindings();
+        setUpDoubleClickListeners();
     }
 
     private void setUpListBindings(){
@@ -38,11 +37,17 @@ public class ListenController {
 
     }
 
-    private Name handleRecordingListSelection(){
-        Name name = (Name) _recordings.getSelectionModel().getSelectedItem();
-        return name;
-
+    private void setUpDoubleClickListeners(){
+        _allNamesList.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent click) {
+                if (click.getClickCount() == 2){
+                    onAddButtonClicked();
+                }
+            }
+        });
     }
+
 
 
     private Name handleNameListSelection(){
@@ -52,31 +57,19 @@ public class ListenController {
     }
 
 
-    @FXML
-    private void onDatabaseNameClicked(){
-        // get currently selected name
-        Name name = handleNameListSelection();
-        // show error if null
-        if (name == null){
-            System.out.println("Name is null");
-            return;
-        } else {
-            // bind recordings to list view
-            _recordings.setItems(name.getDatabaseRecordings());
-        }
-    }
 
     @FXML
-    private void onAddToPlaylistClicked(){
+    private void onAddButtonClicked(){
         // get currently selected name
-        Name name = handleRecordingListSelection();
+        Name name = handleNameListSelection();
         if (name == null){
             System.out.println("Name is null");
             return;
         } else {
-            // add name to playlist
             _model.addNameToPlaylist(name);
         }
     }
 
 }
+
+
