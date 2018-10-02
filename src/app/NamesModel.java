@@ -10,11 +10,12 @@ import java.io.File;
 public class NamesModel {
     private ObservableList<Name> _databaseNames = FXCollections.observableArrayList();
     private ObservableList<Name> _userNames = FXCollections.observableArrayList();
-    private ObservableList<Name> _playlist = FXCollections.observableArrayList();
+    private ObservableList<Playlist> _allPlaylists = FXCollections.observableArrayList();
 
     public static final String DATABASERECORDINGSDIRECTORY = "names";
     public static final String USERRECORDINGSDIRECTORY = "userNames";
     public static final String BADNAMESFILE = "BadNames.txt";
+    public static final String DEFAULT_PLAYLIST_NAME = "Default Playlist";
 
 
 
@@ -26,8 +27,8 @@ public class NamesModel {
         return _userNames;
     }
 
-    public ObservableList<Name> getPlaylist() {
-        return _playlist;
+    public ObservableList<Playlist> getPlaylists() {
+        return _allPlaylists;
     }
 
     // renamed this from 'readDirectory' to setUp() toto prevent confusion
@@ -40,6 +41,16 @@ public class NamesModel {
 
         readDirectory(DATABASERECORDINGSDIRECTORY);
         readDirectory(USERRECORDINGSDIRECTORY);
+
+        setUpDefaultPlaylist();
+    }
+
+    private void setUpDefaultPlaylist(){
+        if (_allPlaylists.size() == 0){
+            // if there are no playlists create a default playlist
+            Playlist playlist = new Playlist(DEFAULT_PLAYLIST_NAME);
+            _allPlaylists.add(playlist);
+        }
     }
 
     private void createErrorFile() {
@@ -124,21 +135,21 @@ public class NamesModel {
     }
 
 
-    public void addNameToPlaylist(Name name){
-        _playlist.add(name);
+    public void addPlaylist(Playlist playlist){
+        _allPlaylists.add(playlist);
     }
-
-    public boolean searchPlaylist(Name name){
-        return _playlist.contains(name);
-    }
-
-    public void removeNameFromPlaylist(Name name) {
-        _playlist.remove(name);
-    }
-
-
-    public void clearPlaylist() {
-        _playlist.clear();
-    }
+//
+//    public boolean searchPlaylist(Name name){
+//        return _playlist.contains(name);
+//    }
+//
+//    public void removeNameFromPlaylist(Name name) {
+//        _playlist.remove(name);
+//    }
+//
+//
+//    public void clearPlaylist() {
+//        _playlist.clear();
+//    }
 
 }
