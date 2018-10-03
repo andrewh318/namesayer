@@ -2,12 +2,18 @@ package app;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.TextFieldListCell;
 import javafx.scene.input.MouseEvent;
 import javafx.util.StringConverter;
+
+import java.io.PrintWriter;
 
 public class ListenController {
     @FXML
@@ -24,6 +30,9 @@ public class ListenController {
 
     @FXML
     private JFXButton _newPlaylistButon;
+
+    @FXML
+    private TextField _searchBar;
 
 
     public void initialize(){
@@ -92,6 +101,7 @@ public class ListenController {
             return;
         } else {
             _currentPlaylist.addName(name);
+
         }
     }
 
@@ -138,6 +148,55 @@ public class ListenController {
         _allPlaylists.getSelectionModel().select(index);
         _allPlaylists.edit(index);
 
+    }
+
+    /*
+    @FXML
+    private void writePlaylistToFile() {
+        try {
+            PrintWriter writer = new PrintWriter(_currentPlaylist.getName() + ".txt");
+
+            for (Name name : _currentPlaylist.getPlaylist()) {
+                writer.println(name);
+            }
+
+            writer.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    */
+
+    @FXML
+    private void onCharacterTyped() {
+
+        _searchBar.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable,
+                                String oldValue, String newValue) {
+
+                String text = _searchBar.getText();
+                if (text.contains(" ")) {
+                    text = text.substring(text.lastIndexOf(" ") + 1);
+                }
+
+                ObservableList<Name> updatedNames = FXCollections.observableArrayList();
+
+                if (text.equals("")) {
+                    _allNamesList.setItems(_model.getDatabaseNames());
+                } else {
+                    _allNamesList.setItems(updatedNames);
+                }
+
+                for (Name name : _model.getDatabaseNames()) {
+                    if (name.getName().startsWith(text)) {
+                        updatedNames.add(name);
+                    }
+                }
+            }
+
+        });
     }
 }
 

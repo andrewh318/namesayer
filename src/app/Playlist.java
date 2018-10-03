@@ -33,4 +33,8 @@ public class Playlist {
     public void setPlaylistName(String name){
         _playlistName = name;
     }
+
+    public String getName() {
+        return _playlistName;
+    }
 }

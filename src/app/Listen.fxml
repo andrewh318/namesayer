@@ -50,7 +50,7 @@
                   <JFXListView fx:id="_allNamesList" prefHeight="560.0" prefWidth="485.0" style="-fx-background-color: #DFDFDF;" />
                   <HBox alignment="CENTER" prefHeight="93.0" prefWidth="485.0">
                      <children>
-                        <TextField prefHeight="39.0" prefWidth="331.0" />
+                        <TextField fx:id="_searchBar" prefHeight="39.0" prefWidth="331.0" />
                         <JFXButton fx:id="_addButton" onAction="#onAddButtonClicked" prefHeight="37.0" prefWidth="95.0" style="-fx-background-color: #157766;" text="Add" textFill="WHITE">
                            <font>
                               <Font size="16.0" />
