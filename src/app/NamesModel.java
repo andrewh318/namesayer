@@ -135,10 +135,11 @@ public class NamesModel {
 
 
     //Method that reads a playlist file
-    private ObservableList<String> readPlaylist(File file) {
+    private List<String> readPlaylist(File file) {
 
-        Playlist playlist = new Playlist(file.getName());
-        ObservableList<String> invalidNames = FXCollections.observableArrayList();
+        String playlistName = file.getName().substring(0, file.getName().lastIndexOf('.'));
+        Playlist playlist = new Playlist(playlistName);
+        List<String> invalidNames = new ArrayList<String>();
 
         BufferedReader br;
         try {
@@ -146,34 +147,49 @@ public class NamesModel {
             String st;
             while ((st = br.readLine()) != null) {
 
+                boolean inDataBase = true;
                 st.replaceAll("-", " ");
                 String[] names = st.split(" ");
+                String combinedName = "";
 
                 for (String name : names) {
-                    name.trim();
-                    name.toLowerCase();
-                    name.substring(0, 1).toUpperCase();
 
-                    boolean added = false;
+                    name = name.trim();
+                    name = name.toLowerCase();
+                    name = name.substring(0, 1).toUpperCase() + name.substring(1);
+
+                    combinedName = combinedName + " " + name;
+
+                    boolean valid = false;
                     for (Name databaseName : _databaseNames) {
                         if (databaseName.getName().equals(name)) {
-                            playlist.addName(databaseName);
-                            added = true;
+                            valid = true;
                             break;
                         }
                     }
 
-                    if (!added) {
-                        invalidNames.add(name);
+                    if (!valid) {
+                        inDataBase = false;
                     }
+                }
+
+                combinedName = combinedName.substring(1);
+
+                if (inDataBase) {
+                    playlist.addName(new Name(combinedName));
+                } else {
+                    invalidNames.add(combinedName);
+                    System.out.println(combinedName);
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        _allPlaylists.add(playlist);
+        addPlaylist(playlist);
+
         return invalidNames;
+
     }
 
 
