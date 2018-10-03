@@ -4,7 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class Playlist {
-    private ObservableList<Name> _playlist;
+    private ObservableList<Name> _playlist = FXCollections.observableArrayList();
     private String _playlistName;
     private int _position;
 
@@ -28,5 +28,9 @@ public class Playlist {
         if (name != null){
             _playlist.add(name);
         }
+    }
+
+    public void setPlaylistName(String name){
+        _playlistName = name;
     }
 }

@@ -16,6 +16,7 @@ public class NamesModel {
     public static final String USERRECORDINGSDIRECTORY = "userNames";
     public static final String BADNAMESFILE = "BadNames.txt";
     public static final String DEFAULT_PLAYLIST_NAME = "Default Playlist";
+    public static final String NEW_PLAYLIST_NAME = "New Playlist";
 
 
 
