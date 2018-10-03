@@ -8,12 +8,11 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.TextFieldListCell;
 import javafx.scene.input.MouseEvent;
 import javafx.util.StringConverter;
-
-import java.io.PrintWriter;
 
 public class ListenController {
     @FXML
@@ -24,12 +23,18 @@ public class ListenController {
     private JFXListView<Playlist> _allPlaylists;
 
     @FXML
+    private Label _currentPlaylistName;
+
+    @FXML
     private JFXButton _addButton;
     private NamesModel _model;
     private Playlist _currentPlaylist;
 
     @FXML
     private JFXButton _newPlaylistButon;
+
+    @FXML
+    private JFXButton _deleteButton;
 
     @FXML
     private TextField _searchBar;
@@ -81,6 +86,7 @@ public class ListenController {
         Playlist playlist =  _allPlaylists.getSelectionModel().getSelectedItem();
         if (playlist == null){
             System.out.println("Playlist is null");
+            _currentPlaylistList.setItems(null);
             return;
         } else {
             // set the current playlist LIST
@@ -100,8 +106,13 @@ public class ListenController {
             System.out.println("Name is null");
             return;
         } else {
-            _currentPlaylist.addName(name);
-
+            Playlist playlist = _allPlaylists.getSelectionModel().getSelectedItem();
+            if (playlist == null){
+                System.out.println("playlist is null");
+                return;
+            } else {
+                playlist.addName(name);
+            }
         }
     }
 
@@ -147,6 +158,19 @@ public class ListenController {
         int index = _model.getPlaylists().indexOf(playlist);
         _allPlaylists.getSelectionModel().select(index);
         _allPlaylists.edit(index);
+
+    }
+
+    @FXML
+    private void onDeleteButtonClicked(){
+        Name name = _currentPlaylistList.getSelectionModel().getSelectedItem();
+        Playlist playlist = _allPlaylists.getSelectionModel().getSelectedItem();
+        if (name != null){
+            playlist.deleteName(name);
+        } else {
+            System.out.println("cant delete: no name selected");
+            return;
+        }
 
     }
 
