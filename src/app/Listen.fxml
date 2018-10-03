@@ -23,7 +23,7 @@
                   <Font size="20.0" />
                </font>
             </Label>
-            <Label alignment="CENTER" prefHeight="30.0" prefWidth="273.0" text="Playlist" textFill="#157766">
+            <Label fx:id="_currentPlaylistName" alignment="CENTER" prefHeight="30.0" prefWidth="273.0" text="Playlist" textFill="#157766">
                <font>
                   <Font size="20.0" />
                </font>
@@ -66,9 +66,14 @@
             <VBox prefHeight="548.0" prefWidth="275.0" style="-fx-background-color: efefef;">
                <children>
                   <JFXListView fx:id="_currentPlaylistList" prefHeight="562.0" prefWidth="275.0" style="-fx-background-color: efefef;" />
-                  <HBox alignment="CENTER" prefHeight="93.0" prefWidth="275.0">
+                  <HBox alignment="CENTER" prefHeight="93.0" prefWidth="275.0" spacing="30.0">
                      <children>
-                        <JFXButton prefHeight="37.0" prefWidth="95.0" style="-fx-background-color: #157766;" text="Save" textFill="WHITE">
+                        <JFXButton prefHeight="37.0" prefWidth="95.0" style="-fx-background-color: #157766;" text="Play" textFill="WHITE">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </JFXButton>
+                        <JFXButton fx:id="_deleteButton" onAction="#onDeleteButtonClicked" prefHeight="37.0" prefWidth="95.0" style="-fx-background-color: #157766;" text="Delete" textFill="WHITE">
                            <font>
                               <Font size="16.0" />
                            </font>

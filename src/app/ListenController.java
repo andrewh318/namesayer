@@ -2,12 +2,17 @@ package app;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.cell.TextFieldListCell;
 import javafx.scene.input.MouseEvent;
 import javafx.util.StringConverter;
+
+import javax.script.Bindings;
 
 public class ListenController {
     @FXML
@@ -16,14 +21,18 @@ public class ListenController {
     private JFXListView<Name> _currentPlaylistList;
     @FXML
     private JFXListView<Playlist> _allPlaylists;
+    @FXML
+    private Label _currentPlaylistName;
+
 
     @FXML
     private JFXButton _addButton;
     private NamesModel _model;
-    private Playlist _currentPlaylist;
 
     @FXML
     private JFXButton _newPlaylistButon;
+    @FXML
+    private JFXButton _deleteButton;
 
 
     public void initialize(){
@@ -40,8 +49,11 @@ public class ListenController {
         _allNamesList.setItems(nameList);
         _allPlaylists.setItems(allPlaylists);
         // by default set current playlist to the first playlist in all playlists
-        _currentPlaylist = allPlaylists.get(0);
-        _currentPlaylistList.setItems(_currentPlaylist.getPlaylist());
+        _currentPlaylistList.setItems(allPlaylists.get(0).getPlaylist());
+        // change text for playlist header
+
+        // set up binding for GUI
+
 
 
     }
@@ -72,12 +84,12 @@ public class ListenController {
         Playlist playlist =  _allPlaylists.getSelectionModel().getSelectedItem();
         if (playlist == null){
             System.out.println("Playlist is null");
+            _currentPlaylistList.setItems(null);
             return;
         } else {
-            // set the current playlist LIST
-            _currentPlaylist = playlist;
             // bind selected playlist to current playlist
-            _currentPlaylistList.setItems(_currentPlaylist.getPlaylist());
+            _currentPlaylistList.setItems(playlist.getPlaylist());
+
         }
     }
 
@@ -91,7 +103,13 @@ public class ListenController {
             System.out.println("Name is null");
             return;
         } else {
-            _currentPlaylist.addName(name);
+            Playlist playlist = _allPlaylists.getSelectionModel().getSelectedItem();
+            if (playlist == null){
+                System.out.println("playlist is null");
+                return;
+            } else {
+                playlist.addName(name);
+            }
         }
     }
 
@@ -127,7 +145,6 @@ public class ListenController {
         _allPlaylists.setOnEditCommit(t ->{
             _allPlaylists.getItems().set(t.getIndex(), t.getNewValue());
         });
-
     }
 
     @FXML
@@ -137,6 +154,19 @@ public class ListenController {
         int index = _model.getPlaylists().indexOf(playlist);
         _allPlaylists.getSelectionModel().select(index);
         _allPlaylists.edit(index);
+
+    }
+
+    @FXML
+    private void onDeleteButtonClicked(){
+        Name name = _currentPlaylistList.getSelectionModel().getSelectedItem();
+        Playlist playlist = _allPlaylists.getSelectionModel().getSelectedItem();
+        if (name != null){
+            playlist.deleteName(name);
+        } else {
+            System.out.println("cant delete: no name selected");
+            return;
+        }
 
     }
 }

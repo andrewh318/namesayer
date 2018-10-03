@@ -1,5 +1,7 @@
 package app;
 
+import javafx.beans.property.ReadOnlyStringProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -30,7 +32,17 @@ public class Playlist {
         }
     }
 
+    public void deleteName(Name name){
+        if (name != null){
+            _playlist.remove(name);
+        }
+    }
+
     public void setPlaylistName(String name){
         _playlistName = name;
+    }
+
+    public ReadOnlyStringProperty nameProperty(){
+        return new SimpleStringProperty(_playlistName);
     }
 }
