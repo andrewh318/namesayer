@@ -36,7 +36,7 @@
                   <JFXListView fx:id="_allPlaylists" onMouseClicked="#handleAllPlaylistsSelect" prefHeight="534.0" prefWidth="265.0" style="-fx-background-color: #E9E9EA;" />
                   <HBox alignment="CENTER" prefHeight="66.0" prefWidth="265.0" spacing="20.0">
                      <children>
-                        <JFXButton prefHeight="39.0" prefWidth="120.0" style="-fx-background-color: #157766;" text="New Playlist" textFill="WHITE">
+                        <JFXButton fx:id="_newPlaylistButon" onAction="#onNewPlaylistClicked" prefHeight="39.0" prefWidth="120.0" style="-fx-background-color: #157766;" text="New Playlist" textFill="WHITE">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -65,7 +65,7 @@
             </VBox>
             <VBox prefHeight="548.0" prefWidth="275.0" style="-fx-background-color: efefef;">
                <children>
-                  <JFXListView fx:id="_currentPlaylist" prefHeight="562.0" prefWidth="275.0" style="-fx-background-color: efefef;" />
+                  <JFXListView fx:id="_currentPlaylistList" prefHeight="562.0" prefWidth="275.0" style="-fx-background-color: efefef;" />
                   <HBox alignment="CENTER" prefHeight="93.0" prefWidth="275.0">
                      <children>
                         <JFXButton prefHeight="37.0" prefWidth="95.0" style="-fx-background-color: #157766;" text="Save" textFill="WHITE">

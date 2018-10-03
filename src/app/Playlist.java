@@ -29,4 +29,8 @@ public class Playlist {
             _playlist.add(name);
         }
     }
+
+    public void setPlaylistName(String name){
+        _playlistName = name;
+    }
 }
