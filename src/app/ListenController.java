@@ -7,6 +7,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.cell.TextFieldListCell;
 import javafx.scene.input.MouseEvent;
@@ -55,10 +56,7 @@ public class ListenController {
 
         // set up binding for GUI
 
-
-
     }
-
 
 
     private void setUpDoubleClickListeners(){
@@ -106,6 +104,7 @@ public class ListenController {
         } else {
             Playlist playlist = _allPlaylists.getSelectionModel().getSelectedItem();
             if (playlist == null){
+                showAlert("Error: No playlist select", "Please select a playlist you would like to add to");
                 System.out.println("playlist is null");
                 return;
             } else {
@@ -156,6 +155,10 @@ public class ListenController {
         _allPlaylists.getSelectionModel().select(index);
         _allPlaylists.edit(index);
 
+        // bind the current playlist list view to the newly created playlist
+        _currentPlaylistList.setItems(playlist.getPlaylist());
+
+
     }
 
     @FXML
@@ -165,10 +168,16 @@ public class ListenController {
         if (name != null){
             playlist.deleteName(name);
         } else {
-            System.out.println("cant delete: no name selected");
+            showAlert("Error: Can't delete", "Please select a name from the playlist");
             return;
         }
+    }
 
+    private void showAlert(String header, String content){
+        Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+        errorAlert.setHeaderText(header);
+        errorAlert.setContentText(content);
+        errorAlert.showAndWait();
     }
 }
 

@@ -33,7 +33,7 @@
          <children>
             <VBox prefHeight="548.0" prefWidth="265.0" style="-fx-background-color: #E9E9EA;">
                <children>
-                  <JFXListView fx:id="_allPlaylists" onMouseClicked="#handleAllPlaylistsSelect" prefHeight="534.0" prefWidth="265.0" style="-fx-background-color: #E9E9EA;" />
+                  <JFXListView fx:id="_allPlaylists" onKeyReleased="#handleAllPlaylistsSelect" onMouseClicked="#handleAllPlaylistsSelect" prefHeight="534.0" prefWidth="265.0" style="-fx-background-color: #E9E9EA;" />
                   <HBox alignment="CENTER" prefHeight="66.0" prefWidth="265.0" spacing="20.0">
                      <children>
                         <JFXButton fx:id="_newPlaylistButon" onAction="#onNewPlaylistClicked" prefHeight="39.0" prefWidth="120.0" style="-fx-background-color: #157766;" text="New Playlist" textFill="WHITE">
