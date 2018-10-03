@@ -35,9 +35,10 @@ public class ListenController {
     private JFXButton _deleteButton;
 
 
-    public void initialize(){
-        _model = new NamesModel();
-        _model.setUp();
+    // injects the model into listen controller from frame
+    // sets up the required bindings
+    public void setModel(NamesModel model){
+        _model = model;
         setUpListBindings();
         setUpDoubleClickListeners();
         setUpEditableCells();
