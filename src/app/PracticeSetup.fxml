@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="648.0" prefWidth="1024.0" style="-fx-background-color: #E9E9EA;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.PracticeSetupController">
+   <children>
+      <Label alignment="CENTER" prefHeight="86.0" prefWidth="1034.0" text="Practice Mode" textFill="#157766">
+         <font>
+            <Font size="59.0" />
+         </font>
+      </Label>
+      <Label text="Select a Playlist to Continue" textFill="#157766">
+         <font>
+            <Font size="30.0" />
+         </font>
+      </Label>
+      <JFXComboBox fx:id="_comboBox" prefHeight="58.0" prefWidth="371.0" />
+      <JFXButton fx:id="_continueButton" style="-fx-background-color: #157766;" text="Lets go!" textFill="WHITE">
+         <font>
+            <Font size="28.0" />
+         </font>
+         <VBox.margin>
+            <Insets top="50.0" />
+         </VBox.margin>
+      </JFXButton>
+   </children>
+</VBox>
