@@ -112,7 +112,7 @@ public class ListenController {
                     Playlist playlist = cell.getItem();
                     // if user delets the entire playlist name, it will default back to 'New Playlist'
                     if (string.length() == 0){
-                        string = "New Playlist";
+                        string = NamesModel.DEFAULT_PLAYLIST_NAME;
                         // change this later to a pop up
                         System.out.println("Playlist cannot be empty");
                     }
@@ -132,7 +132,7 @@ public class ListenController {
 
     @FXML
     private void onNewPlaylistClicked(){
-        Playlist playlist = new Playlist(NamesModel.NEW_PLAYLIST_NAME);
+        Playlist playlist = new Playlist("");
         _model.addPlaylist(playlist);
         int index = _model.getPlaylists().indexOf(playlist);
         _allPlaylists.getSelectionModel().select(index);
