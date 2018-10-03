@@ -7,13 +7,19 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.cell.TextFieldListCell;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.util.StringConverter;
 
 import javax.script.Bindings;
+import java.io.IOException;
 
 public class ListenController {
     @FXML
@@ -24,6 +30,7 @@ public class ListenController {
     private JFXListView<Playlist> _allPlaylists;
     @FXML
     private Label _currentPlaylistName;
+
 
 
     @FXML
@@ -37,6 +44,7 @@ public class ListenController {
 
 
     // injects the model into listen controller from frame
+    // passes a reference of 'this' controller into the controller
     // sets up the required bindings
     public void setModel(NamesModel model){
         _model = model;
@@ -88,6 +96,8 @@ public class ListenController {
         } else {
             // bind selected playlist to current playlist
             _currentPlaylistList.setItems(playlist.getPlaylist());
+            // update name of current playlist
+            _currentPlaylistName.setText("Playlist: " + playlist.toString());
 
         }
     }
@@ -143,23 +153,53 @@ public class ListenController {
 
 
         _allPlaylists.setOnEditCommit(t ->{
-            _allPlaylists.getItems().set(t.getIndex(), t.getNewValue());
+            Playlist playlist = t.getNewValue();
+            // if the newly edit playlist name is empty, set the name to 'Default Playlist'
+            if (playlist.toString().length() == 0){
+                playlist.setPlaylistName(NamesModel.DEFAULT_PLAYLIST_NAME);
+            }
+            _allPlaylists.getItems().set(t.getIndex(), playlist);
+            // after edit finishes, update the current playlist name
+            _currentPlaylistName.setText("Playlist: " + playlist.toString());
         });
     }
 
     @FXML
     private void onNewPlaylistClicked(){
-        Playlist playlist = new Playlist("");
-        _model.addPlaylist(playlist);
-        int index = _model.getPlaylists().indexOf(playlist);
-        _allPlaylists.getSelectionModel().select(index);
-        _allPlaylists.edit(index);
+        // load new playlist FXML
+        Stage stage = new Stage();
+        Parent root;
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("NewPlaylist.fxml"));
+            root = (Parent) loader.load();
+            NewPlaylistController controller = loader.getController();
+            controller.setController(this);
+            stage.setTitle("New Playlist");
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.show();
 
-        // bind the current playlist list view to the newly created playlist
-        _currentPlaylistList.setItems(playlist.getPlaylist());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
 
 
     }
+
+    // this method is called from the new playlist controller
+    public void createNewPlaylist(String name){
+        Playlist playlist = new Playlist(name);
+        _model.addPlaylist(playlist);
+        int index = _model.getPlaylists().indexOf(playlist);
+        _allPlaylists.getSelectionModel().select(index);
+
+        // bind the current playlist list view to the newly created playlist
+        _currentPlaylistList.setItems(playlist.getPlaylist());
+        // temporarily set playlist name to empty
+        _currentPlaylistName.setText("Playlist: " + name);
+    }
+
 
     @FXML
     private void onDeleteButtonClicked(){
