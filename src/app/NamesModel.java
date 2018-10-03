@@ -6,6 +6,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class NamesModel {
     private ObservableList<Name> _databaseNames = FXCollections.observableArrayList();
@@ -133,9 +135,10 @@ public class NamesModel {
 
 
     //Method that reads a playlist file
-    private void readPlaylist(File file) {
+    private ObservableList<String> readPlaylist(File file) {
 
         Playlist playlist = new Playlist(file.getName());
+        ObservableList<String> invalidNames = FXCollections.observableArrayList();
 
         BufferedReader br;
         try {
@@ -147,23 +150,30 @@ public class NamesModel {
                 String[] names = st.split(" ");
 
                 for (String name : names) {
-                    name.toLowerCase();
                     name.trim();
+                    name.toLowerCase();
                     name.substring(0, 1).toUpperCase();
 
-                    Name nameObject = null;
+                    boolean added = false;
                     for (Name databaseName : _databaseNames) {
                         if (databaseName.getName().equals(name)) {
-                            nameObject = databaseName;
-                            playlist.addName(nameObject);
+                            playlist.addName(databaseName);
+                            added = true;
+                            break;
                         }
                     }
 
+                    if (!added) {
+                        invalidNames.add(name);
+                    }
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        _allPlaylists.add(playlist);
+        return invalidNames;
     }
 
 
