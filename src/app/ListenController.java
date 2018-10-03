@@ -55,6 +55,7 @@ public class ListenController {
         setUpListBindings();
         setUpDoubleClickListeners();
         setUpEditableCells();
+        setUpSearchBar();
     }
 
     private void setUpListBindings(){
@@ -243,8 +244,8 @@ public class ListenController {
 
     */
 
-    @FXML
-    private void onCharacterTyped() {
+
+    private void setUpSearchBar() {
 
         _searchBar.textProperty().addListener(new ChangeListener<String>() {
             @Override
