@@ -14,6 +14,7 @@ public class NamesModel {
 
     public static final String DATABASERECORDINGSDIRECTORY = "names";
     public static final String USERRECORDINGSDIRECTORY = "userNames";
+    public static final String PLAYLISTS_DIRECTORY = "playlists";
     public static final String BADNAMESFILE = "BadNames.txt";
     public static final String DEFAULT_PLAYLIST_NAME = "Default Playlist";
 
@@ -37,10 +38,11 @@ public class NamesModel {
         // to prevent double reading of names
         _databaseNames.clear();
         _userNames.clear();
-        createErrorFile();
 
-        readDirectory(DATABASERECORDINGSDIRECTORY);
-        readDirectory(USERRECORDINGSDIRECTORY);
+        createErrorFile();
+        readDirectory(new File(DATABASERECORDINGSDIRECTORY));
+        readDirectory(new File(PLAYLISTS_DIRECTORY));
+        readDirectory(new File(USERRECORDINGSDIRECTORY));
 
         setUpDefaultPlaylist();
     }
@@ -62,11 +64,37 @@ public class NamesModel {
         }
     }
 
+
+
+
+    private void readDirectory(File directory) {
+        directory.mkdir();
+        File[] files =  directory.listFiles();
+
+        if (directory.isDirectory()) {
+
+            if (directory.getName().equals(DATABASERECORDINGSDIRECTORY) || directory.getName().equals(USERRECORDINGSDIRECTORY)) {
+                for (File file : files) {
+                    readName(file);
+                }
+            } else if (directory.getName().equals(PLAYLISTS_DIRECTORY)) {
+                for (File file : files) {
+                    readPlaylist(file);
+                }
+            }
+
+        }
+    }
+
+
+
+
     //Parses a wav file specified by filename, creates a recording object, and adds it to the appropriate name object
     //in the database
+    private void readName(File file) {
 
-    // made this method private
-    private void parse(String fileName, String directory) {
+        String fileName = file.getName();
+        String directory = file.getParent();
 
         //Extracts information from the filename and directory
         String path = directory + "/" + fileName;
@@ -75,7 +103,7 @@ public class NamesModel {
         String[] parts = fileName.split("_");
         String date = parts[1];
         String time = parts[2];
-        String stringName = parts[3].substring(0,1).toUpperCase() + parts[3].substring(1);
+        String stringName = parts[3].substring(0, 1).toUpperCase() + parts[3].substring(1);
 
         //Creates a new recording object with the extracted information
         Recording recording = new Recording(stringName, date, path, fullPath, time);
@@ -103,45 +131,15 @@ public class NamesModel {
         }
     }
 
-    //Reads a folder specified by name for wav files, and creates the folder if it doesn't exist
 
-    // made this method private
-    private void readDirectory(String directory) {
-        File Folder = new File(directory);
+    //Method that reads a playlist file
+    private void readPlaylist(File file) {
 
-        //Creates directory if it doesn't exist and returns
-        if (!Folder.exists()) {
-            Boolean success = Folder.mkdir();
-            if (!success) {
-                System.out.println("Failed to create directory");
-            }
-            return;
-        }
+        Playlist playlist = new Playlist(file.getName());
 
-        //Reads files from directory
-        File[] listOfFiles = Folder.listFiles();
-
-        if (listOfFiles == null){
-            // add exception here
-            System.out.println("NULL");
-        } else {
-            for (int i = 0; i < listOfFiles.length; i++) {
-                if (listOfFiles[i].isFile()) {
-                    String fileName = listOfFiles[i].getName();
-                    parse(fileName, directory);
-                }
-            }
-        }
-    }
-
-    //Method that reads in a directory containing text files containing playlist information
-    private void readPlaylists(String fileName) {
-        File Folder = new File(fileName);
-
-
-        BufferedReader br = null;
+        BufferedReader br;
         try {
-            br = new BufferedReader(new FileReader(Folder));
+            br = new BufferedReader(new FileReader(file));
             String st;
             while ((st = br.readLine()) != null) {
 
@@ -151,21 +149,22 @@ public class NamesModel {
                 for (String name : names) {
                     name.toLowerCase();
                     name.trim();
-                    name.substring(0,1).toUpperCase();
-                    for (Name nameObject : _databaseNames) {
-                        if (nameObject.getName().equals(name)) {
+                    name.substring(0, 1).toUpperCase();
 
+                    Name nameObject = null;
+                    for (Name databaseName : _databaseNames) {
+                        if (databaseName.getName().equals(name)) {
+                            nameObject = databaseName;
+                            playlist.addName(nameObject);
                         }
                     }
+
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
     }
-
 
 
 
