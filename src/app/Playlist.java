@@ -51,4 +51,5 @@ public class Playlist {
     public ReadOnlyStringProperty nameProperty(){
         return new SimpleStringProperty(_playlistName);
     }
+
 }

@@ -51,6 +51,5 @@ public class NewPlaylistController {
         // close stage
        Stage stage = (Stage) _submitButton.getScene().getWindow();
        stage.close();
-
     }
 }

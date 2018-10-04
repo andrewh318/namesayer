@@ -13,6 +13,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.TextFieldListCell;
 import javafx.scene.input.MouseEvent;
@@ -60,6 +61,7 @@ public class ListenController {
         setUpDoubleClickListeners();
         setUpEditableCells();
         setUpSearchBar();
+        setUpCurrentPlaylistCellFactory();
     }
 
     private void setUpListBindings(){
@@ -70,7 +72,7 @@ public class ListenController {
         // by default set current playlist to the first playlist in all playlists
         _currentPlaylistList.setItems(allPlaylists.get(0).getPlaylist());
         // change text for playlist header
-        _currentPlaylistName.setText("Current Playlist: " + allPlaylists.get(0).toString());
+        _currentPlaylistName.setText("Playlist: " + allPlaylists.get(0).toString());
         // select first playlist
         _allPlaylists.getSelectionModel().select(0);
         // set up binding for GUI
@@ -98,11 +100,14 @@ public class ListenController {
                     }
 
 
-                    String nameString = _allNamesList.getSelectionModel().getSelectedItem().toString();
+                    String nameString = _allNamesList.getSelectionModel().getSelectedItem().getName();
 
                     if (nameString.toLowerCase().startsWith(lastNameofSearchText.toLowerCase())) {
                         _searchBar.setText(beginningOfSearchText + nameString + " ");
                     }
+                    _searchBar.requestFocus();
+                    _searchBar.end();
+
                 }
             }
         });
@@ -151,6 +156,8 @@ public class ListenController {
                 return;
             } else {
                 playlist.addName(namesList);
+                _searchBar.clear();
+                _searchBar.requestFocus();
             }
         }
     }
@@ -212,6 +219,24 @@ public class ListenController {
         });
     }
 
+    private void setUpCurrentPlaylistCellFactory(){
+        _currentPlaylistList.setCellFactory(param -> new ListCell<List<Name>>(){
+            @Override
+            protected void updateItem(List<Name> names, boolean empty){
+                super.updateItem(names, empty);
+                if (empty || names == null){
+                    setText(null);
+                } else {
+                    String string = "";
+                    for (Name name:names){
+                        string = string + name.getName() + " ";
+                    }
+                    setText(string);
+                }
+            }
+        });
+    }
+
     @FXML
     private void onNewPlaylistClicked(){
         // load new playlist FXML
@@ -230,8 +255,6 @@ public class ListenController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
 
     }
 
