@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -15,6 +16,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 public class FrameController {
@@ -25,6 +27,10 @@ public class FrameController {
 
     private boolean isListen;
     private boolean isPractice;
+    private ListenController _listenController;
+
+    @FXML
+    JFXButton _playButton;
 
     // reference to the stage used throughout the application
     private Stage _stage;
@@ -35,6 +41,9 @@ public class FrameController {
     private JFXButton _listenButton;
     @FXML
     private JFXButton _uploadButton;
+
+    @FXML
+    private Label _currentNameLabel;
 
     public void initialize(){
         setUpModel();
@@ -93,7 +102,7 @@ public class FrameController {
 
     @FXML
     private void onListenButtonClicked(){
-        if (isListen == false){
+        if (isListen == false) {
             loadListen(_model);
             isListen = true;
             isPractice = false;
@@ -118,8 +127,8 @@ public class FrameController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Listen.fxml"));
             Parent root = (Parent) loader.load();
-            ListenController controller = (ListenController) loader.getController();
-            controller.setModel(model);
+            _listenController = (ListenController) loader.getController();
+            _listenController.setModel(model);
             borderPane.setCenter(root);
 
         } catch (IOException e) {
@@ -138,5 +147,17 @@ public class FrameController {
         } catch (IOException e){
             e.printStackTrace();
         }
+    }
+
+    @FXML
+    private void onPlaybarPlayClicked() {
+        if (isListen == true) {
+            List<Name> name = _listenController.onPlayCLicked();
+            _currentNameLabel.setText(name.toString());
+        } else if(isPractice == true) {
+
+        }
+
+
     }
 }

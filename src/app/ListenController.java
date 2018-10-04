@@ -6,6 +6,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -162,21 +163,6 @@ public class ListenController {
         }
     }
 
-    private String checkIfNameIsValid() {
-        String searchText = _searchBar.getText();
-        String[] searchNames = searchText.split(" ");
-
-        for (String name : searchNames) {
-
-            name = name.trim();
-            name = name.toLowerCase();
-            name = name.substring(0, 1).toUpperCase() + name.substring(1);
-
-        }
-
-        return null;
-
-    }
 
 
     private void setUpEditableCells(){
@@ -256,6 +242,29 @@ public class ListenController {
             e.printStackTrace();
         }
 
+    }
+
+    @FXML
+    public List<Name> onPlayCLicked() {
+        List<Name> selectedName = _currentPlaylistList.getSelectionModel().getSelectedItem();
+
+        Task<Void> task = new Task<Void>() {
+            @Override
+            public Void call() {
+                try {
+                    for (Name name : selectedName) {
+                        name.playRecording();
+                    }
+                    return null;
+                } finally {
+
+                }
+            }
+        };
+        Thread thread = new Thread(task);
+        thread.start();
+
+        return selectedName;
     }
 
     // this method is called from the new playlist controller
