@@ -67,7 +67,6 @@ public class ListenController {
         // by default set current playlist to the first playlist in all playlists
         _currentPlaylistList.setItems(allPlaylists.get(0).getPlaylist());
         // change text for playlist header
-        
         // set up binding for GUI
 
     }
