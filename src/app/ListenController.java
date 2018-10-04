@@ -12,11 +12,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldListCell;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -25,6 +24,7 @@ import javafx.util.StringConverter;
 import javax.script.Bindings;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 public class ListenController {
     @FXML
@@ -63,6 +63,7 @@ public class ListenController {
         setUpEditableCells();
         setUpSearchBar();
         setUpCurrentPlaylistCellFactory();
+        setUpEnterBinding();
     }
 
     private void setUpListBindings(){
@@ -73,13 +74,25 @@ public class ListenController {
         // by default set current playlist to the first playlist in all playlists
         _currentPlaylistList.setItems(allPlaylists.get(0).getPlaylist());
         // change text for playlist header
-        _currentPlaylistName.setText("Playlist: " + allPlaylists.get(0).toString());
+        _currentPlaylistName.setText(allPlaylists.get(0).toString());
         // select first playlist
         _allPlaylists.getSelectionModel().select(0);
-        // set up binding for GUI
-
     }
 
+    // bind enter key to automatically add the name in search bar to the playlist
+    private void setUpEnterBinding(){
+            _searchBar.setOnKeyPressed(new EventHandler<KeyEvent>()
+            {
+                @Override
+                public void handle(KeyEvent ke)
+                {
+                    if (ke.getCode().equals(KeyCode.ENTER))
+                    {
+                        onAddButtonClicked();
+                    }
+                }
+            });
+    }
 
 
     private void setUpDoubleClickListeners(){
@@ -108,19 +121,9 @@ public class ListenController {
                     }
                     _searchBar.requestFocus();
                     _searchBar.end();
-
                 }
             }
         });
-    }
-
-
-
-
-    private Name handleNameListSelection(){
-        // need to cast because JFXlistviews return Objects
-        Name name = _allNamesList.getSelectionModel().getSelectedItem();
-        return name;
     }
 
     @FXML
@@ -134,7 +137,7 @@ public class ListenController {
             // bind selected playlist to current playlist
             _currentPlaylistList.setItems(playlist.getPlaylist());
             // update name of current playlist
-            _currentPlaylistName.setText("Playlist: " + playlist.toString());
+            _currentPlaylistName.setText(playlist.toString());
 
         }
     }
@@ -147,7 +150,7 @@ public class ListenController {
         List<Name> namesList = _model.generateListOfNames(_searchBar.getText());
 
         if (namesList == null){
-            System.out.println(_searchBar.getText() + "Is not a valid name");
+            showAlert("Error: Invalid Name", _searchBar.getText() + " is not a valid name");
             return;
         } else {
             Playlist playlist = _allPlaylists.getSelectionModel().getSelectedItem();
@@ -201,7 +204,7 @@ public class ListenController {
             }
             _allPlaylists.getItems().set(t.getIndex(), playlist);
             // after edit finishes, update the current playlist name
-            _currentPlaylistName.setText("Playlist: " + playlist.toString());
+            _currentPlaylistName.setText(playlist.toString());
         });
     }
 
@@ -210,6 +213,8 @@ public class ListenController {
             @Override
             protected void updateItem(List<Name> names, boolean empty){
                 super.updateItem(names, empty);
+                // need this code so the list view knows the correct behaviour when the cell is empty
+                // throws null pointer otherwise
                 if (empty || names == null){
                     setText(null);
                 } else {
@@ -240,6 +245,32 @@ public class ListenController {
 
         } catch (IOException e) {
             e.printStackTrace();
+        }
+
+    }
+
+    @FXML
+    private void onDeletePlaylistButtonClicked(){
+        // get the current playlist selected
+        Playlist playlist = _allPlaylists.getSelectionModel().getSelectedItem();
+        // check if number of items in playlist is 1, if yes, then do not allow delete (there must at least be one
+        // playlist at all times.
+        int numOfPlaylists = _model.getPlaylists().size();
+        if (numOfPlaylists == 1){
+            showAlert("Error: Cannot delete playlist", "You must have at least one playlist");
+        } else if (playlist == null) {
+            showAlert("Error: No playlist selected", "Please select a playlist to delete");
+        } else {
+            // show delete confirmation
+            if (isDeleteConfirmed()){
+                // delete playlist
+                _model.deletePlaylist(playlist);
+                // get new playlist selected and display as current playlist
+                Playlist newPlaylist = _allPlaylists.getSelectionModel().getSelectedItem();
+                _currentPlaylistList.setItems(newPlaylist.getPlaylist());
+                _currentPlaylistName.setText(newPlaylist.getName());
+            }
+
         }
 
     }
@@ -276,8 +307,7 @@ public class ListenController {
 
         // bind the current playlist list view to the newly created playlist
         _currentPlaylistList.setItems(playlist.getPlaylist());
-        // temporarily set playlist name to empty
-        _currentPlaylistName.setText("Playlist: " + name);
+        _currentPlaylistName.setText(name);
     }
 
 
@@ -286,7 +316,9 @@ public class ListenController {
         List<Name> name = _currentPlaylistList.getSelectionModel().getSelectedItem();
         Playlist playlist = _allPlaylists.getSelectionModel().getSelectedItem();
         if (name != null){
-            playlist.deleteName(name);
+            if (isDeleteConfirmed()){
+                playlist.deleteName(name);
+            }
         } else {
             showAlert("Error: Can't delete", "Please select a name from the playlist");
             return;
@@ -298,6 +330,20 @@ public class ListenController {
         errorAlert.setHeaderText(header);
         errorAlert.setContentText(content);
         errorAlert.showAndWait();
+    }
+
+    // show delete confirmation box, returns whether or not user clicks confirm
+    private boolean isDeleteConfirmed(){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation");
+        alert.setHeaderText(null);
+        alert.setContentText("Are you sure you want to delete?");
+        Optional<ButtonType> action = alert.showAndWait();
+        if (action.get() == ButtonType.OK){
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /*
