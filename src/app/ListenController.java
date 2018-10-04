@@ -47,6 +47,9 @@ public class ListenController {
     @FXML
     private TextField _searchBar;
 
+    public void initialize(){
+
+    }
 
     // injects the model into listen controller from frame
     // passes a reference of 'this' controller into the controller
@@ -67,6 +70,9 @@ public class ListenController {
         // by default set current playlist to the first playlist in all playlists
         _currentPlaylistList.setItems(allPlaylists.get(0).getPlaylist());
         // change text for playlist header
+        _currentPlaylistName.setText("Current Playlist: " + allPlaylists.get(0).toString());
+        // select first playlist
+        _allPlaylists.getSelectionModel().select(0);
         // set up binding for GUI
 
     }
@@ -101,6 +107,7 @@ public class ListenController {
             }
         });
     }
+
 
 
 
