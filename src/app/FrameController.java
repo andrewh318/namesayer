@@ -1,20 +1,26 @@
 package app;
 
 import com.jfoenix.controls.JFXButton;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Optional;
 
 public class FrameController {
     @FXML
     private BorderPane borderPane;
+
     private NamesModel _model;
 
     private boolean isListen;
@@ -27,6 +33,8 @@ public class FrameController {
     private JFXButton _practiceButton;
     @FXML
     private JFXButton _listenButton;
+    @FXML
+    private JFXButton _uploadButton;
 
     public void initialize(){
         setUpModel();
@@ -47,6 +55,8 @@ public class FrameController {
         setUpOnClose();
     }
 
+
+
     private void setUpOnClose(){
         _stage.setOnCloseRequest(e ->{
             e.consume();
@@ -64,6 +74,7 @@ public class FrameController {
         Optional<ButtonType> action = alert.showAndWait();
         if (action.get() == ButtonType.OK){
             System.out.println("Saving playlists");
+            _model.savePlaylists();
             _stage.close();
         } else {
             System.out.println("Thanks for coming");
@@ -87,6 +98,19 @@ public class FrameController {
             isListen = true;
             isPractice = false;
         }
+    }
+
+    @FXML
+    private void onUploadButtonClicked(){
+        FileChooser fc = new FileChooser();
+        fc.setTitle("Open Playlist File");
+        fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Text Files", "*.txt"));
+        File f = fc.showOpenDialog(_stage);
+        if (f != null){
+            // parse the txt file
+            _model.readPlaylist(f);
+        }
+
     }
 
 

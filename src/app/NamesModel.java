@@ -136,7 +136,7 @@ public class NamesModel {
 
 
     //Method that reads a playlist file
-    private List<String> readPlaylist(File file) {
+    public List<String> readPlaylist(File file) {
 
         String playlistName = file.getName().substring(0, file.getName().lastIndexOf('.'));
         Playlist playlist = new Playlist(playlistName);
@@ -162,20 +162,21 @@ public class NamesModel {
         addPlaylist(playlist);
 
         return invalidNames;
-
     }
 
     //Method that reads in a string containing names separated by spaces and returns a list of Name object if successful,
     //or null if unsuccessful.
 
     public List<Name> generateListOfNames(String names) {
+        if (names.isEmpty()){
+            return null;
+        }
         List<Name> namesList = new ArrayList<Name>();
 
         names.replaceAll("-", " ");
         String[] namesArray = names.split(" ");
 
         for (String name : namesArray) {
-
             name = name.trim();
             name = name.toLowerCase();
             name = name.substring(0, 1).toUpperCase() + name.substring(1);
@@ -201,6 +202,35 @@ public class NamesModel {
 
     public void addPlaylist(Playlist playlist){
         _allPlaylists.add(playlist);
+    }
+
+    public void savePlaylists(){
+        ObservableList<Playlist> playlists = this.getPlaylists();
+        // loop through list of playlists
+        for (Playlist playlist : playlists){
+            // for each playlist create a new BufferedReader
+            ObservableList<List<Name>> listNames = playlist.getPlaylist();
+            String playlistName = playlist.getName();
+            try {
+                FileWriter fileWriter = new FileWriter("playlists/" + playlistName + ".txt");
+                BufferedWriter out = new BufferedWriter(fileWriter);
+                // for each list of names (for each playlist entry)
+                for (List<Name> names: listNames){
+                    // as each playlist entry can contain multiple names, print entries names on the same line
+                    for (Name name : names){
+                        // append name followed by space
+                        out.append(name.getName() + " ");
+                    }
+                    // after a playlist entry has finished printing, add a new line to indicate next entry
+                    out.newLine();
+                }
+                // after playlist is complete, close the writer so a new one can be created for next playlist
+                out.close();
+            } catch (IOException e){
+                e.printStackTrace();
+            }
+
+        }
     }
 //
 //    public boolean searchPlaylist(Name name){

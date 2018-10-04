@@ -4,7 +4,6 @@
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -42,17 +41,12 @@
                   <Font size="20.0" />
                </font>
             </JFXButton>
-            <TextField prefHeight="25.0" prefWidth="316.0" promptText="Search">
-               <HBox.margin>
-                  <Insets left="30.0" />
-               </HBox.margin>
-            </TextField>
-            <JFXButton prefHeight="60.0" prefWidth="111.0" text=" " textFill="WHITE">
+            <JFXButton fx:id="_uploadButton" onAction="#onUploadButtonClicked" prefHeight="60.0" prefWidth="139.0" text="UPLOAD" textFill="WHITE">
                <font>
                   <Font size="20.0" />
                </font>
                <graphic>
-                  <FontAwesomeIconView fill="WHITE" glyphName="SEARCH" size="25" />
+                  <FontAwesomeIconView fill="WHITE" glyphName="PLUS" size="20" />
                </graphic>
             </JFXButton>
          </children>
