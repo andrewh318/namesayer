@@ -147,40 +147,12 @@ public class NamesModel {
             br = new BufferedReader(new FileReader(file));
             String st;
             while ((st = br.readLine()) != null) {
+                List<Name> namesList = generateListOfNames(st);
 
-                boolean inDataBase = true;
-                st.replaceAll("-", " ");
-                String[] names = st.split(" ");
-                String combinedName = "";
-
-                for (String name : names) {
-
-                    name = name.trim();
-                    name = name.toLowerCase();
-                    name = name.substring(0, 1).toUpperCase() + name.substring(1);
-
-                    combinedName = combinedName + " " + name;
-
-                    boolean valid = false;
-                    for (Name databaseName : _databaseNames) {
-                        if (databaseName.getName().equals(name)) {
-                            valid = true;
-                            break;
-                        }
-                    }
-
-                    if (!valid) {
-                        inDataBase = false;
-                    }
-                }
-
-                combinedName = combinedName.substring(1);
-
-                if (inDataBase) {
-                    playlist.addName(new Name(combinedName));
+                if (namesList == null) {
+                    invalidNames.add(st);
                 } else {
-                    invalidNames.add(combinedName);
-                    System.out.println(combinedName);
+                    playlist.addName(namesList);
                 }
             }
         } catch (Exception e) {
@@ -191,6 +163,37 @@ public class NamesModel {
 
         return invalidNames;
 
+    }
+
+    //Method that reads in a string containing names separated by spaces and returns a list of Name object if successful,
+    //or null if unsuccessful.
+
+    public List<Name> generateListOfNames(String names) {
+        List<Name> namesList = new ArrayList<Name>();
+
+        names.replaceAll("-", " ");
+        String[] namesArray = names.split(" ");
+
+        for (String name : namesArray) {
+
+            name = name.trim();
+            name = name.toLowerCase();
+            name = name.substring(0, 1).toUpperCase() + name.substring(1);
+
+            boolean valid = false;
+            for (Name databaseName : _databaseNames) {
+                if (databaseName.getName().equals(name)) {
+                    valid = true;
+                    namesList.add(databaseName);
+                    break;
+                }
+            }
+
+            if (!valid) {
+                return null;
+            }
+        }
+        return namesList;
     }
 
 

@@ -22,12 +22,13 @@ import javafx.util.StringConverter;
 
 import javax.script.Bindings;
 import java.io.IOException;
+import java.util.List;
 
 public class ListenController {
     @FXML
     private JFXListView<Name> _allNamesList;
     @FXML
-    private JFXListView<Name> _currentPlaylistList;
+    private JFXListView<List<Name>> _currentPlaylistList;
     @FXML
     private JFXListView<Playlist> _allPlaylists;
     @FXML
@@ -81,7 +82,25 @@ public class ListenController {
             @Override
             public void handle(MouseEvent click) {
                 if (click.getClickCount() == 2){
-                    onAddButtonClicked();
+                    String searchText = _searchBar.getText();
+
+                    String lastNameofSearchText;
+                    String beginningOfSearchText;
+
+                    if (searchText.contains(" ")) {
+                        lastNameofSearchText = searchText.substring(searchText.lastIndexOf(" ") + 1);
+                        beginningOfSearchText = searchText.substring(0, searchText.lastIndexOf(" ") + 1);
+                    } else {
+                        lastNameofSearchText = searchText;
+                        beginningOfSearchText = "";
+                    }
+
+
+                    String nameString = _allNamesList.getSelectionModel().getSelectedItem().toString();
+
+                    if (nameString.toLowerCase().startsWith(lastNameofSearchText.toLowerCase())) {
+                        _searchBar.setText(beginningOfSearchText + nameString + " ");
+                    }
                 }
             }
         });
@@ -117,9 +136,10 @@ public class ListenController {
     @FXML
     private void onAddButtonClicked(){
         // get currently selected name
-        Name name = handleNameListSelection();
-        if (name == null){
-            System.out.println("Name is null");
+        List<Name> namesList = _model.generateListOfNames(_searchBar.getText());
+
+        if (namesList == null){
+            System.out.println(_searchBar.getText() + "Is not a valid name");
             return;
         } else {
             Playlist playlist = _allPlaylists.getSelectionModel().getSelectedItem();
@@ -128,9 +148,25 @@ public class ListenController {
                 System.out.println("playlist is null");
                 return;
             } else {
-                playlist.addName(name);
+                playlist.addName(namesList);
             }
         }
+    }
+
+    private String checkIfNameIsValid() {
+        String searchText = _searchBar.getText();
+        String[] searchNames = searchText.split(" ");
+
+        for (String name : searchNames) {
+
+            name = name.trim();
+            name = name.toLowerCase();
+            name = name.substring(0, 1).toUpperCase() + name.substring(1);
+
+        }
+
+        return null;
+
     }
 
 
@@ -213,7 +249,7 @@ public class ListenController {
 
     @FXML
     private void onDeleteButtonClicked(){
-        Name name = _currentPlaylistList.getSelectionModel().getSelectedItem();
+        List<Name> name = _currentPlaylistList.getSelectionModel().getSelectedItem();
         Playlist playlist = _allPlaylists.getSelectionModel().getSelectedItem();
         if (name != null){
             playlist.deleteName(name);
@@ -270,7 +306,7 @@ public class ListenController {
                 }
 
                 for (Name name : _model.getDatabaseNames()) {
-                    if (name.getName().startsWith(text)) {
+                    if (name.getName().toLowerCase().startsWith(text.toLowerCase())) {
                         updatedNames.add(name);
                     }
                 }

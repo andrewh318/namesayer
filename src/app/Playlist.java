@@ -5,15 +5,17 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.util.List;
+
 public class Playlist {
-    private ObservableList<Name> _playlist = FXCollections.observableArrayList();
+    private ObservableList<List<Name>> _playlist = FXCollections.observableArrayList();
     private String _playlistName;
     private int _position;
 
     public Playlist(String name){
         _playlistName = name;
     }
-    public ObservableList<Name> getPlaylist(){
+    public ObservableList<List<Name>> getPlaylist(){
         return _playlist;
     }
 
@@ -26,13 +28,13 @@ public class Playlist {
         return _playlistName;
     }
 
-    public void addName(Name name){
+    public void addName(List<Name> name){
         if (name != null){
             _playlist.add(name);
         }
     }
 
-    public void deleteName(Name name){
+    public void deleteName(List<Name> name){
         if (name != null){
             _playlist.remove(name);
         }
