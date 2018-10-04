@@ -46,6 +46,9 @@ public class ListenController {
     @FXML
     private TextField _searchBar;
 
+    public void initialize(){
+
+    }
 
     // injects the model into listen controller from frame
     // passes a reference of 'this' controller into the controller
@@ -83,6 +86,7 @@ public class ListenController {
             }
         });
     }
+
 
 
 
