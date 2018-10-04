@@ -61,7 +61,12 @@
    <bottom>
       <HBox alignment="CENTER_RIGHT" nodeOrientation="LEFT_TO_RIGHT" prefHeight="60.0" prefWidth="200.0" style="-fx-background-color: #333333;" BorderPane.alignment="CENTER">
          <children>
-            <Label prefHeight="30.0" prefWidth="483.0" text="Currently Playing:" textFill="WHITE">
+            <Label prefHeight="30.0" prefWidth="181.0" text="Currently Playing:" textFill="WHITE">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label fx:id="_currentNameLabel" prefHeight="30.0" prefWidth="346.0" textFill="WHITE">
                <font>
                   <Font size="20.0" />
                </font>
@@ -71,7 +76,7 @@
                   <FontAwesomeIconView fill="WHITE" glyphName="FAST_BACKWARD" size="25" />
                </graphic>
             </JFXButton>
-            <JFXButton contentDisplay="CENTER" prefHeight="60.0" prefWidth="81.0" ripplerFill="WHITE" text=" ">
+            <JFXButton contentDisplay="CENTER" onAction="#onPlaybarPlayClicked" prefHeight="60.0" prefWidth="81.0" ripplerFill="WHITE" text=" ">
                <graphic>
                   <FontAwesomeIconView fill="WHITE" glyphName="PLAY" size="25" />
                </graphic>

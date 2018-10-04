@@ -68,7 +68,7 @@
                   <JFXListView fx:id="_currentPlaylistList" prefHeight="562.0" prefWidth="275.0" style="-fx-background-color: efefef;" />
                   <HBox alignment="CENTER" prefHeight="93.0" prefWidth="275.0" spacing="30.0">
                      <children>
-                        <JFXButton prefHeight="37.0" prefWidth="95.0" style="-fx-background-color: #157766;" text="Play" textFill="WHITE">
+                        <JFXButton onAction="#onPlayCLicked" prefHeight="37.0" prefWidth="95.0" style="-fx-background-color: #157766;" text="Play" textFill="WHITE">
                            <font>
                               <Font size="16.0" />
                            </font>
