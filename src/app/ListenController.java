@@ -87,25 +87,10 @@ public class ListenController {
             @Override
             public void handle(MouseEvent click) {
                 if (click.getClickCount() == 2){
-                    String searchText = _searchBar.getText();
-
-                    String lastNameofSearchText;
-                    String beginningOfSearchText;
-
-                    if (searchText.contains(" ")) {
-                        lastNameofSearchText = searchText.substring(searchText.lastIndexOf(" ") + 1);
-                        beginningOfSearchText = searchText.substring(0, searchText.lastIndexOf(" ") + 1);
-                    } else {
-                        lastNameofSearchText = searchText;
-                        beginningOfSearchText = "";
-                    }
-
 
                     String nameString = _allNamesList.getSelectionModel().getSelectedItem().getName();
+                    autoCompleteText(nameString);
 
-                    if (nameString.toLowerCase().startsWith(lastNameofSearchText.toLowerCase())) {
-                        _searchBar.setText(beginningOfSearchText + nameString + " ");
-                    }
                     _searchBar.requestFocus();
                     _searchBar.end();
 
@@ -114,7 +99,24 @@ public class ListenController {
         });
     }
 
+    private void autoCompleteText(String nameString) {
+        String searchText = _searchBar.getText();
 
+        String lastNameofSearchText;
+        String beginningOfSearchText;
+
+        if (searchText.contains(" ")) {
+            lastNameofSearchText = searchText.substring(searchText.lastIndexOf(" ") + 1);
+            beginningOfSearchText = searchText.substring(0, searchText.lastIndexOf(" ") + 1);
+        } else {
+            lastNameofSearchText = searchText;
+            beginningOfSearchText = "";
+        }
+
+        if (nameString.toLowerCase().startsWith(lastNameofSearchText.toLowerCase())) {
+            _searchBar.setText(beginningOfSearchText + nameString + " ");
+        }
+    }
 
 
     private Name handleNameListSelection(){
@@ -191,7 +193,6 @@ public class ListenController {
             });
             return cell;
         });
-
 
         _allPlaylists.setOnEditCommit(t ->{
             Playlist playlist = t.getNewValue();
@@ -327,20 +328,24 @@ public class ListenController {
                                 String oldValue, String newValue) {
 
                 String text = _searchBar.getText();
+
+                String lastName;
                 if (text.contains(" ")) {
-                    text = text.substring(text.lastIndexOf(" ") + 1);
+                    lastName = text.substring(text.lastIndexOf(" ") + 1);
+                } else {
+                    lastName = text;
                 }
 
                 ObservableList<Name> updatedNames = FXCollections.observableArrayList();
 
-                if (text.equals("")) {
+                if (lastName.equals("")) {
                     _allNamesList.setItems(_model.getDatabaseNames());
                 } else {
                     _allNamesList.setItems(updatedNames);
                 }
 
                 for (Name name : _model.getDatabaseNames()) {
-                    if (name.getName().toLowerCase().startsWith(text.toLowerCase())) {
+                    if (name.getName().toLowerCase().startsWith(lastName.toLowerCase())) {
                         updatedNames.add(name);
                     }
                 }
