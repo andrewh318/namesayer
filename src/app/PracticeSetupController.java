@@ -21,8 +21,13 @@ public class PracticeSetupController {
 
     public void setModel(NamesModel model){
         _model = model;
+    }
+
+    public void setUpComboBox(){
         // populate combobox with playlist data from model
         _comboBox.setItems(_model.getPlaylists());
+        // focus on the first item of the combo list
+        _comboBox.getSelectionModel().select(0);
     }
 
     public void setPane(BorderPane pane){
@@ -39,6 +44,8 @@ public class PracticeSetupController {
                 Parent root = (Parent) loader.load();
                 PracticeModeController controller = loader.getController();
                 controller.setPlaylist(playlist);
+                controller.setModel(_model);
+                controller.setPane(_borderPane);
                 _borderPane.setCenter(root);
             } catch (IOException e){
                 e.printStackTrace();

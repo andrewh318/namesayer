@@ -98,6 +98,7 @@ public class FrameController {
             isPractice = true;
         }
 
+
     }
 
     @FXML
@@ -146,6 +147,7 @@ public class FrameController {
             PracticeSetupController controller = (PracticeSetupController) loader.getController();
             controller.setModel(model);
             controller.setPane(borderPane);
+            controller.setUpComboBox();
             borderPane.setCenter(root);
         } catch (IOException e){
             e.printStackTrace();
