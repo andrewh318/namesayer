@@ -28,6 +28,16 @@ public class Playlist {
         return _playlistName;
     }
 
+    public String getPlaylistItemAt(int index){
+        List<Name> names = _playlist.get(index);
+        String str = "";
+        // Loop through the names, concatenate them together to a single name
+        for (Name name: names){
+            str = str + name.getName() + " ";
+        }
+        return str;
+    }
+
     public void addName(List<Name> name){
         if (name != null){
             _playlist.add(name);

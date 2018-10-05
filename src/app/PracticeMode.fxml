@@ -1,14 +1,99 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="app.PracticeMode"
-            prefHeight="400.0" prefWidth="600.0">
-
-</AnchorPane>
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="648.0" prefWidth="1024.0" style="-fx-background-color: efefef;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.PracticeModeController">
+   <children>
+      <HBox alignment="CENTER_LEFT" prefHeight="69.0" prefWidth="1024.0">
+         <children>
+            <JFXButton style="-fx-background-color: #36907e;" text="Change Playlist" textFill="WHITE">
+               <font>
+                  <Font size="20.0" />
+               </font>
+               <HBox.margin>
+                  <Insets left="20.0" />
+               </HBox.margin>
+            </JFXButton>
+            <Label fx:id="_playlistName" alignment="CENTER" prefHeight="45.0" prefWidth="636.0" text="Playlist:">
+               <font>
+                  <Font size="30.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" prefHeight="117.0" prefWidth="1024.0" style="-fx-background-color: #E9E9EA;">
+         <children>
+            <Label fx:id="_nameLabel" text="Name:">
+               <font>
+                  <Font size="80.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" prefHeight="213.0" prefWidth="1024.0" spacing="30.0" style="-fx-background-color: #E9E9EA;">
+         <children>
+            <JFXButton fx:id="_previousButton" contentDisplay="CENTER" onAction="#onPreviousButtonClicked" prefHeight="88.0" prefWidth="133.0" style="-fx-background-color: #36907e;" text=" " textFill="WHITE">
+               <graphic>
+                  <FontAwesomeIconView fill="WHITE" glyphName="ARROW_LEFT" size="60" />
+               </graphic>
+            </JFXButton>
+            <JFXButton buttonType="RAISED" contentDisplay="CENTER" prefHeight="136.0" prefWidth="257.0" ripplerFill="WHITE" style="-fx-background-color: #157766;" text=" ">
+               <graphic>
+                  <FontAwesomeIconView fill="WHITE" glyphName="MICROPHONE" size="70" />
+               </graphic>
+            </JFXButton>
+            <JFXButton fx:id="_nextButton" contentDisplay="CENTER" onAction="#onNextButtonClicked" prefHeight="88.0" prefWidth="133.0" style="-fx-background-color: #36907e;" text=" " textFill="WHITE">
+               <graphic>
+                  <FontAwesomeIconView fill="WHITE" glyphName="ARROW_RIGHT" size="60" />
+               </graphic>
+            </JFXButton>
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" prefHeight="170.0" prefWidth="1024.0" style="-fx-background-color: #E9E9EA;">
+         <children>
+            <AnchorPane prefHeight="170.0" prefWidth="1024.0">
+               <children>
+                  <Label layoutX="456.0" layoutY="21.0" text="Attempts">
+                     <font>
+                        <Font size="30.0" />
+                     </font>
+                  </Label>
+                  <JFXComboBox layoutX="220.0" layoutY="89.0" prefHeight="34.0" prefWidth="585.0" />
+                  <JFXButton contentDisplay="CENTER" layoutX="846.0" layoutY="89.0" prefHeight="34.0" prefWidth="65.0" style="-fx-background-color: #157766;" text="Play" textFill="WHITE" />
+                  <JFXButton contentDisplay="CENTER" layoutX="930.0" layoutY="88.0" prefHeight="34.0" prefWidth="65.0" style="-fx-background-color: #A42B1B;" text="Delete" textFill="WHITE" />
+               </children>
+            </AnchorPane>
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" prefHeight="80.0" prefWidth="1024.0" spacing="30.0">
+         <children>
+            <JFXButton contentDisplay="CENTER" prefHeight="44.0" prefWidth="122.0" style="-fx-background-color: #157766;" text="Compare" textFill="WHITE">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </JFXButton>
+            <JFXButton alignment="CENTER" contentDisplay="CENTER" prefHeight="44.0" prefWidth="122.0" style="-fx-background-color: #157766;" text=" " textFill="WHITE">
+               <font>
+                  <Font size="20.0" />
+               </font>
+               <graphic>
+                  <FontAwesomeIconView fill="WHITE" glyphName="PLAY" size="20" />
+               </graphic>
+            </JFXButton>
+            <JFXButton prefHeight="44.0" prefWidth="122.0" style="-fx-background-color: #A42B1B;" text="Flag" textFill="WHITE">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </JFXButton>
+         </children>
+      </HBox>
+   </children>
+</VBox>

@@ -93,7 +93,7 @@ public class FrameController {
     @FXML
     private void onPracticeButtonClicked(){
         if (isPractice == false){
-            loadPractice(_model);
+            loadPractice(_model, borderPane);
             isListen = false;
             isPractice = true;
         }
@@ -137,17 +137,21 @@ public class FrameController {
 
     }
 
-    private void loadPractice(NamesModel model){
+    // pass a reference of the border pane into the practice set up controller so it can change the scene to
+    // practice mode
+    private void loadPractice(NamesModel model, BorderPane borderPane){
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("PracticeSetup.fxml"));
             Parent root = (Parent) loader.load();
             PracticeSetupController controller = (PracticeSetupController) loader.getController();
             controller.setModel(model);
+            controller.setPane(borderPane);
             borderPane.setCenter(root);
         } catch (IOException e){
             e.printStackTrace();
         }
     }
+
 
     @FXML
     private void onPlaybarPlayClicked() {

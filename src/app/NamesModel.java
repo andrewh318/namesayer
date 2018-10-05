@@ -210,6 +210,10 @@ public class NamesModel {
         _allPlaylists.add(playlist);
     }
 
+    public void deletePlaylist(Playlist playlist){
+        _allPlaylists.remove(playlist);
+    }
+
     public void savePlaylists(){
         ObservableList<Playlist> playlists = this.getPlaylists();
         // loop through list of playlists
@@ -238,18 +242,4 @@ public class NamesModel {
 
         }
     }
-//
-//    public boolean searchPlaylist(Name name){
-//        return _playlist.contains(name);
-//    }
-//
-//    public void removeNameFromPlaylist(Name name) {
-//        _playlist.remove(name);
-//    }
-//
-//
-//    public void clearPlaylist() {
-//        _playlist.clear();
-//    }
-
 }
