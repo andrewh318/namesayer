@@ -49,9 +49,7 @@ public class ListenController {
     @FXML
     private TextField _searchBar;
 
-    public void initialize(){
-
-    }
+    private Playlist _currentPlaylist;
 
     // injects the model into listen controller from frame
     // passes a reference of 'this' controller into the controller
@@ -72,9 +70,8 @@ public class ListenController {
         _allNamesList.setItems(nameList);
         _allPlaylists.setItems(allPlaylists);
         // by default set current playlist to the first playlist in all playlists
-        _currentPlaylistList.setItems(allPlaylists.get(0).getPlaylist());
-        // change text for playlist header
-        _currentPlaylistName.setText(allPlaylists.get(0).toString());
+        _currentPlaylist = allPlaylists.get(0);
+        updateCurrentPlaylist();
         // select first playlist
         _allPlaylists.getSelectionModel().select(0);
     }
@@ -113,7 +110,6 @@ public class ListenController {
                         beginningOfSearchText = "";
                     }
 
-
                     String nameString = _allNamesList.getSelectionModel().getSelectedItem().getName();
 
                     if (nameString.toLowerCase().startsWith(lastNameofSearchText.toLowerCase())) {
@@ -128,21 +124,19 @@ public class ListenController {
 
     @FXML
     private void handleAllPlaylistsSelect(){
-        Playlist playlist =  _allPlaylists.getSelectionModel().getSelectedItem();
-        if (playlist == null){
-            System.out.println("Playlist is null");
-            _currentPlaylistList.setItems(null);
-            return;
-        } else {
-            // bind selected playlist to current playlist
-            _currentPlaylistList.setItems(playlist.getPlaylist());
-            // update name of current playlist
-            _currentPlaylistName.setText(playlist.toString());
-
-        }
+        _currentPlaylist =  _allPlaylists.getSelectionModel().getSelectedItem();
+        updateCurrentPlaylist();
     }
 
-
+    private void updateCurrentPlaylist(){
+        if (_currentPlaylist == null){
+            _currentPlaylistList.setItems(null);
+            _currentPlaylistName.setText("No Playlist Selected");
+        } else {
+            _currentPlaylistList.setItems(_currentPlaylist.getPlaylist());
+            _currentPlaylistName.setText(_currentPlaylist.getName());
+        }
+    }
 
     @FXML
     private void onAddButtonClicked(){
@@ -150,7 +144,12 @@ public class ListenController {
         List<Name> namesList = _model.generateListOfNames(_searchBar.getText());
 
         if (namesList == null){
-            showAlert("Error: Invalid Name", _searchBar.getText() + " is not a valid name");
+            // if search bar is empty then display empty error message
+            if (_searchBar.getText().isEmpty()){
+                showAlert("Error: Empty Name", "Must enter a non empty valid name");
+            } else {
+                showAlert("Error: Invalid Name", _searchBar.getText() + " is not a valid name");
+            }
             return;
         } else {
             Playlist playlist = _allPlaylists.getSelectionModel().getSelectedItem();
@@ -266,9 +265,8 @@ public class ListenController {
                 // delete playlist
                 _model.deletePlaylist(playlist);
                 // get new playlist selected and display as current playlist
-                Playlist newPlaylist = _allPlaylists.getSelectionModel().getSelectedItem();
-                _currentPlaylistList.setItems(newPlaylist.getPlaylist());
-                _currentPlaylistName.setText(newPlaylist.getName());
+                 _currentPlaylist = _allPlaylists.getSelectionModel().getSelectedItem();
+                updateCurrentPlaylist();
             }
 
         }
@@ -304,10 +302,10 @@ public class ListenController {
         _model.addPlaylist(playlist);
         int index = _model.getPlaylists().indexOf(playlist);
         _allPlaylists.getSelectionModel().select(index);
+        _currentPlaylist = _allPlaylists.getSelectionModel().getSelectedItem();
 
         // bind the current playlist list view to the newly created playlist
-        _currentPlaylistList.setItems(playlist.getPlaylist());
-        _currentPlaylistName.setText(name);
+        updateCurrentPlaylist();
     }
 
 
