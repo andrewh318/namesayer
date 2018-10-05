@@ -346,16 +346,42 @@ public class ListenController {
                     // get the last index of space in the search bar
                     String searchBarText = _searchBar.getText();
                     int lastIndexOfSpace = searchBarText.lastIndexOf(' ');
+                    int lastIndexOfHyphen = searchBarText.lastIndexOf('-');
+
+                    // cut off index is the last occurrence of either a space or a hyphen
+                    // everything after the cut off index will be removed and replaced for the auto completed name
+                    int cutOffIndex;
+                    // true if cut off symbol is a space, false if it is a hypehn
+                    boolean isSpace;
+                    if (lastIndexOfSpace > lastIndexOfHyphen){
+                        cutOffIndex = lastIndexOfSpace;
+                        isSpace = true;
+                    } else if (lastIndexOfHyphen > lastIndexOfSpace){
+                        cutOffIndex = lastIndexOfHyphen;
+                        isSpace = false;
+                    } else {
+                        // otherwise there isn't a space or a hyphen in the current query
+                        cutOffIndex = -1;
+                        // when there is neither a space or hyphen, we want a space separator
+                        isSpace = true;
+                    }
                     // if theres no space, then lastIndexOf will return -1, in this case we want to just delete the
                     // whole search bar entry
-                    if (lastIndexOfSpace == -1){
+                    if (cutOffIndex == -1){
                         _searchBar.setText(autoCompleteName);
                     } else {
-                        // get the text in search bar up to the last space ( we dont want the text after the space as we are
+                        // get the text in search bar up to the last space/hypehn ( we dont want the text after them as we are
                         // replacing it with the first name in the list)
-                        searchBarText = searchBarText.substring(0, lastIndexOfSpace);
+
+                        searchBarText = searchBarText.substring(0, cutOffIndex);
+
                         // concatenate the auto completed name onto search bar text
-                        searchBarText = searchBarText + " " + autoCompleteName;
+                        if (isSpace){
+                            searchBarText = searchBarText + " " + autoCompleteName;
+                        } else {
+                            searchBarText = searchBarText + "-" + autoCompleteName;
+
+                        }
                         // update the search bar text
                         _searchBar.setText(searchBarText);
                     }
@@ -374,8 +400,15 @@ public class ListenController {
             _filteredNamesList.setPredicate(element -> {
                 String item = element.getName();
                 String currentText = newValue;
-                if (currentText.contains(" ")) {
-                    currentText = currentText.substring(currentText.lastIndexOf(' ')+ 1);
+                // check the index positions of space and hyphen characters
+                int lastSpacePosition = currentText.lastIndexOf(' ');
+                int lastHyphenPosition = currentText.lastIndexOf('-');
+                if (lastSpacePosition > lastHyphenPosition){
+                    // if space is the last separator
+                    currentText = currentText.substring(lastSpacePosition+ 1);
+                } else if (lastHyphenPosition > lastSpacePosition){
+                    // if hyphen is the last separator
+                    currentText = currentText.substring(lastHyphenPosition + 1);
                 }
 
                 if (item.length() >= currentText.length()){

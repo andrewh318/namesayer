@@ -179,7 +179,8 @@ public class NamesModel {
         }
         List<Name> namesList = new ArrayList<Name>();
 
-        names.replaceAll("-", " ");
+        // fixed this, didn't have the 'names =' before so it wasn't replacing the hyphens properly.
+        names = names.replaceAll("-", " ");
         String[] namesArray = names.split(" ");
 
         for (String name : namesArray) {
