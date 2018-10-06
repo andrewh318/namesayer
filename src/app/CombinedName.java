@@ -10,11 +10,8 @@ public class CombinedName extends Name {
 
     public CombinedName(String name) {
         super(name);
-        readRecordings();
     }
 
-    private void readRecordings() {
-    }
 
     @Override
     public void playRecording() {

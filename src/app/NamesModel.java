@@ -13,6 +13,7 @@ public class NamesModel {
     private ObservableList<Name> _databaseNames = FXCollections.observableArrayList();
     private ObservableList<Name> _userNames = FXCollections.observableArrayList();
     private ObservableList<Playlist> _allPlaylists = FXCollections.observableArrayList();
+    private ObservableList<Name> _combinedNames = FXCollections.observableArrayList();
     private Playbar _playbar = new Playbar();
 
     public static final String DATABASERECORDINGSDIRECTORY = "names";
@@ -22,6 +23,7 @@ public class NamesModel {
     public static final String DEFAULT_PLAYLIST_NAME = "Default Playlist";
     public static final String NEW_PLAYLIST_NAME = "New Playlist";
     public static final String TRIMMED_NORMALISED_DIRECTORY = "trimmedNormalised";
+    public static final String COMBINED_NAMES_DIRECTORY = "combinedNames";
 
 
 
@@ -46,21 +48,38 @@ public class NamesModel {
     public void setUp(){
         // remove all database/user names when directories are read
         // to prevent double reading of names
-        _databaseNames.clear();
-        _userNames.clear();
+
+        clearPlaylists();
 
         deleteFolder(new File(NamesModel.TRIMMED_NORMALISED_DIRECTORY));
-        new File(TRIMMED_NORMALISED_DIRECTORY).mkdir();
-        new File(TRIMMED_NORMALISED_DIRECTORY + "/" + DATABASERECORDINGSDIRECTORY).mkdir();
-        new File(TRIMMED_NORMALISED_DIRECTORY + "/" + USERRECORDINGSDIRECTORY).mkdir();
+
+        makeDirectories();
+        readDirectories();
 
         createErrorFile();
-        readDirectory(new File(DATABASERECORDINGSDIRECTORY));
-        readDirectory(new File(PLAYLISTS_DIRECTORY));
-        readDirectory(new File(USERRECORDINGSDIRECTORY));
 
         setUpDefaultPlaylist();
     }
+
+    private void makeDirectories() {
+        new File(DATABASERECORDINGSDIRECTORY).mkdir();
+        new File(USERRECORDINGSDIRECTORY).mkdir();
+        new File(PLAYLISTS_DIRECTORY).mkdir();
+        new File(COMBINED_NAMES_DIRECTORY).mkdir();
+
+        new File(TRIMMED_NORMALISED_DIRECTORY).mkdir();
+        new File(TRIMMED_NORMALISED_DIRECTORY + "/" + DATABASERECORDINGSDIRECTORY).mkdir();
+        new File(TRIMMED_NORMALISED_DIRECTORY + "/" + USERRECORDINGSDIRECTORY).mkdir();
+        new File(TRIMMED_NORMALISED_DIRECTORY + "/" + COMBINED_NAMES_DIRECTORY).mkdir();
+    }
+
+    private void clearPlaylists() {
+        _allPlaylists.clear();
+        _combinedNames.clear();
+        _databaseNames.clear();
+        _userNames.clear();
+    }
+
 
     private void setUpDefaultPlaylist(){
         if (_allPlaylists.size() == 0){
@@ -79,39 +98,30 @@ public class NamesModel {
         }
     }
 
+    private void readDirectories() {
 
+        for (File file : new File(DATABASERECORDINGSDIRECTORY).listFiles()) {
+            readDatabaseRecording(file);
+        }
 
+        for (File file : new File(USERRECORDINGSDIRECTORY).listFiles()) {
+            readUserRecording(file);
+        }
 
-    private void readDirectory(File directory) {
-        directory.mkdir();
-        File[] files =  directory.listFiles();
+        for (File file : new File(PLAYLISTS_DIRECTORY).listFiles()) {
+            readPlaylist(file);
+        }
 
-        if (directory.isDirectory()) {
-
-            if (directory.getName().equals(DATABASERECORDINGSDIRECTORY) || directory.getName().equals(USERRECORDINGSDIRECTORY)) {
-                for (File file : files) {
-                    readName(file);
-                }
-            } else if (directory.getName().equals(PLAYLISTS_DIRECTORY)) {
-                for (File file : files) {
-                    readPlaylist(file);
-                }
-            }
-
+        for (File file : new File(COMBINED_NAMES_DIRECTORY).listFiles()) {
+            readCombinedRecording(file);
         }
     }
 
 
-    public void normaliseAndTrimAudioFile(File file) {
 
+    public void normaliseAndTrimAudioFile(Recording recording) {
 
-        String fileName = file.getName();
-        String directory = file.getParent();
-        String path = directory + "/" + fileName;
-
-
-        String audioCommand = "ffmpeg -i ./" + path + " -af silenceremove=1:0:-40dB" + " ./" + TRIMMED_NORMALISED_DIRECTORY
-                + "/" + path;
+        String audioCommand = "ffmpeg -i ./" + recording.getPath() + " -af silenceremove=1:0:-40dB" + " ./" + recording.getTrimmedPath();
         BashCommand create = new BashCommand(audioCommand);
         create.startProcess();
         try {
@@ -122,14 +132,10 @@ public class NamesModel {
 
     }
 
-
-    //Parses a wav file specified by filename, creates a recording object, and adds it to the appropriate name object
-    //in the database
-    private void readName(File file) {
-
-        normaliseAndTrimAudioFile(file);
+    private Recording parseFilename(File file) {
 
         String fileName = file.getName();
+        System.out.println(fileName);
         String directory = file.getParent();
 
         //Extracts information from the filename and directory
@@ -143,8 +149,50 @@ public class NamesModel {
 
 
         //Creates a new recording object with the extracted information
-        Recording recording = new Recording(stringName, date, path, trimmedPath, time);
+        return new Recording(stringName, date, path, trimmedPath, time);
+    }
 
+
+
+    private void readCombinedRecording(File file) {
+
+        //Parse the file name and create a new recording object
+        Recording recording = parseFilename(file);
+
+        normaliseAndTrimAudioFile(recording);
+
+        //Find the name in _combinedNames that has the same name
+        CombinedName combinedName = (CombinedName) searchListOfName(_combinedNames, recording.getName());
+
+        //If there is none, create a new combinedName
+        if (combinedName == null) {
+            combinedName = new CombinedName(recording.getName());
+            _combinedNames.add(combinedName);
+        }
+
+        //Add the recording to the name object
+        combinedName.addUserRecording(recording);
+
+        //Split name of recording by the replacement for space, "%"
+        String[] stringNames = recording.getName().split("%");
+
+        //Find the name object corresponding to each string and add it to the combined Name
+        for (String stringName : stringNames) {
+            stringName = stringName.trim();
+            stringName = stringName.toLowerCase();
+            stringName = stringName.substring(0, 1).toUpperCase() + stringName.substring(1);
+
+            Name name = searchListOfName(_databaseNames, stringName);
+
+            if (name != null) {
+                combinedName.addName(name);
+            } else {
+                System.out.println(name + "not found in database.");
+            }
+        }
+    }
+
+    private int countBadRecordings(Recording recording) {
         // Read the bad names file to see if the recording has any bad ratings associated with it
         BufferedReader br;
         // Count of how many bad recordings there are
@@ -162,38 +210,53 @@ public class NamesModel {
             e.printStackTrace();
         }
 
-        // Update the number of bad ratings for the recording
-        recording.setBadRecordings(numOfBadRecordings);
-
-        //Checks if the name is already in the database and saves that object to a variable if found
-        Name nameObject = null;
-        for (Name databaseName : _databaseNames) {
-            if (databaseName.getName().equals(stringName)) {
-                nameObject = databaseName;
-                break;
-            }
-        }
-
-        //if the name is not in the database so create a new Name object and add it to the database
-        if (nameObject == null) {
-            nameObject = new Name(stringName);
-            _databaseNames.add(nameObject);
-        }
-
-        // if the name is already in the database, then add it as a recording to the name object
-        if (directory.equals(DATABASERECORDINGSDIRECTORY)) {
-            nameObject.addDatabaseRecording(recording);
-        } else if (directory.equals(USERRECORDINGSDIRECTORY)) {
-            nameObject.addUserRecording(recording);
-        }
+        return numOfBadRecordings;
     }
 
+    //Parses a wav file specified by filename, creates a recording object, and adds it to the appropriate name object
+    //in the database
+    private void readDatabaseRecording(File file) {
+
+        Recording recording = parseFilename(file);
+
+        normaliseAndTrimAudioFile(recording);
+
+        int numBadRecordings = countBadRecordings(recording);
+
+        recording.setBadRecordings(numBadRecordings);
+
+        Name name = searchListOfName(_databaseNames, recording.getName());
+
+        //if the name is not in the database so create a new Name object and add it to the database
+        if (name == null) {
+            name = new Name(recording.getName());
+            _databaseNames.add(name);
+        }
+
+        name.addDatabaseRecording(recording);
+    }
+
+    public void readUserRecording(File file) {
+        Recording recording = parseFilename(file);
+
+        normaliseAndTrimAudioFile(recording);
+
+        Name name = searchListOfName(_databaseNames, recording.getName());
+
+        if (name == null) {
+            System.out.println("Name not found");
+        } else {
+            name.addUserRecording(recording);
+        }
+    }
 
     //Method that reads a playlist file
     public List<String> readPlaylist(File file) {
 
         String playlistName = file.getName().substring(0, file.getName().lastIndexOf('.'));
+
         Playlist playlist = new Playlist(playlistName);
+
         List<String> invalidNames = new ArrayList<String>();
 
         BufferedReader br;
@@ -317,5 +380,16 @@ public class NamesModel {
             }
         }
         folder.delete();
+    }
+
+    private Name searchListOfName(List<Name> namesList, String stringName) {
+
+        for (Name name : namesList) {
+            if (name.getName().equals(stringName)) {
+                return name;
+            }
+        }
+
+        return null;
     }
 }

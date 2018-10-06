@@ -46,7 +46,8 @@ public class Recording {
     //Uses AudioClip and syncLatch to play a recording and not allow overlap when this method is called twice on the
     //same thread
     public void playRecording() {
-        String audioCommand = "ffplay -loglevel panic -autoexit -nodisp -i '"+_trimmedPath+"'";
+        String audioCommand = "ffplay -loglevel panic -autoexit -nodisp -i " + _trimmedPath;
+        System.out.println(_trimmedPath);
         BashCommand cmd = new BashCommand(audioCommand);
         cmd.startProcess();
         try {
