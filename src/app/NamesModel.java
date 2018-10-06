@@ -21,6 +21,7 @@ public class NamesModel {
     public static final String BADNAMESFILE = "BadNames.txt";
     public static final String DEFAULT_PLAYLIST_NAME = "Default Playlist";
     public static final String NEW_PLAYLIST_NAME = "New Playlist";
+    public static final String TRIMMED_NORMALISED_DIRECTORY = "trimmedNormalised";
 
 
 
@@ -47,6 +48,10 @@ public class NamesModel {
         // to prevent double reading of names
         _databaseNames.clear();
         _userNames.clear();
+
+        new File(TRIMMED_NORMALISED_DIRECTORY).mkdir();
+        new File(TRIMMED_NORMALISED_DIRECTORY + "/" + DATABASERECORDINGSDIRECTORY).mkdir();
+        new File(TRIMMED_NORMALISED_DIRECTORY + "/" + USERRECORDINGSDIRECTORY).mkdir();
 
         createErrorFile();
         readDirectory(new File(DATABASERECORDINGSDIRECTORY));
@@ -96,17 +101,38 @@ public class NamesModel {
     }
 
 
+    private void normaliseAndTrimAudioFile(File file) {
+
+
+        String fileName = file.getName();
+        String directory = file.getParent();
+        String path = directory + "/" + fileName;
+
+
+        String audioCommand = "ffmpeg -i ./" + path + " -af silenceremove=1:0:-30dB" + " ./" + TRIMMED_NORMALISED_DIRECTORY
+                + "/" + path;
+        BashCommand create = new BashCommand(audioCommand);
+        create.startProcess();
+        try {
+            create.getProcess().waitFor();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+    }
 
 
     //Parses a wav file specified by filename, creates a recording object, and adds it to the appropriate name object
     //in the database
     private void readName(File file) {
 
+        normaliseAndTrimAudioFile(file);
+
         String fileName = file.getName();
         String directory = file.getParent();
 
         //Extracts information from the filename and directory
-        String path = directory + "/" + fileName;
+        String path = TRIMMED_NORMALISED_DIRECTORY + "/" + directory + "/" + fileName;
         String fullPath = new File(path).toURI().toString();
         fileName = fileName.substring(0, fileName.lastIndexOf('.'));
         String[] parts = fileName.split("_");
@@ -170,8 +196,8 @@ public class NamesModel {
         return invalidNames;
     }
 
-    //Method that reads in a string containing names separated by spaces and returns a list of Name object if successful,
-    //or null if unsuccessful.
+    //Method that reads in a string containing names separated by spaces and returns a Name object if only 1 name, a
+    //combined name object if multiple names, or null if unsuccessful.
 
     public Name generateListOfNames(String names) {
 
