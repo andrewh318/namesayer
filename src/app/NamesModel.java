@@ -117,6 +117,26 @@ public class NamesModel {
         //Creates a new recording object with the extracted information
         Recording recording = new Recording(stringName, date, path, fullPath, time);
 
+        // Read the bad names file to see if the recording has any bad ratings associated with it
+        BufferedReader br;
+        // Count of how many bad recordings there are
+        int numOfBadRecordings = 0;
+        try {
+            br = new BufferedReader(new FileReader(BADNAMESFILE));
+            String st;
+            while ((st = br.readLine()) != null) {
+                // compare the recording to the current name
+                if (st.equals(recording.toString())){
+                    numOfBadRecordings++;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // Update the number of bad ratings for the recording
+        recording.setBadRecordings(numOfBadRecordings);
+
         //Checks if the name is already in the database and saves that object to a variable if found
         Name nameObject = null;
         for (Name databaseName : _databaseNames) {
