@@ -66,18 +66,16 @@ public class Name {
         String date = dateAndTimeArray[0];
         String time = dateAndTimeArray[1];
         String stringName = getName();
-        String path = NamesModel.TRIMMED_NORMALISED_DIRECTORY + "/" + NamesModel.USERRECORDINGSDIRECTORY + "/se206_" + date + "_" + time + "_" + stringName + ".wav";
-        String fullPath = new File(path).toURI().toString();
+        String path =  NamesModel.USERRECORDINGSDIRECTORY + "/se206_" + date + "_" + time + "_" + stringName + ".wav";
+        String trimmedPath = NamesModel.TRIMMED_NORMALISED_DIRECTORY + "/" + path;
 
-        return new Recording(stringName, date, path, fullPath, time);
+        return new Recording(stringName, date, path, trimmedPath, time);
     }
 
     // create an audio file in wav format based on a 5 second capture of the microphone
     public void record(Recording recording){
-        String nonTrimmedPath = recording.getPath();
-        nonTrimmedPath = nonTrimmedPath.substring(nonTrimmedPath.indexOf("/"));
 
-        String audioCommand = "ffmpeg -loglevel panic -f alsa -i default -t 5 " + "./" + nonTrimmedPath;
+        String audioCommand = "ffmpeg -loglevel panic -f alsa -i default -t 5 " + "./" + recording.getPath();
         BashCommand create = new BashCommand(audioCommand);
         create.startProcess();
         try {

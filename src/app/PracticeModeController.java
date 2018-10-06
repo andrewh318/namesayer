@@ -120,9 +120,7 @@ public class PracticeModeController {
             public Void call() {
                 Recording recording = _currentName.createRecordingObject();
                 _currentName.record(recording);
-                String nonTrimmedPath = recording.getPath();
-                nonTrimmedPath = nonTrimmedPath.substring(nonTrimmedPath.indexOf("/"));
-                _model.normaliseAndTrimAudioFile(new File(nonTrimmedPath));
+                _model.normaliseAndTrimAudioFile(new File(recording.getPath()));
 
                 Platform.runLater(new Runnable() {
                     @Override

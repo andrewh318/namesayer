@@ -11,14 +11,14 @@ public class Recording {
     private String _date;
     private String _path;
     private String _time;
-    private String _fullPath;
+    private String _trimmedPath;
     private int _numOfBadRecordings = 0;
 
-    public Recording(String name, String date, String path, String fullPath, String time){
+    public Recording(String name, String date, String path, String trimmedPath, String time){
         _name = name;
         _date = date;
         _path = path;
-        _fullPath = fullPath;
+        _trimmedPath = trimmedPath;
         _time = time;
     }
 
@@ -34,7 +34,7 @@ public class Recording {
         return _path;
     }
 
-    public String getFullPath() { return _fullPath; }
+    public String getTrimmedPath() { return _trimmedPath; }
 
     //Bad quality is appended to the string representation of the recording when the _bad field is true
     @Override

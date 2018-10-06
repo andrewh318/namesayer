@@ -132,8 +132,8 @@ public class NamesModel {
         String directory = file.getParent();
 
         //Extracts information from the filename and directory
-        String path = TRIMMED_NORMALISED_DIRECTORY + "/" + directory + "/" + fileName;
-        String fullPath = new File(path).toURI().toString();
+        String path = directory + "/" + fileName;
+        String trimmedPath = TRIMMED_NORMALISED_DIRECTORY + "/" + path;
         fileName = fileName.substring(0, fileName.lastIndexOf('.'));
         String[] parts = fileName.split("_");
         String date = parts[1];
@@ -141,7 +141,7 @@ public class NamesModel {
         String stringName = parts[3].substring(0, 1).toUpperCase() + parts[3].substring(1);
 
         //Creates a new recording object with the extracted information
-        Recording recording = new Recording(stringName, date, path, fullPath, time);
+        Recording recording = new Recording(stringName, date, path, trimmedPath, time);
 
         // Read the bad names file to see if the recording has any bad ratings associated with it
         BufferedReader br;
