@@ -1,5 +1,6 @@
 package app;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,6 +10,10 @@ public class CombinedName extends Name {
 
     public CombinedName(String name) {
         super(name);
+        readRecordings();
+    }
+
+    private void readRecordings() {
     }
 
     @Override

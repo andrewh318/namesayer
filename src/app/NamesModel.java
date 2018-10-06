@@ -49,6 +49,7 @@ public class NamesModel {
         _databaseNames.clear();
         _userNames.clear();
 
+        deleteFolder(new File(NamesModel.TRIMMED_NORMALISED_DIRECTORY));
         new File(TRIMMED_NORMALISED_DIRECTORY).mkdir();
         new File(TRIMMED_NORMALISED_DIRECTORY + "/" + DATABASERECORDINGSDIRECTORY).mkdir();
         new File(TRIMMED_NORMALISED_DIRECTORY + "/" + USERRECORDINGSDIRECTORY).mkdir();
