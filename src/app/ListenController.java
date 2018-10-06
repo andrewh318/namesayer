@@ -30,7 +30,7 @@ public class ListenController {
     @FXML
     private JFXListView<Name> _allNamesList;
     @FXML
-    private JFXListView<List<Name>> _currentPlaylistList;
+    private JFXListView<Name> _currentPlaylistList;
     @FXML
     private JFXListView<Playlist> _allPlaylists;
     @FXML
@@ -153,9 +153,9 @@ public class ListenController {
     @FXML
     private void onAddButtonClicked(){
         // get currently selected name
-        List<Name> namesList = _model.generateListOfNames(_searchBar.getText());
+        Name name = _model.generateListOfNames(_searchBar.getText());
 
-        if (namesList == null){
+        if (name == null){
             // if search bar is empty then display empty error message
             if (_searchBar.getText().isEmpty()){
                 showAlert("Error: Empty Name", "Must enter a non empty valid name");
@@ -170,7 +170,7 @@ public class ListenController {
                 System.out.println("playlist is null");
                 return;
             } else {
-                playlist.addName(namesList);
+                playlist.addName(name);
                 _searchBar.clear();
                 _searchBar.requestFocus();
             }
@@ -220,20 +220,16 @@ public class ListenController {
     }
 
     private void setUpCurrentPlaylistCellFactory(){
-        _currentPlaylistList.setCellFactory(param -> new ListCell<List<Name>>(){
+        _currentPlaylistList.setCellFactory(param -> new ListCell<Name>(){
             @Override
-            protected void updateItem(List<Name> names, boolean empty){
+            protected void updateItem(Name names, boolean empty){
                 super.updateItem(names, empty);
                 // need this code so the list view knows the correct behaviour when the cell is empty
                 // throws null pointer otherwise
                 if (empty || names == null){
                     setText(null);
                 } else {
-                    String string = "";
-                    for (Name name:names){
-                        string = string + name.getName() + " ";
-                    }
-                    setText(string);
+                    setText(names.getName());
                 }
             }
         });
@@ -286,26 +282,15 @@ public class ListenController {
     }
 
     @FXML
-    public List<Name> onPlayCLicked() {
-        List<Name> selectedName = _currentPlaylistList.getSelectionModel().getSelectedItem();
-
+    public void onPlayCLicked() {
         Task<Void> task = new Task<Void>() {
             @Override
             public Void call() {
-                try {
-                    for (Name name : selectedName) {
-                        name.playRecording();
-                    }
-                    return null;
-                } finally {
-
-                }
+                _currentPlaylistList.getSelectionModel().getSelectedItem().playRecording();
+                return null;
             }
         };
-        Thread thread = new Thread(task);
-        thread.start();
-
-        return selectedName;
+        new Thread(task).start();
     }
 
     // this method is called from the new playlist controller
@@ -323,7 +308,7 @@ public class ListenController {
 
     @FXML
     private void onDeleteButtonClicked(){
-        List<Name> name = _currentPlaylistList.getSelectionModel().getSelectedItem();
+        Name name = _currentPlaylistList.getSelectionModel().getSelectedItem();
         Playlist playlist = _allPlaylists.getSelectionModel().getSelectedItem();
         if (name != null){
             if (isDeleteConfirmed()){

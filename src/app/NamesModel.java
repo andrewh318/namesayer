@@ -153,7 +153,7 @@ public class NamesModel {
             br = new BufferedReader(new FileReader(file));
             String st;
             while ((st = br.readLine()) != null) {
-                List<Name> namesList = generateListOfNames(st);
+                Name namesList = generateListOfNames(st);
 
                 if (namesList == null) {
                     invalidNames.add(st);
@@ -173,7 +173,8 @@ public class NamesModel {
     //Method that reads in a string containing names separated by spaces and returns a list of Name object if successful,
     //or null if unsuccessful.
 
-    public List<Name> generateListOfNames(String names) {
+    public Name generateListOfNames(String names) {
+
         if (names.isEmpty()){
             return null;
         }
@@ -181,6 +182,8 @@ public class NamesModel {
 
         names.replaceAll("-", " ");
         String[] namesArray = names.split(" ");
+
+        String stringName = "";
 
         for (String name : namesArray) {
             name = name.trim();
@@ -192,6 +195,7 @@ public class NamesModel {
                 if (databaseName.getName().equals(name)) {
                     valid = true;
                     namesList.add(databaseName);
+                    stringName = stringName + databaseName.getName() + " ";
                     break;
                 }
             }
@@ -200,7 +204,19 @@ public class NamesModel {
                 return null;
             }
         }
-        return namesList;
+        stringName.trim();
+
+        if (namesList.size() == 1) {
+            return namesList.get(0);
+        } else {
+            CombinedName combinedName = new CombinedName(stringName);
+
+            for (Name name : namesList) {
+                combinedName.addName(name);
+            }
+
+            return combinedName;
+        }
     }
 
 
@@ -219,18 +235,15 @@ public class NamesModel {
         // loop through list of playlists
         for (Playlist playlist : playlists){
             // for each playlist create a new BufferedReader
-            ObservableList<List<Name>> listNames = playlist.getPlaylist();
+            ObservableList<Name> listNames = playlist.getPlaylist();
             String playlistName = playlist.getName();
             try {
                 FileWriter fileWriter = new FileWriter("playlists/" + playlistName + ".txt");
                 BufferedWriter out = new BufferedWriter(fileWriter);
                 // for each list of names (for each playlist entry)
-                for (List<Name> names: listNames){
+                for (Name name: listNames){
                     // as each playlist entry can contain multiple names, print entries names on the same line
-                    for (Name name : names){
-                        // append name followed by space
-                        out.append(name.getName() + " ");
-                    }
+                    out.append(name.getName() + " ");
                     // after a playlist entry has finished printing, add a new line to indicate next entry
                     out.newLine();
                 }
