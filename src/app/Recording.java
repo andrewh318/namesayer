@@ -2,12 +2,8 @@
 
 package app;
 
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.LineEvent;
-import java.io.File;
-import java.io.InputStream;
+import javax.sound.sampled.*;
+import java.io.*;
 import java.util.concurrent.CountDownLatch;
 
 public class Recording {
@@ -16,7 +12,7 @@ public class Recording {
     private String _path;
     private String _time;
     private String _fullPath;
-    private Boolean _bad = false;
+    private int _numOfBadRecordings = 0;
 
     public Recording(String name, String date, String path, String fullPath, String time){
         _name = name;
@@ -44,9 +40,6 @@ public class Recording {
     @Override
     public String toString() {
         String string = _name + " " + _date + " " + _time;
-        if (_bad) {
-            string = string + " (Bad Quality)";
-        }
         return string;
     }
 
@@ -83,7 +76,46 @@ public class Recording {
     }
 
 
-    public void setBad() {
-        _bad = true;
+    public void flagAsBad() {
+        _numOfBadRecordings++;
+        // write bad recording to file
+        writeToFile();
+    }
+
+    public void setBadRecordings(int num){
+        _numOfBadRecordings = num;
+    }
+
+    public int getBadRecordings(){
+        return _numOfBadRecordings;
+    }
+
+    private void writeToFile(){
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(NamesModel.BADNAMESFILE,true));
+            writer.append(this.toString());
+            writer.newLine();
+            writer.close();
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    public float getRecordingLength(){
+        File audioFile = new File(_path);
+        try {
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(audioFile);
+            AudioFormat format = audioInputStream.getFormat();
+            long audioFilelength = audioFile.length();
+            int frameSize = format.getFrameSize();
+            float frameRate = format.getFrameRate();
+            float durationInSeconds = (audioFilelength / (frameSize * frameRate));
+            return durationInSeconds;
+        } catch (UnsupportedAudioFileException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 }

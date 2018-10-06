@@ -54,11 +54,14 @@ public class ListenController {
 
     private Playlist _currentPlaylist;
 
+    private FrameController _frameController;
+
     // injects the model into listen controller from frame
     // passes a reference of 'this' controller into the controller
     // sets up the required bindings
-    public void setModel(NamesModel model){
+    public void setModel(NamesModel model, FrameController controller){
         _model = model;
+        _frameController = controller;
         setUpListBindings();
         setUpDoubleClickListeners();
         setUpEditableCells();
@@ -261,10 +264,12 @@ public class ListenController {
 
     @FXML
     public void onPlayCLicked() {
+        Name name = _currentPlaylistList.getSelectionModel().getSelectedItem();
+        _frameController.startProgressBar(name.getRecordingLength());
         Task<Void> task = new Task<Void>() {
             @Override
             public Void call() {
-                _currentPlaylistList.getSelectionModel().getSelectedItem().playRecording();
+                name.playRecording();
                 return null;
             }
         };

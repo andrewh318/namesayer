@@ -1,7 +1,10 @@
 package app;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXProgressBar;
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -18,6 +21,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class FrameController {
     @FXML
@@ -35,6 +40,8 @@ public class FrameController {
     // reference to the stage used throughout the application
     private Stage _stage;
 
+    @FXML
+    private JFXProgressBar _progressBar;
     @FXML
     private JFXButton _practiceButton;
     @FXML
@@ -129,7 +136,7 @@ public class FrameController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Listen.fxml"));
             Parent root = (Parent) loader.load();
             _listenController = (ListenController) loader.getController();
-            _listenController.setModel(model);
+            _listenController.setModel(model, this);
             borderPane.setCenter(root);
 
         } catch (IOException e) {
@@ -158,4 +165,24 @@ public class FrameController {
     private void onPlaybarPlayClicked() {
 
     }
+
+    public void startProgressBar(float duration){
+
+        Task<Void> task = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                for (int i = 0; i < duration*1000; i++){
+                    updateProgress(i+1, duration*1000);
+                    Thread.sleep(1);
+                }
+                return null;
+            }
+        };
+        _progressBar.progressProperty().unbind();
+        _progressBar.progressProperty().bind(task.progressProperty());
+
+        new Thread(task).start();
+    }
+
+
 }
