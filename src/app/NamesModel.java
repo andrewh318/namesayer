@@ -109,7 +109,7 @@ public class NamesModel {
         String path = directory + "/" + fileName;
 
 
-        String audioCommand = "ffmpeg -i ./" + path + " -af silenceremove=1:0:-30dB" + " ./" + TRIMMED_NORMALISED_DIRECTORY
+        String audioCommand = "ffmpeg -i ./" + path + " -af silenceremove=1:0:-40dB" + " ./" + TRIMMED_NORMALISED_DIRECTORY
                 + "/" + path;
         BashCommand create = new BashCommand(audioCommand);
         create.startProcess();

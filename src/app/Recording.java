@@ -46,31 +46,12 @@ public class Recording {
     //Uses AudioClip and syncLatch to play a recording and not allow overlap when this method is called twice on the
     //same thread
     public void playRecording() {
-
-
-        CountDownLatch syncLatch = new CountDownLatch(1);
-
-        InputStream in = null;
+        String audioCommand = "ffplay -loglevel panic -autoexit -nodisp -i '"+_trimmedPath+"'";
+        BashCommand cmd = new BashCommand(audioCommand);
+        cmd.startProcess();
         try {
-            File audioFile = new File(_trimmedPath);
-
-            AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
-
-            Clip audioClip = (Clip) AudioSystem.getClip();
-
-            audioClip.addLineListener(e -> {
-                if (e.getType() == LineEvent.Type.STOP) {
-                    syncLatch.countDown();
-                }
-            });
-
-            audioClip.open(audioStream);
-            audioClip.start();
-
-            syncLatch.await();
-
-
-        } catch (Exception e) {
+            cmd.getProcess().waitFor();
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
@@ -102,7 +83,7 @@ public class Recording {
     }
 
     public float getRecordingLength(){
-        File audioFile = new File(_path);
+        File audioFile = new File(_trimmedPath);
         try {
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(audioFile);
             AudioFormat format = audioInputStream.getFormat();
