@@ -81,6 +81,7 @@ public class FrameController {
 
 
         Optional<ButtonType> action = alert.showAndWait();
+
         if (action.get() == ButtonType.OK){
             System.out.println("Saving playlists");
             _model.savePlaylists();
@@ -89,6 +90,8 @@ public class FrameController {
             System.out.println("Thanks for coming");
             _stage.close();
         }
+
+        _model.deleteFolder(new File(NamesModel.TRIMMED_NORMALISED_DIRECTORY));
     }
     @FXML
     private void onPracticeButtonClicked(){

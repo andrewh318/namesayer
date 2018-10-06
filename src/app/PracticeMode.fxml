@@ -45,7 +45,7 @@
                   <FontAwesomeIconView fill="WHITE" glyphName="ARROW_LEFT" size="60" />
                </graphic>
             </JFXButton>
-            <JFXButton buttonType="RAISED" contentDisplay="CENTER" prefHeight="136.0" prefWidth="257.0" ripplerFill="WHITE" style="-fx-background-color: #157766;" text=" ">
+            <JFXButton fx:id="_recordButton" buttonType="RAISED" contentDisplay="CENTER" onAction="#onRecordPressed" prefHeight="136.0" prefWidth="257.0" ripplerFill="WHITE" style="-fx-background-color: #157766;" text=" ">
                <graphic>
                   <FontAwesomeIconView fill="WHITE" glyphName="MICROPHONE" size="70" />
                </graphic>
