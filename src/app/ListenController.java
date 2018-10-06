@@ -87,6 +87,7 @@ public class ListenController {
 
 
     private void setUpDoubleClickListeners(){
+        // set up double click to add names into search box
         _allNamesList.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent click) {
@@ -111,6 +112,17 @@ public class ListenController {
                     }
                     _searchBar.requestFocus();
                     _searchBar.end();
+                }
+            }
+        });
+
+        // set up double click to play a name from the playlist
+        _currentPlaylistList.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent click) {
+                if (click.getClickCount() == 2) {
+                    // play audio recording
+                    onPlayCLicked();
                 }
             }
         });
@@ -265,15 +277,21 @@ public class ListenController {
     @FXML
     public void onPlayCLicked() {
         Name name = _currentPlaylistList.getSelectionModel().getSelectedItem();
-        _frameController.startProgressBar(name.getRecordingLength());
-        Task<Void> task = new Task<Void>() {
-            @Override
-            public Void call() {
-                name.playRecording();
-                return null;
-            }
-        };
-        new Thread(task).start();
+        // check if name is null
+        if (name != null){
+            _frameController.startProgressBar(name.getRecordingLength());
+            Task<Void> task = new Task<Void>() {
+                @Override
+                public Void call() {
+                    name.playRecording();
+                    return null;
+                }
+            };
+            new Thread(task).start();
+        } else {
+            showAlert("Error: No name selected", "Please select a name to play");
+        }
+
     }
 
     // this method is called from the new playlist controller
