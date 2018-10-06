@@ -52,7 +52,7 @@ public class Recording {
 
         InputStream in = null;
         try {
-            File audioFile = new File(_path);
+            File audioFile = new File(_trimmedPath);
 
             AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
 

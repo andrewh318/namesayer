@@ -140,6 +140,7 @@ public class NamesModel {
         String time = parts[2];
         String stringName = parts[3].substring(0, 1).toUpperCase() + parts[3].substring(1);
 
+
         //Creates a new recording object with the extracted information
         Recording recording = new Recording(stringName, date, path, trimmedPath, time);
 
