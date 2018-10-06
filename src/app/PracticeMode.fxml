@@ -80,7 +80,7 @@
                   <Font size="20.0" />
                </font>
             </JFXButton>
-            <JFXButton alignment="CENTER" contentDisplay="CENTER" prefHeight="44.0" prefWidth="122.0" style="-fx-background-color: #157766;" text=" " textFill="WHITE">
+            <JFXButton alignment="CENTER" contentDisplay="CENTER" onAction="#onPlayButtonClicked" prefHeight="44.0" prefWidth="122.0" style="-fx-background-color: #157766;" text=" " textFill="WHITE">
                <font>
                   <Font size="20.0" />
                </font>
@@ -88,7 +88,7 @@
                   <FontAwesomeIconView fill="WHITE" glyphName="PLAY" size="20" />
                </graphic>
             </JFXButton>
-            <JFXButton prefHeight="44.0" prefWidth="122.0" style="-fx-background-color: #A42B1B;" text="Flag" textFill="WHITE">
+            <JFXButton onAction="#onFlagButtonClicked" prefHeight="44.0" prefWidth="122.0" style="-fx-background-color: #A42B1B;" text="Flag" textFill="WHITE">
                <font>
                   <Font size="20.0" />
                </font>

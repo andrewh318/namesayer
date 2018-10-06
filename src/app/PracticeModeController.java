@@ -1,6 +1,7 @@
 package app;
 
 import com.jfoenix.controls.JFXButton;
+import javafx.concurrent.Task;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
@@ -74,6 +75,26 @@ public class PracticeModeController {
 
     public void setPane(BorderPane pane){
         _pane = pane;
+    }
+
+    @FXML
+    // flag the current recording playing
+    private void onFlagButtonClicked(){
+        _currentName.flagRecording();
+    }
+
+    @FXML
+    private void onPlayButtonClicked(){
+        Task<Void> task = new Task<Void>() {
+            @Override
+            public Void call() {
+                System.out.println(_currentName.getRecordingLength());
+                _currentName.playRecording();
+                return null;
+            }
+        };
+        new Thread(task).start();
+
     }
     @FXML
     private void onChangePlaylistButton(){

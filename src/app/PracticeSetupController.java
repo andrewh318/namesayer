@@ -38,7 +38,10 @@ public class PracticeSetupController {
     public void loadPracticeMode(){
         // only load practice mode if a playlist is selected
         Playlist playlist = _comboBox.getValue();
-        if (playlist != null){
+        // if playlist is empty show warning
+        if (playlist.getNumberOfItems() == 0){
+            System.out.println("Playlist cannot be emty");
+        }else if (playlist != null){
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("PracticeMode.fxml"));
                 Parent root = (Parent) loader.load();

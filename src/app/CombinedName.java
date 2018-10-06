@@ -18,6 +18,17 @@ public class CombinedName extends Name {
         }
     }
 
+    @Override
+    // loop over all the names in the list, sum the length of all the best recordings
+    public float getRecordingLength(){
+        float totalLength = 0;
+        for (Name name : names){
+            float length = name.getRecordingLength();
+            totalLength = totalLength + length;
+        }
+        return totalLength;
+    }
+
     public void addName(Name name) {
         names.add(name);
     }

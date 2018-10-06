@@ -48,6 +48,10 @@ public class Playlist {
         }
     }
 
+    public int getNumberOfItems(){
+        return _playlist.size();
+    }
+
     public void setPlaylistName(String name){
         _playlistName = name;
     }

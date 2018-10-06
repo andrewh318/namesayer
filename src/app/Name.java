@@ -43,9 +43,9 @@ public class Name {
         }
     }
 
-    // play recording at position 0 of the database recordings
+    // playRecording plays the best recording in the list of database recordings
     public void playRecording(){
-        _databaseRecordings.get(0).playRecording();
+        getBestRecording().playRecording();
     }
 
     public void removeUserRecording(Recording recording) {
@@ -96,5 +96,27 @@ public class Name {
     public ObservableList<Recording> getUserRecordings(){
         return _userRecordings;
     }
+
+    // return the best database recording
+    private Recording getBestRecording(){
+        // loop through the all the recordings and find the one with the highest rating
+        Recording bestRecording = _databaseRecordings.get(0);
+        for (Recording recording : _databaseRecordings){
+            if (recording.getBadRecordings() < bestRecording.getBadRecordings()){
+                bestRecording = recording;
+            }
+        }
+        return bestRecording;
+    }
+
+    // flags the current recording (best recording) as poor quality
+    public void flagRecording(){
+        getBestRecording().flagAsBad();
+    }
+
+    public float getRecordingLength(){
+        return getBestRecording().getRecordingLength();
+    }
+
 
 }
