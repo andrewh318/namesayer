@@ -14,7 +14,7 @@
    <children>
       <HBox alignment="CENTER_LEFT" prefHeight="69.0" prefWidth="1024.0">
          <children>
-            <JFXButton style="-fx-background-color: #36907e;" text="Change Playlist" textFill="WHITE">
+            <JFXButton onAction="#onChangePlaylistButton" style="-fx-background-color: #36907e;" text="Change Playlist" textFill="WHITE">
                <font>
                   <Font size="20.0" />
                </font>

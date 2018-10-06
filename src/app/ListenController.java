@@ -6,6 +6,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.concurrent.Task;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -36,7 +37,7 @@ public class ListenController {
     @FXML
     private Label _currentPlaylistName;
 
-
+    private FilteredList<Name> _filteredNamesList;
     @FXML
     private JFXButton _addButton;
     private NamesModel _model;
@@ -45,6 +46,8 @@ public class ListenController {
     private JFXButton _newPlaylistButon;
     @FXML
     private JFXButton _deleteButton;
+
+    private static final int MAX_NAME_LENGTH = 50;
 
     @FXML
     private TextField _searchBar;
@@ -61,37 +64,23 @@ public class ListenController {
         setUpEditableCells();
         setUpSearchBar();
         setUpCurrentPlaylistCellFactory();
-        setUpEnterBinding();
+        bindSearchKeys();
     }
 
     private void setUpListBindings(){
         ObservableList<Name> nameList = _model.getDatabaseNames();
         ObservableList<Playlist> allPlaylists = _model.getPlaylists();
-        _allNamesList.setItems(nameList);
         _allPlaylists.setItems(allPlaylists);
         // by default set current playlist to the first playlist in all playlists
         _currentPlaylist = allPlaylists.get(0);
         updateCurrentPlaylist();
         // select first playlist
         _allPlaylists.getSelectionModel().select(0);
-        // set up binding for GUI
+        _filteredNamesList = new FilteredList<>(nameList, e -> true);
+        _allNamesList.setItems(_filteredNamesList);
 
     }
 
-    // bind enter key to automatically add the name in search bar to the playlist
-    private void setUpEnterBinding(){
-            _searchBar.setOnKeyPressed(new EventHandler<KeyEvent>()
-            {
-                @Override
-                public void handle(KeyEvent ke)
-                {
-                    if (ke.getCode().equals(KeyCode.ENTER))
-                    {
-                        onAddButtonClicked();
-                    }
-                }
-            });
-    }
 
 
     private void setUpDoubleClickListeners(){
@@ -99,38 +88,30 @@ public class ListenController {
             @Override
             public void handle(MouseEvent click) {
                 if (click.getClickCount() == 2){
+                    String searchText = _searchBar.getText();
+
+                    String lastNameofSearchText;
+                    String beginningOfSearchText;
+
+                    if (searchText.contains(" ")) {
+                        lastNameofSearchText = searchText.substring(searchText.lastIndexOf(" ") + 1);
+                        beginningOfSearchText = searchText.substring(0, searchText.lastIndexOf(" ") + 1);
+                    } else {
+                        lastNameofSearchText = searchText;
+                        beginningOfSearchText = "";
+                    }
 
                     String nameString = _allNamesList.getSelectionModel().getSelectedItem().getName();
-                    autoCompleteText(nameString);
 
+                    if (nameString.toLowerCase().startsWith(lastNameofSearchText.toLowerCase())) {
+                        _searchBar.setText(beginningOfSearchText + nameString + " ");
+                    }
                     _searchBar.requestFocus();
                     _searchBar.end();
-
                 }
             }
         });
     }
-
-    private void autoCompleteText(String nameString) {
-        String searchText = _searchBar.getText();
-
-        String lastNameofSearchText;
-        String beginningOfSearchText;
-
-        if (searchText.contains(" ")) {
-            lastNameofSearchText = searchText.substring(searchText.lastIndexOf(" ") + 1);
-            beginningOfSearchText = searchText.substring(0, searchText.lastIndexOf(" ") + 1);
-        } else {
-            lastNameofSearchText = searchText;
-            beginningOfSearchText = "";
-        }
-
-
-        if (nameString.toLowerCase().startsWith(lastNameofSearchText.toLowerCase())) {
-            _searchBar.setText(beginningOfSearchText + nameString + " ");
-        }
-    }
-
 
     @FXML
     private void handleAllPlaylistsSelect(){
@@ -148,10 +129,13 @@ public class ListenController {
         }
     }
 
-
-
     @FXML
     private void onAddButtonClicked(){
+        // get the number of characters in the search bar
+        if (_searchBar.getText().length() >= MAX_NAME_LENGTH){
+            showAlert("Error: Name too long", "Name must be 50 characters or below");
+            return;
+        }
         // get currently selected name
         List<Name> namesList = _model.generateListOfNames(_searchBar.getText());
 
@@ -193,12 +177,6 @@ public class ListenController {
                 @Override
                 public Playlist fromString(String string) {
                     Playlist playlist = cell.getItem();
-                    // if user delets the entire playlist name, it will default back to 'New Playlist'
-                    if (string.length() == 0){
-                        string = NamesModel.DEFAULT_PLAYLIST_NAME;
-                        // change this later to a pop up
-                        System.out.println("Playlist cannot be empty");
-                    }
                     playlist.setPlaylistName(string);
                     return playlist;
                 }
@@ -356,56 +334,96 @@ public class ListenController {
         }
     }
 
-    /*
-    @FXML
-    private void writePlaylistToFile() {
-        try {
-            PrintWriter writer = new PrintWriter(_currentPlaylist.getName() + ".txt");
 
-            for (Name name : _currentPlaylist.getPlaylist()) {
-                writer.println(name);
+    private void bindSearchKeys(){
+        _searchBar.setOnKeyPressed(e -> {
+            // bind autocomplete on enter
+            if (e.getCode().equals(KeyCode.SPACE)){
+                // check if list is empty
+                int numOfListItems = _allNamesList.getItems().size();
+                if (numOfListItems != 0){
+                    String autoCompleteName = _allNamesList.getItems().get(0).getName();
+                    // get the last index of space in the search bar
+                    String searchBarText = _searchBar.getText();
+                    int lastIndexOfSpace = searchBarText.lastIndexOf(' ');
+                    int lastIndexOfHyphen = searchBarText.lastIndexOf('-');
+
+                    // cut off index is the last occurrence of either a space or a hyphen
+                    // everything after the cut off index will be removed and replaced for the auto completed name
+                    int cutOffIndex;
+                    // true if cut off symbol is a space, false if it is a hypehn
+                    boolean isSpace;
+                    if (lastIndexOfSpace > lastIndexOfHyphen){
+                        cutOffIndex = lastIndexOfSpace;
+                        isSpace = true;
+                    } else if (lastIndexOfHyphen > lastIndexOfSpace){
+                        cutOffIndex = lastIndexOfHyphen;
+                        isSpace = false;
+                    } else {
+                        // otherwise there isn't a space or a hyphen in the current query
+                        cutOffIndex = -1;
+                        // when there is neither a space or hyphen, we want a space separator
+                        isSpace = true;
+                    }
+                    // if theres no space, then lastIndexOf will return -1, in this case we want to just delete the
+                    // whole search bar entry
+                    if (cutOffIndex == -1){
+                        _searchBar.setText(autoCompleteName);
+                    } else {
+                        // get the text in search bar up to the last space/hypehn ( we dont want the text after them as we are
+                        // replacing it with the first name in the list)
+
+                        searchBarText = searchBarText.substring(0, cutOffIndex);
+
+                        // concatenate the auto completed name onto search bar text
+                        if (isSpace){
+                            searchBarText = searchBarText + " " + autoCompleteName;
+                        } else {
+                            searchBarText = searchBarText + "-" + autoCompleteName;
+
+                        }
+                        // update the search bar text
+                        _searchBar.setText(searchBarText);
+                    }
+                    _searchBar.requestFocus();
+                    _searchBar.end();
+                }
+            // bind auto submit on enter
+            } else if (e.getCode().equals(KeyCode.ENTER)){
+                onAddButtonClicked();
             }
-
-            writer.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        });
     }
 
-    */
-
-
     private void setUpSearchBar() {
-
-        _searchBar.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable,
-                                String oldValue, String newValue) {
-
-                String text = _searchBar.getText();
-
-                String lastName;
-                if (text.contains(" ")) {
-                    lastName = text.substring(text.lastIndexOf(" ") + 1);
-                } else {
-                    lastName = text;
+        _searchBar.textProperty().addListener((observable, oldValue, newValue) ->{
+            _filteredNamesList.setPredicate(element -> {
+                String item = element.getName();
+                String currentText = newValue;
+                // check the index positions of space and hyphen characters
+                int lastSpacePosition = currentText.lastIndexOf(' ');
+                int lastHyphenPosition = currentText.lastIndexOf('-');
+                if (lastSpacePosition > lastHyphenPosition){
+                    // if space is the last separator
+                    currentText = currentText.substring(lastSpacePosition+ 1);
+                } else if (lastHyphenPosition > lastSpacePosition){
+                    // if hyphen is the last separator
+                    currentText = currentText.substring(lastHyphenPosition + 1);
                 }
 
-                ObservableList<Name> updatedNames = FXCollections.observableArrayList();
-
-                if (lastName.equals("")) {
-                    _allNamesList.setItems(_model.getDatabaseNames());
-                } else {
-                    _allNamesList.setItems(updatedNames);
-                }
-
-                for (Name name : _model.getDatabaseNames()) {
-                    if (name.getName().toLowerCase().startsWith(lastName.toLowerCase())) {
-                        updatedNames.add(name);
+                if (item.length() >= currentText.length()){
+                    if (item.toUpperCase().substring(0,currentText.length()).equals(currentText.toUpperCase())){
+                        return true;
                     }
                 }
-            }
 
+                if (newValue == null || newValue.isEmpty()){
+                    return true;
+                }
+
+                return false;
+            });
+            _allNamesList.setItems(_filteredNamesList);
         });
     }
 }
