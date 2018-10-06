@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="648.0" prefWidth="1024.0" style="-fx-background-color: efefef;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.PracticeModeController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="648.0" prefWidth="1024.0" style="-fx-background-color: efefef;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.PracticeModeController">
    <children>
       <HBox alignment="CENTER_LEFT" prefHeight="69.0" prefWidth="1024.0">
          <children>
@@ -66,9 +66,9 @@
                         <Font size="30.0" />
                      </font>
                   </Label>
-                  <JFXComboBox layoutX="220.0" layoutY="89.0" prefHeight="34.0" prefWidth="585.0" />
-                  <JFXButton contentDisplay="CENTER" layoutX="846.0" layoutY="89.0" prefHeight="34.0" prefWidth="65.0" style="-fx-background-color: #157766;" text="Play" textFill="WHITE" />
-                  <JFXButton contentDisplay="CENTER" layoutX="930.0" layoutY="88.0" prefHeight="34.0" prefWidth="65.0" style="-fx-background-color: #A42B1B;" text="Delete" textFill="WHITE" />
+                  <JFXComboBox fx:id="_userRecordings" layoutX="220.0" layoutY="89.0" prefHeight="34.0" prefWidth="585.0" />
+                  <JFXButton contentDisplay="CENTER" layoutX="846.0" layoutY="89.0" onAction="#setOnUserRecordingPlayButtonClicked" prefHeight="34.0" prefWidth="65.0" style="-fx-background-color: #157766;" text="Play" textFill="WHITE" />
+                  <JFXButton contentDisplay="CENTER" layoutX="930.0" layoutY="88.0" onAction="#onUserRecordingDeleteButtonClicked" prefHeight="34.0" prefWidth="65.0" style="-fx-background-color: #A42B1B;" text="Delete" textFill="WHITE" />
                </children>
             </AnchorPane>
          </children>

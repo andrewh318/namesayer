@@ -17,6 +17,7 @@ public class PracticeSetupController {
     private BorderPane _borderPane;
 
     private NamesModel _model;
+    private FrameController _controller;
 
 
     public void setModel(NamesModel model){
@@ -34,6 +35,10 @@ public class PracticeSetupController {
       _borderPane = pane;
     }
 
+    public void setFrameController(FrameController controller){
+        _controller = controller;
+    }
+
     @FXML
     public void loadPracticeMode(){
         // only load practice mode if a playlist is selected
@@ -48,6 +53,7 @@ public class PracticeSetupController {
                 PracticeModeController controller = loader.getController();
                 controller.setPlaylist(playlist);
                 controller.setModel(_model);
+                controller.setFrameController(_controller);
                 controller.setPane(_borderPane);
                 _borderPane.setCenter(root);
             } catch (IOException e){
