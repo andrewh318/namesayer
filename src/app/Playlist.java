@@ -8,14 +8,14 @@ import javafx.collections.ObservableList;
 import java.util.List;
 
 public class Playlist {
-    private ObservableList<List<Name>> _playlist = FXCollections.observableArrayList();
+    private ObservableList<Name> _playlist = FXCollections.observableArrayList();
     private String _playlistName;
     private int _position;
 
     public Playlist(String name){
         _playlistName = name;
     }
-    public ObservableList<List<Name>> getPlaylist(){
+    public ObservableList<Name> getPlaylist(){
         return _playlist;
     }
 
@@ -29,22 +29,20 @@ public class Playlist {
     }
 
     public String getPlaylistItemAt(int index){
-        List<Name> names = _playlist.get(index);
-        String str = "";
+        Name name = _playlist.get(index);
+
         // Loop through the names, concatenate them together to a single name
-        for (Name name: names){
-            str = str + name.getName() + " ";
-        }
+        String str = name.getName();
         return str;
     }
 
-    public void addName(List<Name> name){
+    public void addName(Name name){
         if (name != null){
             _playlist.add(name);
         }
     }
 
-    public void deleteName(List<Name> name){
+    public void deleteName(Name name){
         if (name != null){
             _playlist.remove(name);
         }

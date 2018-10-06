@@ -16,8 +16,8 @@ public class PracticeModeController {
     private Playlist _playlist;
     // keeps track of current name in playlist
     private int _position = 0;
-    private List<Name> _currentName;
     private BorderPane _pane;
+    private Name _currentName;
 
     @FXML
     private Label _nameLabel;

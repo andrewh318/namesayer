@@ -154,16 +154,8 @@ public class FrameController {
         }
     }
 
-
     @FXML
     private void onPlaybarPlayClicked() {
-        if (isListen == true) {
-            List<Name> name = _listenController.onPlayCLicked();
-            _currentNameLabel.setText(name.toString());
-        } else if(isPractice == true) {
-
-        }
-
 
     }
 }
