@@ -2,8 +2,6 @@
 
 # Documentation
 
-Welcome to Andrew and Vincent's NameSayer 4 Assignment.
-
 ## What is Name Sayer?
 
 Name Sayer is a software tool to assist users in learning unfamiliar names. Users are able to listen to the correct pronunciation spoken by the owner of the name themselves from the database, as well as record their own version to compare and contrast. If a database recording is deemed of bad quality, users can choose to flag it. 
