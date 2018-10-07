@@ -91,7 +91,11 @@ public class PracticeModeController {
     // Should also populate the database
     private void updateScreen(){
 
-        if (_position == _playlist.getNumberOfItems()-1){
+        // if the number of items is 1 then both buttons should be disabled
+        if (_playlist.getNumberOfItems() == 1){
+          _nextButton.setDisable(true);
+          _previousButton.setDisable(true);
+        } else if (_position == _playlist.getNumberOfItems()-1){
             _nextButton.setDisable(true);
         } else if (_position == 0){
             _previousButton.setDisable(true);
@@ -124,9 +128,17 @@ public class PracticeModeController {
     @FXML
     // flag the current recording playing
     private void onFlagButtonClicked(){
+        Recording currentRecording = _currentName.getBestRecording();
         if (!_currentName.flagRecording()){
             showAlert("Error: Cannot flag this item", "Custom names cannot be flagged");
         } else {
+            // show confirmation of flag
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Information Alert");
+            alert.setHeaderText("Successful flag");
+            alert.setContentText("The recording " + currentRecording.toString() + "\nhas been flagged");
+
+            alert.showAndWait();
             updateScreen();
         }
     }
@@ -149,7 +161,7 @@ public class PracticeModeController {
     @FXML
     private void onChangePlaylistButton(){
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/PracticeSetup.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/app/views/PracticeSetup.fxml"));
             Parent root = (Parent) loader.load();
 
             PracticeSetupController controller = loader.getController();

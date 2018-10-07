@@ -48,10 +48,11 @@ public class NamesModel {
 
         deleteFolder(new File(NamesModel.TRIMMED_NORMALISED_DIRECTORY));
 
+        createErrorFile();
         makeDirectories();
         readDirectories();
 
-        createErrorFile();
+
 
         setUpDefaultPlaylist();
     }

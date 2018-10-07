@@ -7,6 +7,7 @@ import com.jfoenix.controls.JFXComboBox;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.layout.BorderPane;
 
 import java.io.IOException;
@@ -47,10 +48,11 @@ public class PracticeSetupController {
         Playlist playlist = _comboBox.getValue();
         // if playlist is empty show warning
         if (playlist.getNumberOfItems() == 0){
-            System.out.println("Playlist cannot be emty");
+            showAlert("Error: Playlist cannot be empty", "Please go back to the manage screen to \nadd a name");
+
         }else if (playlist != null){
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/PracticeMode.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/app/views/PracticeMode.fxml"));
                 Parent root = (Parent) loader.load();
                 PracticeModeController controller = loader.getController();
                 controller.setPlaylist(playlist);
@@ -65,6 +67,13 @@ public class PracticeSetupController {
             System.out.println("no playlist selected");
         }
 
+    }
+
+    private void showAlert(String header, String content){
+        Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+        errorAlert.setHeaderText(header);
+        errorAlert.setContentText(content);
+        errorAlert.showAndWait();
     }
 
 
