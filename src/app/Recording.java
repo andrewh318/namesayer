@@ -47,7 +47,7 @@ public class Recording {
     //same thread
     public void playRecording() {
         String audioCommand = "ffplay -loglevel panic -autoexit -nodisp -i " + _trimmedPath;
-        System.out.println(_trimmedPath);
+
         BashCommand cmd = new BashCommand(audioCommand);
         cmd.startProcess();
         try {

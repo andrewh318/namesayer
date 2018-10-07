@@ -126,11 +126,22 @@ public class FrameController {
         fc.setTitle("Open Playlist File");
         fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Text Files", "*.txt"));
         File f = fc.showOpenDialog(_stage);
+
+
         if (f != null){
             // parse the txt file
-            _model.readPlaylist(f);
-        }
+            List<String> invalidNames = _model.readPlaylist(f);
+            if (invalidNames.size() > 0) {
+                String fileName = f.getName().substring(0, f.getName().lastIndexOf("."));
 
+                String invalidNamesString = "";
+                for (String invalidName : invalidNames) {
+                    invalidNamesString = invalidNamesString + invalidName + "\n";
+                }
+
+                showAlert("Error: the following names from playlist: " + fileName + "could not be found in the database", invalidNamesString);
+            }
+        }
     }
 
 
@@ -189,5 +200,11 @@ public class FrameController {
         new Thread(task).start();
     }
 
+    private void showAlert(String header, String content){
+        Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+        errorAlert.setHeaderText(header);
+        errorAlert.setContentText(content);
+        errorAlert.showAndWait();
+    }
 
 }

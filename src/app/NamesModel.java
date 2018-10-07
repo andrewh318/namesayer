@@ -255,7 +255,8 @@ public class NamesModel {
             String st;
             while ((st = br.readLine()) != null) {
 
-                st = st.trim();
+                st = formatNamesString(st);
+
                 Name name = findName(st);
 
 
@@ -288,7 +289,6 @@ public class NamesModel {
 
         //Split up the string into individual names
         String[] namesArray = names.split("%");
-
 
         //Find and return the corresponding combined name
         CombinedName combinedName;
@@ -373,7 +373,7 @@ public class NamesModel {
                 // for each list of names (for each playlist entry)
                 for (Name name: listNames){
                     // as each playlist entry can contain multiple names, print entries names on the same line
-                    out.append(name.getName() + " ");
+                    out.append(name.getCleanName() + " ");
                     // after a playlist entry has finished printing, add a new line to indicate next entry
                     out.newLine();
                 }
