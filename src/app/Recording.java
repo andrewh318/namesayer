@@ -83,6 +83,7 @@ public class Recording {
     }
 
     public float getRecordingLength(){
+        // gets the recording length of the TRIMMED files
         File audioFile = new File(_trimmedPath);
         try {
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(audioFile);

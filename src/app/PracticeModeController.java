@@ -30,6 +30,8 @@ public class PracticeModeController {
     @FXML
     private Label _nameLabel;
     @FXML
+    private Label _recordingLabel;
+    @FXML
     private JFXButton _nextButton;
     @FXML
     private JFXButton _previousButton;
@@ -39,8 +41,6 @@ public class PracticeModeController {
 
     private NamesModel _model;
 
-    @FXML
-    private ProgressIndicator _recordIndicator;
     @FXML
     private JFXComboBox<Recording> _userRecordings;
 
@@ -62,6 +62,10 @@ public class PracticeModeController {
         _model = model;
     }
 
+    public void setPane(BorderPane pane){
+        _pane = pane;
+    }
+
     @FXML
     private void onNextButtonClicked(){
         _position = Math.floorMod(_position + 1, _playlist.getPlaylist().size());
@@ -80,18 +84,20 @@ public class PracticeModeController {
         _currentName = _playlist.getPlaylist().get(_position);
         _nameLabel.setText(_playlist.getPlaylistItemAt(_position));
         _userRecordings.setItems(_currentName.getUserRecordings());
-        // display the first user recording on the top of the combo list (if it exists0
+        // display the first user recording on the top of the combo list (if it exists)
         _userRecordings.getSelectionModel().select(0);
+        // display the current recording that is selected for name
+        _recordingLabel.setText(_currentName.getBestRecording().toString());
+
     }
 
-    public void setPane(BorderPane pane){
-        _pane = pane;
-    }
+
 
     @FXML
     // flag the current recording playing
     private void onFlagButtonClicked(){
         _currentName.flagRecording();
+        updateScreen();
     }
 
     @FXML
@@ -105,6 +111,8 @@ public class PracticeModeController {
             }
         };
         new Thread(task).start();
+        // start progress indicator
+        _frameController.startProgressBar(_currentName.getRecordingLength());
 
     }
     @FXML
@@ -164,6 +172,9 @@ public class PracticeModeController {
                 }
             };
             new Thread(task).start();
+            // start the progress bar
+            _frameController.startProgressBar(recording.getRecordingLength());
+
         } else {
             System.out.println("no name selected");
         }

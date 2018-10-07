@@ -96,7 +96,7 @@ public class Name {
     }
 
     // return the best database recording
-    private Recording getBestRecording(){
+    public Recording getBestRecording(){
         // loop through the all the recordings and find the one with the highest rating
         Recording bestRecording = _databaseRecordings.get(0);
         for (Recording recording : _databaseRecordings){
