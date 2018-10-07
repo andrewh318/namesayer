@@ -362,6 +362,16 @@ public class NamesModel {
 
     public void savePlaylists(){
         ObservableList<Playlist> playlists = this.getPlaylists();
+
+        // first delete all existing playlists to prevent duplication after renaming
+        File[] files = new File(PLAYLISTS_DIRECTORY).listFiles();
+        for(File file: files ){
+            if (!file.isDirectory()){
+                file.delete();
+            }
+        }
+
+
         // loop through list of playlists
         for (Playlist playlist : playlists){
             // for each playlist create a new BufferedReader
