@@ -1,11 +1,9 @@
-package app;
+package app.models;
 
 import javafx.beans.property.ReadOnlyStringProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
-import java.util.List;
 
 public class Playlist {
     private ObservableList<Name> _playlist = FXCollections.observableArrayList();

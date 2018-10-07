@@ -1,10 +1,9 @@
 // Author: Andrew Hu and Vincent Tunnell
 
-package app;
+package app.models;
 
 import javax.sound.sampled.*;
 import java.io.*;
-import java.util.concurrent.CountDownLatch;
 
 public class Recording {
     private String _name;

@@ -1,5 +1,6 @@
 package app;
 
+import app.controllers.FrameController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -10,7 +11,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("Frame.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("views/Frame.fxml"));
         Parent root = (Parent) loader.load();
         FrameController controller = (FrameController) loader.getController();
         primaryStage.setTitle("Name Sayer");

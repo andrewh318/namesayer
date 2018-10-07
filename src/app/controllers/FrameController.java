@@ -1,10 +1,10 @@
-package app;
+package app.controllers;
+
+import app.models.NamesModel;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXProgressBar;
 import com.jfoenix.controls.JFXSlider;
-import javafx.application.Platform;
-import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,15 +16,10 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import javax.sound.sampled.*;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class FrameController {
     @FXML
@@ -152,7 +147,7 @@ public class FrameController {
 
     private void loadListen(NamesModel model){
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("Listen.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/Listen.fxml"));
             Parent root = (Parent) loader.load();
             _listenController = (ListenController) loader.getController();
             _listenController.setModel(model, this);
@@ -168,7 +163,7 @@ public class FrameController {
     // practice mode
     private void loadPractice(NamesModel model, BorderPane borderPane){
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("PracticeSetup.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/PracticeSetup.fxml"));
             Parent root = (Parent) loader.load();
             PracticeSetupController controller = (PracticeSetupController) loader.getController();
             controller.setModel(model);

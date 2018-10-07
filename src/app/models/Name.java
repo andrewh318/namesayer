@@ -1,6 +1,6 @@
 // Author: Andrew Hu and Vincent Tunnell
 
-package app;
+package app.models;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -24,7 +24,7 @@ public class Name {
     }
 
     public void addUserRecording(Recording recording){
-        _userRecordings.add(recording);
+        _userRecordings.add(0,recording);
     }
 
     public void addDatabaseRecording(Recording recording){
