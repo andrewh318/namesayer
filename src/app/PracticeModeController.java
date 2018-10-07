@@ -226,7 +226,14 @@ public class PracticeModeController {
 
     private void startRecordProgress() {
         // call the progress bar with a 5 second timer
+        setButtonsDisable(true);
         _frameController.startProgressBar(5);
+
+
+    }
+
+    private void setButtonsDisable(Boolean disable) {
+        _recordButton.setDisable(disable);
     }
 
     private void showAlert(String header, String content){

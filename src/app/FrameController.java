@@ -198,6 +198,8 @@ public class FrameController {
         _progressBar.progressProperty().bind(task.progressProperty());
 
         new Thread(task).start();
+
+        //task.setOnSucceeded();
     }
 
     private void showAlert(String header, String content){
