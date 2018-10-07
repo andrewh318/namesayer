@@ -66,7 +66,10 @@ public class Name {
         String date = dateAndTimeArray[0];
         String time = dateAndTimeArray[1];
         String stringName = getName();
-        String path =  NamesModel.USERRECORDINGSDIRECTORY + "/se206_" + date + "_" + time + "_" + stringName + ".wav";
+
+
+        String path = NamesModel.USERRECORDINGSDIRECTORY + "/se206_" + date + "_" + time + "_" + stringName + ".wav";
+
         String trimmedPath = NamesModel.TRIMMED_NORMALISED_DIRECTORY + "/" + path;
 
         return new Recording(stringName, date, path, trimmedPath, time);

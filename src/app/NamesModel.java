@@ -119,23 +119,11 @@ public class NamesModel {
 
 
 
-    public void normaliseAndTrimAudioFile(Recording recording) {
 
-        String audioCommand = "ffmpeg -i ./" + recording.getPath() + " -af silenceremove=1:0:-40dB" + " ./" + recording.getTrimmedPath();
-        BashCommand create = new BashCommand(audioCommand);
-        create.startProcess();
-        try {
-            create.getProcess().waitFor();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-    }
 
     private Recording parseFilename(File file) {
 
         String fileName = file.getName();
-        System.out.println(fileName);
         String directory = file.getParent();
 
         //Extracts information from the filename and directory
@@ -146,7 +134,6 @@ public class NamesModel {
         String date = parts[1];
         String time = parts[2];
         String stringName = parts[3].substring(0, 1).toUpperCase() + parts[3].substring(1);
-
 
         //Creates a new recording object with the extracted information
         return new Recording(stringName, date, path, trimmedPath, time);
@@ -160,6 +147,7 @@ public class NamesModel {
         Recording recording = parseFilename(file);
 
         normaliseAndTrimAudioFile(recording);
+
 
         //Find the name in _combinedNames that has the same name
         CombinedName combinedName = (CombinedName) searchListOfName(_combinedNames, recording.getName());
@@ -264,12 +252,16 @@ public class NamesModel {
             br = new BufferedReader(new FileReader(file));
             String st;
             while ((st = br.readLine()) != null) {
-                Name namesList = generateListOfNames(st);
 
-                if (namesList == null) {
+                st = st.trim();
+                Name name = findName(st);
+
+                System.out.println(name);
+
+                if (name == null) {
                     invalidNames.add(st);
                 } else {
-                    playlist.addName(namesList);
+                    playlist.addName(name);
                 }
             }
         } catch (Exception e) {
@@ -281,57 +273,82 @@ public class NamesModel {
         return invalidNames;
     }
 
-    //Method that reads in a string containing names separated by spaces and returns a Name object if only 1 name, a
-    //combined name object if multiple names, or null if unsuccessful.
 
-    public Name generateListOfNames(String names) {
 
+    //Method that reads in a string in the playlist or search bar format, and returns either an existing combined name,
+    //an existing databasename, or a new combined name.
+
+    public Name findName(String names) {
+
+        //If the string is empty return null
         if (names.isEmpty()){
             return null;
         }
-        List<Name> namesList = new ArrayList<Name>();
 
-        // fixed this, didn't have the 'names =' before so it wasn't replacing the hyphens properly.
+        //Split up the string into individual names
+        String[] namesArray = names.split("%");
+
+
+        //Find and return the corresponding combined name
+        CombinedName combinedName;
+        if (namesArray.length > 1) {
+            combinedName = (CombinedName) searchListOfName(_combinedNames, names);
+
+            if (combinedName == null) {
+                combinedName = new CombinedName(names);
+            } else {
+                return combinedName;
+            }
+            //Find and return the corresponding name
+        } else {
+            Name name = searchListOfName(_databaseNames, names);
+
+            if (name == null) {
+                return null;
+            } else {
+                return name;
+            }
+        }
+
+        //Add names to new combined name and if an invalid name is found, return null
+        for (String nameString : namesArray) {
+
+            Name name = searchListOfName(_databaseNames, nameString);
+
+            if (name != null) {
+                combinedName.addName(name);
+            } else {
+                return null;
+            }
+        }
+
+        //Return the new combined name
+        return combinedName;
+
+
+    }
+
+    public String formatNamesString (String names) {
+
+        String formattedName = "";
+
         names = names.replaceAll("-", " ");
         String[] namesArray = names.split(" ");
-
-        String stringName = "";
 
         for (String name : namesArray) {
             name = name.trim();
             name = name.toLowerCase();
             name = name.substring(0, 1).toUpperCase() + name.substring(1);
 
-            boolean valid = false;
-            for (Name databaseName : _databaseNames) {
-                if (databaseName.getName().equals(name)) {
-                    valid = true;
-                    namesList.add(databaseName);
-                    stringName = stringName + databaseName.getName() + " ";
-                    break;
-                }
-            }
-
-            if (!valid) {
-                return null;
-            }
+            formattedName = formattedName + name + "%";
         }
-        stringName.trim();
 
-        if (namesList.size() == 1) {
-            return namesList.get(0);
-        } else {
-            CombinedName combinedName = new CombinedName(stringName);
+        formattedName = formattedName.substring(0, formattedName.length() - 1);
 
-            for (Name name : namesList) {
-                combinedName.addName(name);
-            }
+        System.out.println(formattedName);
 
-            return combinedName;
-        }
+        return formattedName;
     }
-
-
 
 
     public void addPlaylist(Playlist playlist){
@@ -391,5 +408,12 @@ public class NamesModel {
         }
 
         return null;
+    }
+
+    public void normaliseAndTrimAudioFile(Recording recording) {
+
+        String audioCommand = "ffmpeg -i ./" + recording.getPath() + " -af silenceremove=1:0:-40dB" + " ./" + recording.getTrimmedPath();
+        BashCommand create = new BashCommand(audioCommand);
+        create.startProcess();
     }
 }

@@ -151,8 +151,11 @@ public class ListenController {
             showAlert("Error: Name too long", "Name must be 50 characters or below");
             return;
         }
-        // get currently selected name
-        Name name = _model.generateListOfNames(_searchBar.getText());
+
+        String searchText = _model.formatNamesString(_searchBar.getText());
+
+        // get the name object from the searchbar text
+        Name name = _model.findName(searchText);
 
         if (name == null){
             // if search bar is empty then display empty error message
@@ -213,6 +216,7 @@ public class ListenController {
     }
 
     private void setUpCurrentPlaylistCellFactory(){
+
         _currentPlaylistList.setCellFactory(param -> new ListCell<Name>(){
             @Override
             protected void updateItem(Name names, boolean empty){
@@ -222,10 +226,11 @@ public class ListenController {
                 if (empty || names == null){
                     setText(null);
                 } else {
-                    setText(names.getName());
+                    setText(names.toString());
                 }
             }
         });
+
     }
 
     @FXML

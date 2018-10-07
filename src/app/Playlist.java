@@ -29,11 +29,7 @@ public class Playlist {
     }
 
     public String getPlaylistItemAt(int index){
-        Name name = _playlist.get(index);
-
-        // Loop through the names, concatenate them together to a single name
-        String str = name.getName();
-        return str;
+        return _playlist.get(index).toString();
     }
 
     public void addName(Name name){
