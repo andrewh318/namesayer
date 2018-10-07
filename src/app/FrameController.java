@@ -104,6 +104,7 @@ public class FrameController {
 
         _model.deleteFolder(new File(NamesModel.TRIMMED_NORMALISED_DIRECTORY));
     }
+
     @FXML
     private void onPracticeButtonClicked(){
         if (isPractice == false){
@@ -180,10 +181,6 @@ public class FrameController {
         }
     }
 
-    @FXML
-    private void onPlaybarPlayClicked() {
-
-    }
 
     // duration is duration in seconds
     public void startProgressBar(float duration){
@@ -202,8 +199,6 @@ public class FrameController {
         _progressBar.progressProperty().bind(task.progressProperty());
 
         new Thread(task).start();
-
-        //task.setOnSucceeded();
     }
 
     private void showAlert(String header, String content){

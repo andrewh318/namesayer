@@ -346,8 +346,6 @@ public class NamesModel {
 
         formattedName = formattedName.substring(0, formattedName.length() - 1);
 
-        System.out.println(formattedName);
-
         return formattedName;
     }
 
