@@ -1,6 +1,6 @@
 // Author: Andrew Hu and Vincent Tunnell
 
-package app;
+package app.models;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -14,7 +14,6 @@ public class NamesModel {
     private ObservableList<Name> _userNames = FXCollections.observableArrayList();
     private ObservableList<Playlist> _allPlaylists = FXCollections.observableArrayList();
     private ObservableList<Name> _combinedNames = FXCollections.observableArrayList();
-    private Playbar _playbar = new Playbar();
 
     public static final String DATABASERECORDINGSDIRECTORY = "names";
     public static final String USERRECORDINGSDIRECTORY = "userNames";
@@ -37,10 +36,6 @@ public class NamesModel {
 
     public ObservableList<Playlist> getPlaylists() {
         return _allPlaylists;
-    }
-
-    public Playbar getPlaybar() {
-        return _playbar;
     }
 
 

@@ -1,4 +1,4 @@
-package app;
+package app.models;
 
 public class BashCommand {
     private String _cmd;

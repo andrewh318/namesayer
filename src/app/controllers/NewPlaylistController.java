@@ -1,5 +1,6 @@
-package app;
+package app.controllers;
 
+import app.models.NamesModel;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import javafx.event.EventHandler;

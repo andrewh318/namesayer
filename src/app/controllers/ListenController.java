@@ -1,10 +1,10 @@
-package app;
+package app.controllers;
 
+import app.models.Name;
+import app.models.NamesModel;
+import app.models.Playlist;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.concurrent.Task;
@@ -16,15 +16,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldListCell;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 
-import javax.script.Bindings;
 import java.io.IOException;
-import java.util.List;
 import java.util.Optional;
 
 public class ListenController {
@@ -239,7 +236,7 @@ public class ListenController {
         Stage stage = new Stage();
         Parent root;
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("NewPlaylist.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/NewPlaylist.fxml"));
             root = (Parent) loader.load();
             NewPlaylistController controller = loader.getController();
             controller.setController(this);

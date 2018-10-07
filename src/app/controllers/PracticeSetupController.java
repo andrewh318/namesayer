@@ -1,5 +1,7 @@
-package app;
+package app.controllers;
 
+import app.models.NamesModel;
+import app.models.Playlist;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import javafx.fxml.FXML;
@@ -48,7 +50,7 @@ public class PracticeSetupController {
             System.out.println("Playlist cannot be emty");
         }else if (playlist != null){
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("PracticeMode.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/PracticeMode.fxml"));
                 Parent root = (Parent) loader.load();
                 PracticeModeController controller = loader.getController();
                 controller.setPlaylist(playlist);

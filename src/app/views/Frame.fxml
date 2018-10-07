@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.FrameController">
+<BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.FrameController">
    <center>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #DFDFDF;" BorderPane.alignment="CENTER" />
    </center>
@@ -21,13 +21,13 @@
          <children>
             <ImageView fitHeight="55.0" fitWidth="47.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../resources/whiteheadphone.png" />
+                  <Image url="@../../resources/whiteheadphone.png" />
                </image>
                <HBox.margin>
                   <Insets left="10.0" />
                </HBox.margin>
             </ImageView>
-            <JFXButton fx:id="_listenButton" onAction="#onListenButtonClicked" prefHeight="60.0" prefWidth="111.0" text="LISTEN" textFill="WHITE">
+            <JFXButton fx:id="_listenButton" onAction="#onListenButtonClicked" prefHeight="60.0" prefWidth="128.0" text="MANAGE" textFill="WHITE">
                <font>
                   <Font size="20.0" />
                </font>
