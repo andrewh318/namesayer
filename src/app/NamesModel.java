@@ -256,7 +256,6 @@ public class NamesModel {
                 st = st.trim();
                 Name name = findName(st);
 
-                System.out.println(name);
 
                 if (name == null) {
                     invalidNames.add(st);
