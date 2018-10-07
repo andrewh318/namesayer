@@ -59,7 +59,7 @@ public class CombinedName extends Name {
 
     @Override
     public String toString() {
-        return getName().replaceAll("%", " ");
+        return super.getName().replaceAll("%", " ");
     }
 
     // there should be no best recording for combined names
@@ -73,6 +73,10 @@ public class CombinedName extends Name {
     public boolean flagRecording(){
         // custom names cannot be flagged
         return false;
+    }
+
+    public String getName(){
+        return super.getName().replaceAll("%", " ");
     }
 
 }
