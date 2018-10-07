@@ -2,6 +2,7 @@ package app;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXProgressBar;
+import com.jfoenix.controls.JFXSlider;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -15,6 +16,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import javax.sound.sampled.*;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -35,7 +37,9 @@ public class FrameController {
     private ListenController _listenController;
 
     @FXML
-    JFXButton _playButton;
+    private JFXButton _playButton;
+    @FXML
+    private JFXSlider _volumeSlider;
 
     // reference to the stage used throughout the application
     private Stage _stage;
@@ -188,6 +192,10 @@ public class FrameController {
 
         new Thread(task).start();
     }
+
+    public void setVolume(float volume){
+    }
+
 
 
 }

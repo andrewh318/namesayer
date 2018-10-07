@@ -150,7 +150,11 @@ public class PracticeModeController {
                 Recording recording = _currentName.createRecordingObject();
                 _currentName.record(recording);
                 _model.normaliseAndTrimAudioFile(recording);
-                _currentName.addUserRecording(recording);
+
+                // user recordings are bounded to the GUI so need to add the recording on the application thread
+                Platform.runLater(() -> {
+                    _currentName.addUserRecording(recording);
+                });
 
                 return null;
             }
