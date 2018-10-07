@@ -158,6 +158,7 @@ public class FrameController {
             controller.setModel(model);
             controller.setPane(borderPane);
             controller.setUpComboBox();
+            controller.setFrameController(this);
             borderPane.setCenter(root);
         } catch (IOException e){
             e.printStackTrace();
@@ -169,6 +170,7 @@ public class FrameController {
 
     }
 
+    // duration is duration in seconds
     public void startProgressBar(float duration){
 
         Task<Void> task = new Task<Void>() {

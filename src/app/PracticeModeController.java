@@ -1,6 +1,7 @@
 package app;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXComboBox;
 import javafx.concurrent.Task;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
@@ -29,6 +30,8 @@ public class PracticeModeController {
     @FXML
     private Label _nameLabel;
     @FXML
+    private Label _recordingLabel;
+    @FXML
     private JFXButton _nextButton;
     @FXML
     private JFXButton _previousButton;
@@ -39,8 +42,9 @@ public class PracticeModeController {
     private NamesModel _model;
 
     @FXML
-    private ProgressIndicator _recordIndicator;
+    private JFXComboBox<Recording> _userRecordings;
 
+    private FrameController _frameController;
 
     public void setPlaylist(Playlist playlist){
         // Set the playlist
@@ -50,8 +54,16 @@ public class PracticeModeController {
         updateScreen();
     }
 
+    public void setFrameController(FrameController controller){
+        _frameController = controller;
+    }
+
     public void setModel(NamesModel model){
         _model = model;
+    }
+
+    public void setPane(BorderPane pane){
+        _pane = pane;
     }
 
     @FXML
@@ -71,16 +83,21 @@ public class PracticeModeController {
     private void updateScreen(){
         _currentName = _playlist.getPlaylist().get(_position);
         _nameLabel.setText(_playlist.getPlaylistItemAt(_position));
+        _userRecordings.setItems(_currentName.getUserRecordings());
+        // display the first user recording on the top of the combo list (if it exists)
+        _userRecordings.getSelectionModel().select(0);
+        // display the current recording that is selected for name
+        _recordingLabel.setText(_currentName.getBestRecording().toString());
+
     }
 
-    public void setPane(BorderPane pane){
-        _pane = pane;
-    }
+
 
     @FXML
     // flag the current recording playing
     private void onFlagButtonClicked(){
         _currentName.flagRecording();
+        updateScreen();
     }
 
     @FXML
@@ -94,6 +111,8 @@ public class PracticeModeController {
             }
         };
         new Thread(task).start();
+        // start progress indicator
+        _frameController.startProgressBar(_currentName.getRecordingLength());
 
     }
     @FXML
@@ -120,46 +139,63 @@ public class PracticeModeController {
             public Void call() {
                 Recording recording = _currentName.createRecordingObject();
                 _currentName.record(recording);
+                _model.normaliseAndTrimAudioFile(new File(recording.getPath()));
+                _currentName.addUserRecording(recording);
 
-                Platform.runLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        _currentName.addUserRecording(recording);
-                    }
-                });
                 return null;
             }
         };
         new Thread(task).start();
-        //startRecordProgress();
+        task.setOnSucceeded(e -> {
+            // update the view again to refresh combo box
+            // this is done on the application thread
+            updateScreen();
+        });
+        startRecordProgress();
+
+
+
     }
 
+    @FXML
+    private void setOnUserRecordingPlayButtonClicked(){
+        // get the current recording that the user has selected
+        Recording recording = _userRecordings.getSelectionModel().getSelectedItem();
+        // check if the item selected is valid
+        if (recording != null){
+            // play the recording
+            Task<Void> task = new Task<Void>(){
+                @Override
+                protected Void call() throws Exception {
+                    recording.playRecording();
+                    return null;
+                }
+            };
+            new Thread(task).start();
+            // start the progress bar
+            _frameController.startProgressBar(recording.getRecordingLength());
+
+        } else {
+            System.out.println("no name selected");
+        }
+    }
+
+    @FXML
+    private void onUserRecordingDeleteButtonClicked(){
+        // get the recording that the user has selected
+        Recording recording = _userRecordings.getSelectionModel().getSelectedItem();
+        // delete the recording if its value is not null
+        if (recording != null){
+            _currentName.removeUserRecording(recording);
+            updateScreen();
+        } else {
+            System.out.println("no recording selected");
+        }
+    }
 
     private void startRecordProgress() {
-        Timer timer = new Timer();
-        _recordIndicator.setProgress(0d);
-        _recordButton.setDisable(true);
-
-        // Personal: Threading explanation
-        // a JavaFX application runs on the Application thread which handles all the UI elements
-        // the Java Timer runs on its own thread
-        // due to this, calling Thread.sleep inside the Timer method won't affect the Application thread
-        // runLater() will run the code inside it on the Application thread
-        // generally used when you are updating UI components
-        timer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                if (_recordIndicator.getProgress() <= 1){
-                    Platform.runLater(() -> {
-                        _recordIndicator.setProgress(_recordIndicator.getProgress() + 0.01);
-                    });
-                } else {
-                    timer.cancel();
-                    _recordButton.setDisable(false);
-                }
-            }
-        }, 0, 50);
-
+        // call the progress bar with a 5 second timer
+        _frameController.startProgressBar(5);
     }
 
 

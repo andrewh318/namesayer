@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="648.0" prefWidth="1024.0" style="-fx-background-color: efefef;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.PracticeModeController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="648.0" prefWidth="1024.0" style="-fx-background-color: efefef;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.PracticeModeController">
    <children>
       <HBox alignment="CENTER_LEFT" prefHeight="69.0" prefWidth="1024.0">
          <children>
@@ -22,7 +22,7 @@
                   <Insets left="20.0" />
                </HBox.margin>
             </JFXButton>
-            <Label fx:id="_playlistName" alignment="CENTER" prefHeight="45.0" prefWidth="636.0" text="Playlist:">
+            <Label fx:id="_playlistName" alignment="CENTER" prefHeight="45.0" prefWidth="628.0" text="Playlist:">
                <font>
                   <Font size="30.0" />
                </font>
@@ -31,11 +31,20 @@
       </HBox>
       <HBox alignment="CENTER" prefHeight="117.0" prefWidth="1024.0" style="-fx-background-color: #E9E9EA;">
          <children>
-            <Label fx:id="_nameLabel" text="Name:">
-               <font>
-                  <Font size="80.0" />
-               </font>
-            </Label>
+            <VBox alignment="TOP_CENTER" prefHeight="117.0" prefWidth="1004.0">
+               <children>
+                  <Label fx:id="_nameLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="81.0" prefWidth="1004.0" text="Name:">
+                     <font>
+                        <Font size="60.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="_recordingLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="35.0" prefWidth="1006.0" text="Recording:">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+               </children>
+            </VBox>
          </children>
       </HBox>
       <HBox alignment="CENTER" prefHeight="213.0" prefWidth="1024.0" spacing="30.0" style="-fx-background-color: #E9E9EA;">
@@ -61,14 +70,14 @@
          <children>
             <AnchorPane prefHeight="170.0" prefWidth="1024.0">
                <children>
-                  <Label layoutX="456.0" layoutY="21.0" text="Attempts">
+                  <Label layoutX="443.0" layoutY="22.0" text="Attempts">
                      <font>
                         <Font size="30.0" />
                      </font>
                   </Label>
-                  <JFXComboBox layoutX="220.0" layoutY="89.0" prefHeight="34.0" prefWidth="585.0" />
-                  <JFXButton contentDisplay="CENTER" layoutX="846.0" layoutY="89.0" prefHeight="34.0" prefWidth="65.0" style="-fx-background-color: #157766;" text="Play" textFill="WHITE" />
-                  <JFXButton contentDisplay="CENTER" layoutX="930.0" layoutY="88.0" prefHeight="34.0" prefWidth="65.0" style="-fx-background-color: #A42B1B;" text="Delete" textFill="WHITE" />
+                  <JFXComboBox fx:id="_userRecordings" layoutX="220.0" layoutY="89.0" prefHeight="34.0" prefWidth="585.0" />
+                  <JFXButton contentDisplay="CENTER" layoutX="846.0" layoutY="89.0" onAction="#setOnUserRecordingPlayButtonClicked" prefHeight="34.0" prefWidth="65.0" style="-fx-background-color: #157766;" text="Play" textFill="WHITE" />
+                  <JFXButton contentDisplay="CENTER" layoutX="930.0" layoutY="88.0" onAction="#onUserRecordingDeleteButtonClicked" prefHeight="34.0" prefWidth="65.0" style="-fx-background-color: #A42B1B;" text="Delete" textFill="WHITE" />
                </children>
             </AnchorPane>
          </children>
