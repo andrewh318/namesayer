@@ -111,8 +111,10 @@ public class Name {
     }
 
     // flags the current recording (best recording) as poor quality
-    public void flagRecording(){
+    public boolean flagRecording(){
         getBestRecording().flagAsBad();
+        // return true as single names can be flagged
+        return true;
     }
 
     public float getRecordingLength(){

@@ -62,4 +62,17 @@ public class CombinedName extends Name {
         return getName().replaceAll("%", " ");
     }
 
+    // there should be no best recording for combined names
+    @Override
+    public Recording getBestRecording(){
+        return null;
+    }
+
+    // users cannot flag custom namse
+    @Override
+    public boolean flagRecording(){
+        // custom names cannot be flagged
+        return false;
+    }
+
 }

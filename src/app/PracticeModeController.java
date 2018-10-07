@@ -8,6 +8,7 @@ import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.layout.BorderPane;
@@ -87,7 +88,13 @@ public class PracticeModeController {
         // display the first user recording on the top of the combo list (if it exists)
         _userRecordings.getSelectionModel().select(0);
         // display the current recording that is selected for name
-        _recordingLabel.setText(_currentName.getBestRecording().toString());
+        Recording recording = _currentName.getBestRecording();
+        // if recording is null then the current name is a combined name (no database recording exists)
+        if (recording != null){
+            _recordingLabel.setText(_currentName.getBestRecording().toString());
+        } else {
+            _recordingLabel.setText("");
+        }
 
     }
 
@@ -96,8 +103,11 @@ public class PracticeModeController {
     @FXML
     // flag the current recording playing
     private void onFlagButtonClicked(){
-        _currentName.flagRecording();
-        updateScreen();
+        if (!_currentName.flagRecording()){
+            showAlert("Error: Cannot flag this item", "Custom names cannot be flagged");
+        } else {
+            updateScreen();
+        }
     }
 
     @FXML
@@ -139,7 +149,7 @@ public class PracticeModeController {
             public Void call() {
                 Recording recording = _currentName.createRecordingObject();
                 _currentName.record(recording);
-                _model.normaliseAndTrimAudioFile(new File(recording.getPath()));
+                _model.normaliseAndTrimAudioFile(recording);
                 _currentName.addUserRecording(recording);
 
                 return null;
@@ -197,6 +207,14 @@ public class PracticeModeController {
         // call the progress bar with a 5 second timer
         _frameController.startProgressBar(5);
     }
+
+    private void showAlert(String header, String content){
+        Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+        errorAlert.setHeaderText(header);
+        errorAlert.setContentText(content);
+        errorAlert.showAndWait();
+    }
+
 
 
 
