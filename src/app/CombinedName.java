@@ -57,6 +57,7 @@ public class CombinedName extends Name {
         return new Recording(stringName, date, path, trimmedPath, time);
     }
 
+
     @Override
     public String toString() {
         return super.getName().replaceAll("%", " ");
@@ -75,8 +76,10 @@ public class CombinedName extends Name {
         return false;
     }
 
-    public String getName(){
-        return super.getName().replaceAll("%", " ");
+    @Override
+    public String getCleanName() {
+        return getName().replaceAll("%", " ");
     }
+
 
 }

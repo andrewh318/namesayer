@@ -89,6 +89,10 @@ public class Name {
 
     }
 
+    public String getCleanName() {
+        return getName();
+    }
+
 
     public ObservableList<Recording> getDatabaseRecordings(){
         return _databaseRecordings;

@@ -39,7 +39,7 @@ public class Recording {
     //Bad quality is appended to the string representation of the recording when the _bad field is true
     @Override
     public String toString() {
-        String string = _name + " " + _date + " " + _time;
+        String string = _name.replaceAll("%", " ") + " " + _date + " " + _time;
         return string;
     }
 

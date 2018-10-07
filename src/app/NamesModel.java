@@ -108,13 +108,15 @@ public class NamesModel {
             readUserRecording(file);
         }
 
+        for (File file : new File(COMBINED_NAMES_DIRECTORY).listFiles()) {
+            readCombinedRecording(file);
+        }
+
         for (File file : new File(PLAYLISTS_DIRECTORY).listFiles()) {
             readPlaylist(file);
         }
 
-        for (File file : new File(COMBINED_NAMES_DIRECTORY).listFiles()) {
-            readCombinedRecording(file);
-        }
+
     }
 
 

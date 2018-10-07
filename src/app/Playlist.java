@@ -29,7 +29,7 @@ public class Playlist {
     }
 
     public String getPlaylistItemAt(int index){
-        return _playlist.get(index).getName();
+        return _playlist.get(index).getCleanName();
     }
 
     public void addName(Name name){
