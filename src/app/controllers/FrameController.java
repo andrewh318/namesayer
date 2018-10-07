@@ -89,11 +89,9 @@ public class FrameController {
         Optional<ButtonType> action = alert.showAndWait();
 
         if (action.get() == ButtonType.OK){
-            System.out.println("Saving playlists");
             _model.savePlaylists();
             _stage.close();
         } else {
-            System.out.println("Thanks for coming");
             _stage.close();
         }
 
@@ -146,7 +144,7 @@ public class FrameController {
 
     private void loadListen(NamesModel model){
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/Listen.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/app/views/Listen.fxml"));
             Parent root = (Parent) loader.load();
             _listenController = (ListenController) loader.getController();
             _listenController.setModel(model, this);
@@ -162,7 +160,7 @@ public class FrameController {
     // practice mode
     private void loadPractice(NamesModel model, BorderPane borderPane){
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/PracticeSetup.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/app/views/PracticeSetup.fxml"));
             Parent root = (Parent) loader.load();
             PracticeSetupController controller = (PracticeSetupController) loader.getController();
             controller.setModel(model);

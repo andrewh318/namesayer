@@ -147,6 +147,10 @@ public class ListenController {
         if (_searchBar.getText().length() >= MAX_NAME_LENGTH){
             showAlert("Error: Name too long", "Name must be 50 characters or below");
             return;
+        // empty names are not allowed
+        } else if (_searchBar.getText().length() == 0){
+            showAlert("Error: Empty name", "Name can not be empty");
+            return;
         }
 
         String searchText = _model.formatNamesString(_searchBar.getText());
@@ -236,7 +240,7 @@ public class ListenController {
         Stage stage = new Stage();
         Parent root;
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/NewPlaylist.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/app/views/NewPlaylist.fxml"));
             root = (Parent) loader.load();
             NewPlaylistController controller = loader.getController();
             controller.setController(this);

@@ -48,10 +48,11 @@ public class NamesModel {
 
         deleteFolder(new File(NamesModel.TRIMMED_NORMALISED_DIRECTORY));
 
+        createErrorFile();
         makeDirectories();
         readDirectories();
 
-        createErrorFile();
+
 
         setUpDefaultPlaylist();
     }
@@ -340,8 +341,6 @@ public class NamesModel {
         }
 
         formattedName = formattedName.substring(0, formattedName.length() - 1);
-
-        System.out.println(formattedName);
 
         return formattedName;
     }
