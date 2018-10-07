@@ -84,7 +84,7 @@
       </HBox>
       <HBox alignment="CENTER" prefHeight="80.0" prefWidth="1024.0" spacing="30.0">
          <children>
-            <JFXButton contentDisplay="CENTER" prefHeight="44.0" prefWidth="122.0" style="-fx-background-color: #157766;" text="Compare" textFill="WHITE">
+            <JFXButton contentDisplay="CENTER" onAction="#onCompareButtonClicked" prefHeight="44.0" prefWidth="122.0" style="-fx-background-color: #157766;" text="Compare" textFill="WHITE">
                <font>
                   <Font size="20.0" />
                </font>

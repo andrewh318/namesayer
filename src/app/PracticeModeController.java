@@ -93,7 +93,7 @@ public class PracticeModeController {
         if (recording != null){
             _recordingLabel.setText(_currentName.getBestRecording().toString());
         } else {
-            _recordingLabel.setText("");
+            _recordingLabel.setText("Custom Name");
         }
 
     }
@@ -115,7 +115,7 @@ public class PracticeModeController {
         Task<Void> task = new Task<Void>() {
             @Override
             public Void call() {
-                System.out.println(_currentName.getRecordingLength());
+//                System.out.println(_currentName.getRecordingLength());
                 _currentName.playRecording();
                 return null;
             }
@@ -186,7 +186,7 @@ public class PracticeModeController {
             _frameController.startProgressBar(recording.getRecordingLength());
 
         } else {
-            System.out.println("no name selected");
+            showAlert("Error: No recording selected", "Please select a recording to play");
         }
     }
 
@@ -199,7 +199,28 @@ public class PracticeModeController {
             _currentName.removeUserRecording(recording);
             updateScreen();
         } else {
-            System.out.println("no recording selected");
+            showAlert("Error; No recording selected", "Please select a recording to delete");
+        }
+    }
+
+    @FXML
+    private void onCompareButtonClicked(){
+        // play the database recording followed by the currently selected user recording
+        Recording recording = _userRecordings.getSelectionModel().getSelectedItem();
+        // a recording must be selected for comparison
+        if (recording != null){
+            Task<Void> task = new Task<Void>() {
+                @Override
+                protected Void call() throws Exception {
+                    _currentName.playRecording();
+                    recording.playRecording();
+                    return null;
+                }
+            };
+            new Thread(task).start();
+
+        } else {
+            showAlert("Error: No recordings selected", "Please select a recording to compare");
         }
     }
 
