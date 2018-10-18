@@ -96,9 +96,11 @@ public class PracticeModeController {
           _nextButton.setDisable(true);
           _previousButton.setDisable(true);
         } else if (_position == _playlist.getNumberOfItems()-1){
+            _previousButton.setDisable(false);
             _nextButton.setDisable(true);
         } else if (_position == 0){
             _previousButton.setDisable(true);
+            _nextButton.setDisable(false);
         } else {
             _nextButton.setDisable(false);
             _previousButton.setDisable(false);

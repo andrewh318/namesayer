@@ -29,7 +29,7 @@
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <Label text=" A-Z" textFill="#157766">
+                  <Label text=" A-Z">
                      <font>
                         <Font size="20.0" />
                      </font>
@@ -43,7 +43,7 @@
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <Label fx:id="_currentPlaylistName" alignment="TOP_LEFT" prefHeight="30.0" prefWidth="207.0" textFill="#157766">
+                  <Label fx:id="_currentPlaylistName" alignment="TOP_LEFT" prefHeight="30.0" prefWidth="207.0" styleClass="themed-text" textFill="#157766">
                      <font>
                         <Font size="20.0" />
                      </font>
@@ -58,12 +58,12 @@
                   <JFXListView fx:id="_allPlaylists" onKeyReleased="#handleAllPlaylistsSelect" onMouseClicked="#handleAllPlaylistsSelect" prefHeight="534.0" prefWidth="284.0" style="-fx-background-color: #E9E9EA;" />
                   <HBox alignment="CENTER" prefHeight="66.0" prefWidth="265.0" spacing="20.0">
                      <children>
-                        <JFXButton fx:id="_newPlaylistButon" onAction="#onNewPlaylistClicked" prefHeight="39.0" prefWidth="120.0" style="-fx-background-color: #157766;" text="New" textFill="WHITE">
+                        <JFXButton fx:id="_newPlaylistButon" onAction="#onNewPlaylistClicked" prefHeight="39.0" prefWidth="120.0" styleClass="themed-items" text="New" textFill="WHITE">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </JFXButton>
-                        <JFXButton fx:id="_deletePlaylistButton" onAction="#onDeletePlaylistButtonClicked" prefHeight="39.0" prefWidth="120.0" style="-fx-background-color: #157766;" text="Delete" textFill="WHITE">
+                        <JFXButton fx:id="_deletePlaylistButton" onAction="#onDeletePlaylistButtonClicked" prefHeight="39.0" prefWidth="120.0" styleClass="themed-items" text="Delete" textFill="WHITE">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -78,7 +78,7 @@
                   <HBox alignment="CENTER" prefHeight="93.0" prefWidth="485.0">
                      <children>
                         <TextField fx:id="_searchBar" prefHeight="39.0" prefWidth="281.0" />
-                        <JFXButton fx:id="_addButton" onAction="#onAddButtonClicked" prefHeight="37.0" prefWidth="95.0" style="-fx-background-color: #157766;" text="Add" textFill="WHITE">
+                        <JFXButton fx:id="_addButton" onAction="#onAddButtonClicked" prefHeight="37.0" prefWidth="95.0" styleClass="themed-items" text="Add" textFill="WHITE">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -95,12 +95,12 @@
                   <JFXListView fx:id="_currentPlaylistList" prefHeight="562.0" prefWidth="275.0" style="-fx-background-color: efefef;" />
                   <HBox alignment="CENTER" prefHeight="93.0" prefWidth="275.0" spacing="30.0">
                      <children>
-                        <JFXButton onAction="#onPlayCLicked" prefHeight="37.0" prefWidth="95.0" style="-fx-background-color: #157766;" text="Play" textFill="WHITE">
+                        <JFXButton onAction="#onPlayCLicked" prefHeight="37.0" prefWidth="95.0" styleClass="themed-items" text="Play" textFill="WHITE">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </JFXButton>
-                        <JFXButton fx:id="_deleteButton" onAction="#onDeleteButtonClicked" prefHeight="37.0" prefWidth="95.0" style="-fx-background-color: #157766;" text="Delete" textFill="WHITE">
+                        <JFXButton fx:id="_deleteButton" onAction="#onDeleteButtonClicked" prefHeight="37.0" prefWidth="95.0" styleClass="themed-items" text="Delete" textFill="WHITE">
                            <font>
                               <Font size="16.0" />
                            </font>

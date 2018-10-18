@@ -19,10 +19,11 @@ public class NamesModel {
     public static final String USERRECORDINGSDIRECTORY = "userNames";
     public static final String PLAYLISTS_DIRECTORY = "playlists";
     public static final String BADNAMESFILE = "BadNames.txt";
+    public static final String MONEYFILE = "UserMoney.txt";
     public static final String DEFAULT_PLAYLIST_NAME = "Default Playlist";
-    public static final String NEW_PLAYLIST_NAME = "New Playlist";
     public static final String TRIMMED_NORMALISED_DIRECTORY = "trimmedNormalised";
     public static final String COMBINED_NAMES_DIRECTORY = "combinedNames";
+    public static final String DEFAULT_MONEY = "0";
 
 
 
@@ -49,6 +50,8 @@ public class NamesModel {
         deleteFolder(new File(NamesModel.TRIMMED_NORMALISED_DIRECTORY));
 
         createErrorFile();
+        createMoneyFile();
+
         makeDirectories();
         readDirectories();
 
@@ -94,6 +97,35 @@ public class NamesModel {
         }
     }
 
+    // keeps track of the number of points user has accumulated
+    private void createMoneyFile(){
+        File file = new File(MONEYFILE);
+        try {
+            file.createNewFile();
+            // check if file is empty, skip the rest of steps
+            if (file.length() == 0){
+                return;
+//                BufferedWriter writer = new BufferedWriter(new FileWriter(file, false));
+//                writer.write(DEFAULT_MONEY);
+//                writer.close();
+            } else {
+                // else if there is a value in teh file
+                BufferedReader reader = new BufferedReader(new FileReader(file));
+                String moneyFromFile = reader.readLine();
+                // check if it is a valid integer, throws exception if not
+                int money = Integer.parseInt(moneyFromFile);
+                // set the application global money to money from file
+                MoneySingleton.getInstance().setMoney(money);
+            }
+        } catch(IOException e){
+            e.printStackTrace();
+        } catch (NumberFormatException e){
+            // if money from file is not valid set money to default
+            MoneySingleton.getInstance().setMoney(Integer.valueOf(DEFAULT_MONEY));
+        }
+
+    }
+
     private void readDirectories() {
 
         for (File file : new File(DATABASERECORDINGSDIRECTORY).listFiles()) {
@@ -114,9 +146,6 @@ public class NamesModel {
 
 
     }
-
-
-
 
 
     private Recording parseFilename(File file) {
@@ -365,7 +394,6 @@ public class NamesModel {
             }
         }
 
-
         // loop through list of playlists
         for (Playlist playlist : playlists){
             // for each playlist create a new BufferedReader
@@ -386,8 +414,21 @@ public class NamesModel {
             } catch (IOException e){
                 e.printStackTrace();
             }
-
         }
+    }
+
+    // get money from application and write to text file
+    public void saveMoney(){
+        int money = MoneySingleton.getInstance().getMoney();
+
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(MONEYFILE));
+            writer.write(String.valueOf(money));
+            writer.close();
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+
     }
 
     public void deleteFolder(File folder) {
