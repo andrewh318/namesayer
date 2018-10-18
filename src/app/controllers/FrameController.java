@@ -203,6 +203,10 @@ public class FrameController {
     public void setVolume(float volume){
     }
 
+    public double getVolume() {
+        return _volumeSlider.getValue();
+    }
+
 
 
 }

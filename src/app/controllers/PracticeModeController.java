@@ -149,7 +149,7 @@ public class PracticeModeController {
             @Override
             public Void call() {
 //                System.out.println(_currentName.getRecordingLength());
-                _currentName.playRecording();
+                _currentName.playRecording(_frameController.getVolume());
                 return null;
             }
         };
@@ -218,7 +218,7 @@ public class PracticeModeController {
             Task<Void> task = new Task<Void>(){
                 @Override
                 protected Void call() throws Exception {
-                    recording.playRecording();
+                    recording.playRecording(_frameController.getVolume());
                     return null;
                 }
             };
@@ -253,8 +253,8 @@ public class PracticeModeController {
             Task<Void> task = new Task<Void>() {
                 @Override
                 protected Void call() throws Exception {
-                    _currentName.playRecording();
-                    recording.playRecording();
+                    _currentName.playRecording(_frameController.getVolume());
+                    recording.playRecording(_frameController.getVolume());
                     return null;
                 }
             };

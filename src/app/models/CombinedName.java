@@ -1,5 +1,7 @@
 package app.models;
 
+import javafx.scene.media.MediaPlayer;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -16,9 +18,9 @@ public class CombinedName extends Name {
 
 
     @Override
-    public void playRecording() {
+    public void playRecording(double volume) {
         for (Name name : names) {
-            name.playRecording();
+            name.getBestRecording().playRecording(volume);
         }
     }
 
