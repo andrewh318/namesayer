@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="648.0" prefWidth="1024.0" style="-fx-background-color: #E9E9EA;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.ShopController">
+   <children>
+      <Label alignment="CENTER" prefHeight="86.0" prefWidth="1024.0" text="Shop">
+         <font>
+            <Font size="59.0" />
+         </font>
+         <padding>
+            <Insets top="60.0" />
+         </padding>
+      </Label>
+      <HBox alignment="CENTER" prefHeight="277.0" prefWidth="1024.0" spacing="50.0">
+         <children>
+            <VBox alignment="TOP_CENTER" prefHeight="189.0" prefWidth="341.3">
+               <children>
+                  <JFXButton fx:id="greenTheme" alignment="CENTER" onAction="#onGreenThemeClicked" prefHeight="131.0" prefWidth="162.0" ripplerFill="WHITE" style="-fx-background-color: #157766; -fx-background-radius: 20;" text=" " textFill="WHITE">
+                     <font>
+                        <Font size="5.0" />
+                     </font>
+                     <graphic>
+                        <FontAwesomeIconView fill="WHITE" glyphName="UNLOCK" size="40" />
+                     </graphic>
+                     <VBox.margin>
+                        <Insets top="30.0" />
+                     </VBox.margin>
+                  </JFXButton>
+                  <VBox alignment="CENTER" prefHeight="63.0" prefWidth="308.0">
+                     <children>
+                        <Label alignment="CENTER" prefHeight="16.0" prefWidth="159.0" text="Pine Green">
+                           <font>
+                              <Font size="19.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" prefHeight="63.0" prefWidth="308.0">
+                     <children>
+                        <JFXButton disable="true" prefHeight="43.0" prefWidth="103.0" style="-fx-background-color: #8395a7;" text="Owned" textFill="WHITE" />
+                     </children>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </VBox>
+               </children>
+            </VBox>
+            <VBox alignment="TOP_CENTER" prefHeight="189.0" prefWidth="341.3">
+               <children>
+                  <JFXButton fx:id="purpleTheme" alignment="CENTER" onAction="#onPurpleThemeClicked" prefHeight="131.0" prefWidth="162.0" style="-fx-background-color: #6c5ce7; -fx-background-radius: 20;" text=" " textFill="WHITE">
+                     <font>
+                        <Font size="5.0" />
+                     </font>
+                     <graphic>
+                        <FontAwesomeIconView fx:id="purpleIcon" fill="WHITE" glyphName="LOCK" size="40" />
+                     </graphic>
+                     <VBox.margin>
+                        <Insets top="30.0" />
+                     </VBox.margin>
+                  </JFXButton>
+                  <VBox alignment="CENTER" prefHeight="63.0" prefWidth="308.0">
+                     <children>
+                        <Label alignment="CENTER" prefHeight="16.0" prefWidth="159.0" text="Exodus Fruit">
+                           <font>
+                              <Font size="19.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" prefHeight="63.0" prefWidth="308.0">
+                     <children>
+                        <JFXButton fx:id="purpleUnlock" onAction="#onPurpleUnlockClicked" prefHeight="43.0" prefWidth="103.0" style="-fx-background-color: #8395a7;" text="Unlock" textFill="WHITE" />
+                     </children>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </VBox>
+               </children>
+            </VBox>
+            <VBox alignment="TOP_CENTER" prefHeight="189.0" prefWidth="341.3">
+               <children>
+                  <JFXButton fx:id="blueTheme" alignment="CENTER" onAction="#onBlueThemeClicked" prefHeight="131.0" prefWidth="162.0" style="-fx-background-color: #0984e3; -fx-background-radius: 20;" text=" " textFill="WHITE">
+                     <font>
+                        <Font size="5.0" />
+                     </font>
+                     <graphic>
+                        <FontAwesomeIconView fx:id="blueIcon" fill="WHITE" glyphName="LOCK" size="40" />
+                     </graphic>
+                     <VBox.margin>
+                        <Insets top="30.0" />
+                     </VBox.margin>
+                  </JFXButton>
+                  <VBox alignment="CENTER" prefHeight="63.0" prefWidth="308.0">
+                     <children>
+                        <Label alignment="CENTER" prefHeight="16.0" prefWidth="159.0" text="Electric Blue">
+                           <font>
+                              <Font size="19.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" prefHeight="63.0" prefWidth="308.0">
+                     <children>
+                        <JFXButton fx:id="blueUnlock" onAction="#onBlueUnlockClicked" prefHeight="43.0" prefWidth="103.0" style="-fx-background-color: #8395a7;" text="Unlock" textFill="WHITE" />
+                     </children>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </VBox>
+               </children>
+            </VBox>
+         </children></HBox>
+   </children>
+</VBox>

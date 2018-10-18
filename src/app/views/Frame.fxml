@@ -5,6 +5,8 @@
 <?import com.jfoenix.controls.JFXSlider?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -17,7 +19,7 @@
       <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #DFDFDF;" BorderPane.alignment="CENTER" />
    </center>
    <top>
-      <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="1024.0" style="-fx-background-color: #157766;" BorderPane.alignment="CENTER">
+      <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="1024.0" styleClass="themed-items" BorderPane.alignment="CENTER">
          <children>
             <ImageView fitHeight="55.0" fitWidth="47.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -27,24 +29,64 @@
                   <Insets left="10.0" />
                </HBox.margin>
             </ImageView>
-            <JFXButton fx:id="_listenButton" onAction="#onListenButtonClicked" prefHeight="60.0" prefWidth="128.0" text="MANAGE" textFill="WHITE">
+            <JFXButton onAction="#onListenButtonClicked" prefHeight="60.0" prefWidth="128.0" text="MANAGE" textFill="WHITE">
                <font>
                   <Font size="20.0" />
                </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
             </JFXButton>
-            <JFXButton fx:id="_practiceButton" onAction="#onPracticeButtonClicked" prefHeight="60.0" prefWidth="135.0" text="PRACTICE" textFill="WHITE">
+            <JFXButton onAction="#onPracticeButtonClicked" prefHeight="60.0" prefWidth="135.0" text="PRACTICE" textFill="WHITE">
                <font>
                   <Font size="20.0" />
                </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
             </JFXButton>
-            <JFXButton fx:id="_uploadButton" onAction="#onUploadButtonClicked" prefHeight="60.0" prefWidth="139.0" text="UPLOAD" textFill="WHITE">
+            <JFXButton onAction="#onShopButtonClicked" prefHeight="60.0" prefWidth="135.0" text="SHOP" textFill="WHITE">
+               <font>
+                  <Font size="20.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </JFXButton>
+            <JFXButton onAction="#onUploadButtonClicked" prefHeight="60.0" prefWidth="139.0" text="UPLOAD" textFill="WHITE">
                <font>
                   <Font size="20.0" />
                </font>
                <graphic>
                   <FontAwesomeIconView fill="WHITE" glyphName="PLUS" size="20" />
                </graphic>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
             </JFXButton>
+            <HBox alignment="CENTER_RIGHT" prefHeight="60.0" prefWidth="431.0" spacing="5.0" styleClass="themed-items">
+               <children>
+                  <JFXButton fx:id="_shopButton1" onAction="#onShopButtonClicked" prefHeight="60.0" prefWidth="82.0" text=":" textFill="WHITE">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                     <graphic>
+                        <FontAwesomeIconView fill="WHITE" glyphName="MONEY" size="40" text="" />
+                     </graphic>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </JFXButton>
+                  <Label fx:id="_moneyLabel" text="100" textFill="WHITE">
+                     <font>
+                        <Font size="23.0" />
+                     </font>
+                  </Label>
+               </children>
+               <padding>
+                  <Insets right="30.0" />
+               </padding>
+            </HBox>
          </children>
       </HBox>
    </top>

@@ -1,5 +1,6 @@
 package app.controllers;
 
+import app.models.MoneySingleton;
 import app.models.NamesModel;
 
 import com.jfoenix.controls.JFXButton;
@@ -21,6 +22,10 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
+enum Screen {
+    LISTEN, PRACTICE, SHOP
+}
+
 public class FrameController {
     @FXML
     private BorderPane borderPane;
@@ -31,31 +36,32 @@ public class FrameController {
     private boolean isPractice;
     private ListenController _listenController;
 
-    @FXML
-    private JFXButton _playButton;
-    @FXML
-    private JFXSlider _volumeSlider;
+    @FXML private JFXButton _playButton;
 
     // reference to the stage used throughout the application
     private Stage _stage;
 
-    @FXML
-    private JFXProgressBar _progressBar;
-    @FXML
-    private JFXButton _practiceButton;
-    @FXML
-    private JFXButton _listenButton;
-    @FXML
-    private JFXButton _uploadButton;
+    @FXML private JFXProgressBar _progressBar;
+    @FXML private JFXSlider _volumeSlider;
 
-    @FXML
-    private Label _currentNameLabel;
+    @FXML private Label _currentNameLabel;
+    @FXML private Label _moneyLabel;
+
+    private Parent shopScreen;
+
+    private Screen _currentScreen;
 
     public void initialize(){
         setUpModel();
+        initializeMoney();
         loadListen(_model);
-        isListen = true;
-        isPractice = false;
+        _currentScreen = Screen.LISTEN;
+
+    }
+
+    private void initializeMoney(){
+        int startingMoney = MoneySingleton.getInstance().getMoney();
+        _moneyLabel.setText(String.valueOf(startingMoney));
 
     }
 
@@ -69,6 +75,7 @@ public class FrameController {
         _stage = stage;
         setUpOnClose();
     }
+
 
 
 
@@ -94,16 +101,16 @@ public class FrameController {
         } else {
             _stage.close();
         }
-
+        // always save money on close
+        _model.saveMoney();
         _model.deleteFolder(new File(NamesModel.TRIMMED_NORMALISED_DIRECTORY));
     }
 
     @FXML
     private void onPracticeButtonClicked(){
-        if (isPractice == false){
+        if (!_currentScreen.equals(Screen.PRACTICE)){
             loadPractice(_model, borderPane);
-            isListen = false;
-            isPractice = true;
+            _currentScreen = Screen.PRACTICE;
         }
 
 
@@ -111,10 +118,17 @@ public class FrameController {
 
     @FXML
     private void onListenButtonClicked(){
-        if (isListen == false) {
+        if (!_currentScreen.equals(Screen.LISTEN)) {
             loadListen(_model);
-            isListen = true;
-            isPractice = false;
+            _currentScreen = Screen.LISTEN;
+        }
+    }
+
+    @FXML
+    private void onShopButtonClicked(){
+        if (!_currentScreen.equals(Screen.SHOP)){
+            loadShop();
+            _currentScreen = Screen.SHOP;
         }
     }
 
@@ -175,6 +189,24 @@ public class FrameController {
     }
 
 
+    // we only want to instantiate the shop screen once, if its already been laoded before just get the old reference
+    private void loadShop(){
+        if (shopScreen == null){
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/app/views/Shop.fxml"));
+                Parent root = (Parent) loader.load();
+                shopScreen = root;
+                borderPane.setCenter(root);
+            } catch (IOException e){
+                e.printStackTrace();
+            }
+        } else {
+            borderPane.setCenter(shopScreen);
+        }
+
+
+    }
+
     // duration is duration in seconds
     public void startProgressBar(float duration){
 
@@ -192,6 +224,8 @@ public class FrameController {
         _progressBar.progressProperty().bind(task.progressProperty());
 
         new Thread(task).start();
+
+        //task.setOnSucceeded();
     }
 
     private void showAlert(String header, String content){

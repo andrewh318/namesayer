@@ -14,7 +14,7 @@
    <children>
       <HBox alignment="CENTER_LEFT" prefHeight="69.0" prefWidth="1024.0">
          <children>
-            <JFXButton onAction="#onChangePlaylistButton" style="-fx-background-color: #36907e;" text="Change Playlist" textFill="WHITE">
+            <JFXButton onAction="#onChangePlaylistButton" styleClass="themed-items" text="Change Playlist" textFill="WHITE">
                <font>
                   <Font size="20.0" />
                </font>
@@ -49,17 +49,17 @@
       </HBox>
       <HBox alignment="CENTER" prefHeight="213.0" prefWidth="1024.0" spacing="30.0" style="-fx-background-color: #E9E9EA;">
          <children>
-            <JFXButton fx:id="_previousButton" contentDisplay="CENTER" onAction="#onPreviousButtonClicked" prefHeight="88.0" prefWidth="133.0" style="-fx-background-color: #36907e;" text=" " textFill="WHITE">
+            <JFXButton fx:id="_previousButton" contentDisplay="CENTER" onAction="#onPreviousButtonClicked" prefHeight="88.0" prefWidth="133.0" styleClass="themed-items" text=" " textFill="WHITE">
                <graphic>
                   <FontAwesomeIconView fill="WHITE" glyphName="ARROW_LEFT" size="60" />
                </graphic>
             </JFXButton>
-            <JFXButton fx:id="_recordButton" buttonType="RAISED" contentDisplay="CENTER" onAction="#onRecordPressed" prefHeight="136.0" prefWidth="257.0" ripplerFill="WHITE" style="-fx-background-color: #157766;" text=" ">
+            <JFXButton fx:id="_recordButton" buttonType="RAISED" contentDisplay="CENTER" onAction="#onRecordPressed" prefHeight="136.0" prefWidth="257.0" ripplerFill="WHITE" styleClass="themed-items" text=" ">
                <graphic>
                   <FontAwesomeIconView fill="WHITE" glyphName="MICROPHONE" size="70" />
                </graphic>
             </JFXButton>
-            <JFXButton fx:id="_nextButton" contentDisplay="CENTER" onAction="#onNextButtonClicked" prefHeight="88.0" prefWidth="133.0" style="-fx-background-color: #36907e;" text=" " textFill="WHITE">
+            <JFXButton fx:id="_nextButton" contentDisplay="CENTER" onAction="#onNextButtonClicked" prefHeight="88.0" prefWidth="133.0" styleClass="themed-items" text=" " textFill="WHITE">
                <graphic>
                   <FontAwesomeIconView fill="WHITE" glyphName="ARROW_RIGHT" size="60" />
                </graphic>
@@ -76,7 +76,7 @@
                      </font>
                   </Label>
                   <JFXComboBox fx:id="_userRecordings" layoutX="220.0" layoutY="89.0" prefHeight="34.0" prefWidth="585.0" />
-                  <JFXButton fx:id="_playUserRecordingButton" contentDisplay="CENTER" layoutX="846.0" layoutY="89.0" onAction="#setOnUserRecordingPlayButtonClicked" prefHeight="34.0" prefWidth="65.0" style="-fx-background-color: #157766;" text="Play" textFill="WHITE" />
+                  <JFXButton fx:id="_playUserRecordingButton" contentDisplay="CENTER" layoutX="846.0" layoutY="89.0" onAction="#setOnUserRecordingPlayButtonClicked" prefHeight="34.0" prefWidth="65.0" styleClass="themed-items" text="Play" textFill="WHITE" />
                   <JFXButton fx:id="_deleteUserRecordingButton" contentDisplay="CENTER" layoutX="930.0" layoutY="88.0" onAction="#onUserRecordingDeleteButtonClicked" prefHeight="34.0" prefWidth="65.0" style="-fx-background-color: #A42B1B;" text="Delete" textFill="WHITE" />
                </children>
             </AnchorPane>
@@ -84,12 +84,12 @@
       </HBox>
       <HBox alignment="CENTER" prefHeight="80.0" prefWidth="1024.0" spacing="30.0">
          <children>
-            <JFXButton fx:id="_compareButton" contentDisplay="CENTER" onAction="#onCompareButtonClicked" prefHeight="44.0" prefWidth="122.0" style="-fx-background-color: #157766;" text="Compare" textFill="WHITE">
+            <JFXButton fx:id="_compareButton" contentDisplay="CENTER" onAction="#onCompareButtonClicked" prefHeight="44.0" prefWidth="122.0" styleClass="themed-items" text="Compare" textFill="WHITE">
                <font>
                   <Font size="20.0" />
                </font>
             </JFXButton>
-            <JFXButton fx:id="_playButton" alignment="CENTER" contentDisplay="CENTER" onAction="#onPlayButtonClicked" prefHeight="44.0" prefWidth="122.0" style="-fx-background-color: #157766;" text=" " textFill="WHITE">
+            <JFXButton fx:id="_playButton" alignment="CENTER" contentDisplay="CENTER" onAction="#onPlayButtonClicked" prefHeight="44.0" prefWidth="122.0" styleClass="themed-items" text=" " textFill="WHITE">
                <font>
                   <Font size="20.0" />
                </font>
