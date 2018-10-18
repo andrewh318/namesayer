@@ -2,6 +2,10 @@
 
 package app.models;
 
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
+
 import javax.sound.sampled.*;
 import java.io.*;
 
@@ -44,13 +48,14 @@ public class Recording {
 
     //Uses AudioClip and syncLatch to play a recording and not allow overlap when this method is called twice on the
     //same thread
-    public void playRecording() {
-        String audioCommand = "ffplay -loglevel panic -autoexit -nodisp -i " + _trimmedPath;
-
-        BashCommand cmd = new BashCommand(audioCommand);
-        cmd.startProcess();
+    public void playRecording(double volume) {
+        Media media = new Media(new File(_trimmedPath).toURI().toString());
+        MediaPlayer mediaPlayer = new MediaPlayer(media);
+        mediaPlayer.setVolume(volume);
+        mediaPlayer.setAutoPlay(true);
+        new MediaView(mediaPlayer);
         try {
-            cmd.getProcess().waitFor();
+            Thread.sleep((long) getRecordingLength() * 1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

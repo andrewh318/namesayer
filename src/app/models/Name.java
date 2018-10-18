@@ -4,6 +4,7 @@ package app.models;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.media.MediaPlayer;
 
 import java.io.File;
 import java.text.DateFormat;
@@ -44,8 +45,8 @@ public class Name {
     }
 
     // playRecording plays the best recording in the list of database recordings
-    public void playRecording(){
-        getBestRecording().playRecording();
+    public void playRecording(double volume){
+        getBestRecording().playRecording(volume);
     }
 
     public void removeUserRecording(Recording recording) {

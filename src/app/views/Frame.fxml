@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.FrameController">
+<BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.FrameController">
    <center>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #DFDFDF;" BorderPane.alignment="CENTER" />
    </center>
@@ -94,7 +94,7 @@
       <HBox alignment="CENTER_RIGHT" nodeOrientation="LEFT_TO_RIGHT" prefHeight="60.0" prefWidth="200.0" spacing="30.0" style="-fx-background-color: #333333;" BorderPane.alignment="CENTER">
          <children>
             <JFXProgressBar fx:id="_progressBar" prefHeight="1.0" prefWidth="400.0" progress="1.0" style="-fx-background-color: red;" />
-            <JFXSlider fx:id="_volumeSlider" prefHeight="16.0" prefWidth="252.0">
+            <JFXSlider fx:id="_volumeSlider" max="1.0" prefHeight="16.0" prefWidth="252.0" value="0.5">
                <HBox.margin>
                   <Insets right="30.0" />
                </HBox.margin>
