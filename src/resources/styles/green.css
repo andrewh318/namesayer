@@ -5,3 +5,29 @@
 .themed-text{
     -fx-text-fill: #157766;
 }
+
+.jfx-progress-bar > .track, .jfx-progress-bar > .bar {
+    -fx-background-radius: 0;
+    -fx-background-insets: 0;
+}
+
+.jfx-progress-bar > .bar {
+    -fx-background-color: #157766;
+}
+
+.jfx-slider > .colored-track {
+    -fx-background-color: #157766;
+}
+
+.jfx-slider > .animated-thumb {
+    -fx-background-color: #157766;
+}
+
+.jfx-slider > .thumb {
+    -fx-background-color: #157766;
+}
+
+.jfx-slider .slider-value {
+    -fx-fill: #157766;
+    -fx-stroke: white;
+}

@@ -5,3 +5,24 @@
 .themed-text{
     -fx-text-fill: #6c5ce7;
 }
+
+.jfx-progress-bar > .bar {
+    -fx-background-color: #6c5ce7;
+}
+
+.jfx-slider > .colored-track {
+    -fx-background-color: #6c5ce7;
+}
+
+.jfx-slider > .animated-thumb {
+    -fx-background-color: #6c5ce7;
+}
+
+.jfx-slider > .thumb {
+    -fx-background-color: #6c5ce7;
+}
+
+.jfx-slider .slider-value {
+    -fx-fill: #6c5ce7;
+    -fx-stroke: white;
+}

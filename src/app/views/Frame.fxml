@@ -91,10 +91,15 @@
       </HBox>
    </top>
    <bottom>
-      <HBox alignment="CENTER_RIGHT" nodeOrientation="LEFT_TO_RIGHT" prefHeight="60.0" prefWidth="200.0" spacing="30.0" style="-fx-background-color: #333333;" BorderPane.alignment="CENTER">
+      <HBox alignment="CENTER_RIGHT" nodeOrientation="LEFT_TO_RIGHT" prefHeight="60.0" prefWidth="1024.0" style="-fx-background-color: #333333;" BorderPane.alignment="CENTER">
          <children>
-            <JFXProgressBar fx:id="_progressBar" prefHeight="1.0" prefWidth="400.0" progress="1.0" style="-fx-background-color: red;" />
-            <JFXSlider fx:id="_volumeSlider" prefHeight="16.0" prefWidth="252.0">
+            <JFXProgressBar fx:id="_progressBar" prefHeight="1.0" prefWidth="400.0" progress="1.0" style="-fx-background-color: red;" styleClass="themed-bar" />
+            <FontAwesomeIconView fill="WHITE" glyphName="VOLUME_UP" size="20">
+               <HBox.margin>
+                  <Insets left="25.0" right="5.0" />
+               </HBox.margin>
+            </FontAwesomeIconView>
+            <JFXSlider fx:id="_volumeSlider" indicatorPosition="RIGHT" prefHeight="3.0" prefWidth="252.0">
                <HBox.margin>
                   <Insets right="30.0" />
                </HBox.margin>
