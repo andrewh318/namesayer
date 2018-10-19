@@ -44,7 +44,7 @@
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <Label fx:id="_currentPlaylistName" alignment="TOP_LEFT" prefHeight="30.0" prefWidth="207.0" styleClass="themed-text" textFill="#157766">
+                  <Label fx:id="_currentPlaylistName" prefHeight="30.0" prefWidth="207.0" styleClass="themed-text" textFill="#157766">
                      <font>
                         <Font size="20.0" />
                      </font>

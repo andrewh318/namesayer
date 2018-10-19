@@ -325,12 +325,6 @@ public class ListenController {
         }
     }
 
-    private void showAlert(String header, String content){
-        Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-        errorAlert.setHeaderText(header);
-        errorAlert.setContentText(content);
-        errorAlert.showAndWait();
-    }
 
     // show delete confirmation box, returns whether or not user clicks confirm
     private boolean isDeleteConfirmed(){
@@ -437,6 +431,14 @@ public class ListenController {
             });
             _allNamesList.setItems(_filteredNamesList);
         });
+    }
+
+
+    private void showAlert(String header, String content){
+        Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+        errorAlert.setHeaderText(header);
+        errorAlert.setContentText(content);
+        errorAlert.showAndWait();
     }
 }
 

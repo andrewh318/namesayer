@@ -18,13 +18,13 @@ public class ShopModel {
     public int getMoney(){
         return currentMoney.get();
     }
-
-    public SimpleIntegerProperty getMoneyBinding(){
-        return currentMoney;
-    }
-
     public void setMoney(int money){
         currentMoney.set(money);
+    }
+
+    // returns the IntegerProperty version of the current money so it can be used to bind label
+    public SimpleIntegerProperty getMoneyBinding(){
+        return currentMoney;
     }
 
 
@@ -41,6 +41,13 @@ public class ShopModel {
 
     public void setBlueUnlocked(boolean status){
         isBlueUnlocked = status;
+    }
+
+    // in the case that there is no previous application state, this is the default status
+    private void setUpDefaultState(){
+        currentMoney.set(NamesModel.DEFAULT_MONEY);
+        isPurpleUnlocked = false;
+        isBlueUnlocked = false;
     }
 
     // reads in a serializable object and builds the application state
@@ -75,13 +82,8 @@ public class ShopModel {
         }
     }
 
-    private void setUpDefaultState(){
-        currentMoney.set(NamesModel.DEFAULT_MONEY);
-        isPurpleUnlocked = false;
-        isBlueUnlocked = false;
-    }
 
-
+    // saves the application state to a serialized object so it can be read back in
     public void saveStateToFile(){
         try {
             // create a proxy object that implements serializable to hold application staet
@@ -89,7 +91,9 @@ public class ShopModel {
 
             FileOutputStream fileOut = new FileOutputStream(NamesModel.APPLICATION_STATE);
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
+
             out.writeObject(shopSave);
+
             out.close();
             fileOut.close();
         } catch (IOException e){

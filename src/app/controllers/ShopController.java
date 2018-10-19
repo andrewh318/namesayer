@@ -6,10 +6,13 @@ import app.models.ShopModel;
 import com.jfoenix.controls.JFXButton;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 
 public class ShopController {
     public static final String UNLOCK = "UNLOCK";
-    public static final String LOCK = "LOCK";
+    public static final String ITEM_OWNED = "Owned";
+    public static final int THEME_PRICE = 500;
+
 
     @FXML private JFXButton purpleTheme;
     @FXML private JFXButton greenTheme;
@@ -47,42 +50,54 @@ public class ShopController {
     }
 
 
-    // green button should be enabled while other two as disabled
+    // reads in state from shop and sets up buttons correctly
     private void initialButtonSetup(){
-        if (!_shopModel.getPurpleUnlocked()){
-            purpleTheme.setDisable(true);
+        if (_shopModel.getPurpleUnlocked()){
+            unlockPurple();
         }
-        if (!_shopModel.getBlueUnlocked()){
-            blueTheme.setDisable(true);
+        if (_shopModel.getBlueUnlocked()){
+            unlockBlue();
         }
 
     }
 
     @FXML
     private void onPurpleUnlockClicked(){
-        if (checkMoneyAvailable(500)){
-            purpleUnlock.setText("Owned");
-            purpleUnlock.setDisable(true);
-            purpleTheme.setDisable(false);
-            purpleIcon.setGlyphName(UNLOCK);
-
+        if (checkMoneyAvailable(THEME_PRICE)){
+            unlockPurple();
             // set the global application state for shop
             _shopModel.setPurpleUnlock(true);
+        } else {
+            showAlert("Sorry: Not enough money", "This item costs: " + THEME_PRICE + " V Bucks \nYou" +
+                    " only have: " + _shopModel.getMoney() + " V Bucks");
         }
 
     }
 
     @FXML
     private void onBlueUnlockClicked(){
-        if (checkMoneyAvailable(500)){
-            blueUnlock.setText("Owned");
-            blueUnlock.setDisable(true);
-            blueTheme.setDisable(false);
-            blueIcon.setGlyphName(UNLOCK);
-
+        if (checkMoneyAvailable(THEME_PRICE)){
+            unlockBlue();
             // set the global application state for shop
             _shopModel.setBlueUnlocked(true);
+        } else {
+            showAlert("Sorry: Not enough money", "This item costs: " + THEME_PRICE + " V Bucks \nYou" +
+                    " only have: " + _shopModel.getMoney() + " V Bucks");
         }
+    }
+
+    private void unlockPurple(){
+        purpleUnlock.setDisable(true);
+        purpleUnlock.setText(ITEM_OWNED);
+        purpleTheme.setDisable(false);
+        purpleIcon.setGlyphName(UNLOCK);
+    }
+
+    private void unlockBlue(){
+        blueUnlock.setDisable(true);
+        blueUnlock.setText(ITEM_OWNED);
+        blueTheme.setDisable(false);
+        blueIcon.setGlyphName(UNLOCK);
     }
 
     private boolean checkMoneyAvailable(int price){
@@ -94,5 +109,13 @@ public class ShopController {
         } else {
             return false;
         }
+    }
+
+
+    private void showAlert(String header, String content){
+        Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+        errorAlert.setHeaderText(header);
+        errorAlert.setContentText(content);
+        errorAlert.showAndWait();
     }
 }
