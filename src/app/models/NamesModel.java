@@ -5,6 +5,7 @@ package app.models;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import javax.rmi.ssl.SslRMIClientSocketFactory;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -149,21 +150,26 @@ public class NamesModel {
 
 
     private Recording parseFilename(File file) {
+        String fileName = "";
+        try {
+            fileName = file.getName();
+            String directory = file.getParent();
 
-        String fileName = file.getName();
-        String directory = file.getParent();
+            //Extracts information from the filename and directory
+            String path = directory + "/" + fileName;
+            String trimmedPath = TRIMMED_NORMALISED_DIRECTORY + "/" + path;
+            fileName = fileName.substring(0, fileName.lastIndexOf('.'));
+            String[] parts = fileName.split("_");
+            String date = parts[1];
+            String time = parts[2];
+            String stringName = parts[3].substring(0, 1).toUpperCase() + parts[3].substring(1);
 
-        //Extracts information from the filename and directory
-        String path = directory + "/" + fileName;
-        String trimmedPath = TRIMMED_NORMALISED_DIRECTORY + "/" + path;
-        fileName = fileName.substring(0, fileName.lastIndexOf('.'));
-        String[] parts = fileName.split("_");
-        String date = parts[1];
-        String time = parts[2];
-        String stringName = parts[3].substring(0, 1).toUpperCase() + parts[3].substring(1);
-
-        //Creates a new recording object with the extracted information
-        return new Recording(stringName, date, path, trimmedPath, time);
+            //Creates a new recording object with the extracted information
+            return new Recording(stringName, date, path, trimmedPath, time);
+        } catch (Exception e) {
+            System.out.println("Could not read file " + fileName);
+            return null;
+        }
     }
 
 
@@ -172,7 +178,9 @@ public class NamesModel {
 
         //Parse the file name and create a new recording object
         Recording recording = parseFilename(file);
-
+        if (recording == null) {
+            return;
+        }
         normaliseAndTrimAudioFile(recording);
 
 
@@ -234,6 +242,10 @@ public class NamesModel {
 
         Recording recording = parseFilename(file);
 
+        if (recording == null) {
+            return;
+        }
+
         normaliseAndTrimAudioFile(recording);
 
         int numBadRecordings = countBadRecordings(recording);
@@ -253,6 +265,10 @@ public class NamesModel {
 
     public void readUserRecording(File file) {
         Recording recording = parseFilename(file);
+
+        if (recording == null) {
+            return;
+        }
 
         normaliseAndTrimAudioFile(recording);
 
@@ -458,8 +474,58 @@ public class NamesModel {
 
     public void normaliseAndTrimAudioFile(Recording recording) {
 
-        String audioCommand = "ffmpeg -i ./" + recording.getPath() + " -af silenceremove=1:0:-40dB" + " ./" + recording.getTrimmedPath();
-        BashCommand create = new BashCommand(audioCommand);
-        create.startProcess();
+        String getVolumeCommand = "ffmpeg -i ./" + recording.getPath() + " -af 'volumedetect' -vn -sn -dn -f null /dev/null |& grep 'max_volume:'";
+        BashCommand getVol = new BashCommand(getVolumeCommand);
+        getVol.startProcess();
+
+        try {
+            getVol.getProcess().waitFor();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        InputStream stdin = getVol.getProcess().getInputStream();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(stdin));
+
+        String maxVolume = null;
+        try {
+            String line = reader.readLine();
+            reader.close();
+            maxVolume = line.substring(line.lastIndexOf(":") + 2, line.lastIndexOf("d") - 1);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        double maxVolumeInt = Double.parseDouble(maxVolume);
+
+        double volumeChange = 0 - maxVolumeInt;
+
+        String tempPath = TRIMMED_NORMALISED_DIRECTORY + "/output.wav";
+
+        if (volumeChange != 0) {
+            String normaliseCommand = "ffmpeg -i ./" + recording.getPath() + " -af 'volume=" + volumeChange + "dB' " + "./" + tempPath;
+            BashCommand normalise = new BashCommand(normaliseCommand);
+            normalise.startProcess();
+            try {
+                normalise.getProcess().waitFor();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+        String trimCommand = "ffmpeg -i ./" + tempPath + " -af silenceremove=1:0:-30dB" + " ./" + recording.getTrimmedPath();
+        BashCommand trim = new BashCommand(trimCommand);
+        trim.startProcess();
+
+        try {
+            trim.getProcess().waitFor();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        String deleteTempCommand = "rm " + tempPath;
+        BashCommand delete = new BashCommand(deleteTempCommand);
+        delete.startProcess();
     }
 }

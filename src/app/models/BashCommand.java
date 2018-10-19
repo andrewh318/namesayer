@@ -10,7 +10,8 @@ public class BashCommand {
 
     //Creates and starts a new process with the command specified on construction of BashProcess
     public void startProcess(){
-        ProcessBuilder pb = new ProcessBuilder("/bin/sh", "-c", _cmd);
+        ProcessBuilder pb = new ProcessBuilder("/bin/bash", "-c", _cmd);
+        pb.redirectErrorStream(true);
         try{
             _process = pb.start();
         } catch (Exception e){
