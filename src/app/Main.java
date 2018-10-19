@@ -7,35 +7,51 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+
+
 public class Main extends Application {
-    public static Parent rootScene;
+    public enum Theme {
+        GREEN, PURPLE, BLUE
+    }
+
+    public static Theme currentTheme = null;
+    // this field allows the shop class to change the CSS for the overall application
+    public static Parent programRoot = null;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
         FXMLLoader loader = new FXMLLoader(getClass().getResource("views/Frame.fxml"));
         Parent root = (Parent) loader.load();
-        rootScene = root;
+
+        programRoot = root;
+
         FrameController controller = (FrameController) loader.getController();
         primaryStage.setTitle("Name Sayer");
         primaryStage.setScene(new Scene(root));
         controller.setStage(primaryStage);
-        setGreen();
+        setTheme(Theme.GREEN, programRoot);
         primaryStage.show();
     }
 
-    public static void setPurple(){
-        rootScene.getStylesheets().clear();
-        rootScene.getStylesheets().add("/resources/styles/purple.css");
-    }
-
-    public static void setGreen(){
-        rootScene.getStylesheets().clear();
-        rootScene.getStylesheets().add("/resources/styles/green.css");
-    }
-
-    public static void setBlue(){
-        rootScene.getStylesheets().clear();
-        rootScene.getStylesheets().add("/resources/styles/blue.css");
+    // takes a node in the application and changes the css file for it
+    public static void setTheme(Theme theme, Parent root){
+        switch (theme){
+            case GREEN:
+                root.getStylesheets().clear();
+                root.getStylesheets().add("/resources/styles/green.css");
+                currentTheme = Theme.GREEN;
+                break;
+            case PURPLE:
+                root.getStylesheets().clear();
+                root.getStylesheets().add("/resources/styles/purple.css");
+                currentTheme = Theme.PURPLE;
+                break;
+            case BLUE:
+                root.getStylesheets().clear();
+                root.getStylesheets().add("/resources/styles/blue.css");
+                currentTheme = Theme.BLUE;
+                break;
+        }
     }
 
 

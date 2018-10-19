@@ -88,6 +88,21 @@
    <bottom>
       <HBox alignment="CENTER_RIGHT" nodeOrientation="LEFT_TO_RIGHT" prefHeight="60.0" prefWidth="1024.0" style="-fx-background-color: #333333;" BorderPane.alignment="CENTER">
          <children>
+            <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="295.0">
+               <children>
+                  <JFXButton onAction="#onTestMicButtonClicked" prefHeight="60.0" prefWidth="135.0" text=" TEST MIC" textFill="WHITE">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                     <graphic>
+                        <FontAwesomeIconView fill="WHITE" glyphName="MICROPHONE" size="20" />
+                     </graphic>
+                  </JFXButton>
+               </children>
+            </HBox>
             <JFXProgressBar fx:id="_progressBar" prefHeight="1.0" prefWidth="400.0" progress="1.0" style="-fx-background-color: red;" styleClass="themed-bar" />
             <FontAwesomeIconView fill="WHITE" glyphName="VOLUME_UP" size="20">
                <HBox.margin>

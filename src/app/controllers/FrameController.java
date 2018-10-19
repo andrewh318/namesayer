@@ -1,5 +1,6 @@
 package app.controllers;
 
+import app.Main;
 import app.models.NamesModel;
 
 import app.models.ShopModel;
@@ -10,11 +11,13 @@ import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -131,6 +134,11 @@ public class FrameController {
     }
 
     @FXML
+    private void onTestMicButtonClicked(){
+        loadTestMic();
+    }
+
+    @FXML
     private void onUploadButtonClicked(){
         FileChooser fc = new FileChooser();
         fc.setTitle("Open Playlist File");
@@ -203,8 +211,26 @@ public class FrameController {
         } else {
             borderPane.setCenter(shopScreen);
         }
+    }
 
+    private void loadTestMic(){
+        // load new playlist FXML
+        Stage stage = new Stage();
+        Parent root;
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/app/views/TestMic.fxml"));
+            root = (Parent) loader.load();
 
+            // need to set CSS for this node as its a new stage
+            Main.setTheme(Main.currentTheme, root);
+
+            stage.setTitle("Test Mic");
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     // duration is duration in seconds

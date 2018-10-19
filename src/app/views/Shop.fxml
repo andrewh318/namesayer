@@ -3,6 +3,7 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -40,6 +41,7 @@
                               <Font size="19.0" />
                            </font>
                         </Label>
+                        <Label alignment="CENTER" nodeOrientation="RIGHT_TO_LEFT" text="500" />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="63.0" prefWidth="308.0">
@@ -72,11 +74,15 @@
                               <Font size="19.0" />
                            </font>
                         </Label>
+                        <Label alignment="CENTER" nodeOrientation="RIGHT_TO_LEFT" text="500" />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="63.0" prefWidth="308.0">
                      <children>
-                        <JFXButton fx:id="purpleUnlock" onAction="#onPurpleUnlockClicked" prefHeight="43.0" prefWidth="103.0" style="-fx-background-color: #8395a7;" text="Unlock" textFill="WHITE" />
+                        <JFXButton fx:id="purpleUnlock" onAction="#onPurpleUnlockClicked" prefHeight="43.0" prefWidth="103.0" style="-fx-background-color: #8395a7;" text="Unlock" textFill="WHITE">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor></JFXButton>
                      </children>
                      <opaqueInsets>
                         <Insets />
@@ -104,6 +110,7 @@
                               <Font size="19.0" />
                            </font>
                         </Label>
+                        <Label alignment="CENTER" nodeOrientation="RIGHT_TO_LEFT" text="500" />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="63.0" prefWidth="308.0">

@@ -1,5 +1,6 @@
 package app.controllers;
 
+import app.Main;
 import app.models.Name;
 import app.models.NamesModel;
 import app.models.Playlist;
@@ -235,6 +236,10 @@ public class ListenController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/app/views/NewPlaylist.fxml"));
             root = (Parent) loader.load();
+
+            // need to set CSS for this node as its a new stage
+            Main.setTheme(Main.currentTheme, root);
+
             NewPlaylistController controller = loader.getController();
             controller.setController(this);
             stage.setTitle("New Playlist");

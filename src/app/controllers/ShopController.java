@@ -23,17 +23,17 @@ public class ShopController {
 
     @FXML
     public void onBlueThemeClicked(){
-        Main.setBlue();
+        Main.setTheme(Main.Theme.BLUE, Main.programRoot);
     }
 
     @FXML
     public void onGreenThemeClicked(){
-        Main.setGreen();
+        Main.setTheme(Main.Theme.GREEN, Main.programRoot);
     }
 
     @FXML
     public void onPurpleThemeClicked(){
-        Main.setPurple();
+        Main.setTheme(Main.Theme.PURPLE, Main.programRoot);
     }
 
     private NamesModel _model;
