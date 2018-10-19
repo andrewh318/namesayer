@@ -159,8 +159,6 @@ public class NamesModel {
         if (recording == null) {
             return;
         }
-        normaliseAndTrimAudioFile(recording);
-
 
         //Find the name in _combinedNames that has the same name
         CombinedName combinedName = (CombinedName) searchListOfName(_combinedNames, recording.getName());
@@ -224,8 +222,6 @@ public class NamesModel {
             return;
         }
 
-        normaliseAndTrimAudioFile(recording);
-
         int numBadRecordings = countBadRecordings(recording);
 
         recording.setBadRecordings(numBadRecordings);
@@ -247,8 +243,6 @@ public class NamesModel {
         if (recording == null) {
             return;
         }
-
-        normaliseAndTrimAudioFile(recording);
 
         Name name = searchListOfName(_databaseNames, recording.getName());
 
@@ -293,7 +287,6 @@ public class NamesModel {
 
         return invalidNames;
     }
-
 
 
     //Method that reads in a string in the playlist or search bar format, and returns either an existing combined name,
@@ -462,60 +455,5 @@ public class NamesModel {
         return null;
     }
 
-    public void normaliseAndTrimAudioFile(Recording recording) {
 
-        String getVolumeCommand = "ffmpeg -i ./" + recording.getPath() + " -af 'volumedetect' -vn -sn -dn -f null /dev/null |& grep 'max_volume:'";
-        BashCommand getVol = new BashCommand(getVolumeCommand);
-        getVol.startProcess();
-
-        try {
-            getVol.getProcess().waitFor();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        InputStream stdin = getVol.getProcess().getInputStream();
-        BufferedReader reader = new BufferedReader(new InputStreamReader(stdin));
-
-        String maxVolume = null;
-        try {
-            String line = reader.readLine();
-            reader.close();
-            maxVolume = line.substring(line.lastIndexOf(":") + 2, line.lastIndexOf("d") - 1);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        double maxVolumeInt = Double.parseDouble(maxVolume);
-
-        double volumeChange = 0 - maxVolumeInt;
-
-        String tempPath = TRIMMED_NORMALISED_DIRECTORY + "/output.wav";
-
-        if (volumeChange != 0) {
-            String normaliseCommand = "ffmpeg -i ./" + recording.getPath() + " -af 'volume=" + volumeChange + "dB' " + "./" + tempPath;
-            BashCommand normalise = new BashCommand(normaliseCommand);
-            normalise.startProcess();
-            try {
-                normalise.getProcess().waitFor();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-
-
-        String trimCommand = "ffmpeg -i ./" + tempPath + " -af silenceremove=1:0:-30dB" + " ./" + recording.getTrimmedPath();
-        BashCommand trim = new BashCommand(trimCommand);
-        trim.startProcess();
-
-        try {
-            trim.getProcess().waitFor();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        String deleteTempCommand = "rm " + tempPath;
-        BashCommand delete = new BashCommand(deleteTempCommand);
-        delete.startProcess();
-    }
 }

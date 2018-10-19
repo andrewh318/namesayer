@@ -55,7 +55,7 @@ public class Recording {
         mediaPlayer.setAutoPlay(true);
         new MediaView(mediaPlayer);
         try {
-            Thread.sleep((long) getRecordingLength() * 1000);
+            Thread.sleep((long) media.getDuration().toMillis());
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -104,5 +104,68 @@ public class Recording {
             e.printStackTrace();
         }
         return 0;
+    }
+
+    public void normaliseAndTrimAudioFile() {
+
+        String getVolumeCommand = "ffmpeg -i ./" + _path + " -af 'volumedetect' -vn -sn -dn -f null /dev/null |& grep 'max_volume:'";
+        BashCommand getVol = new BashCommand(getVolumeCommand);
+        getVol.startProcess();
+
+        try {
+            getVol.getProcess().waitFor();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        InputStream stdin = getVol.getProcess().getInputStream();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(stdin));
+
+        String maxVolume = null;
+        try {
+            String line = reader.readLine();
+            reader.close();
+            maxVolume = line.substring(line.lastIndexOf(":") + 2, line.lastIndexOf("d") - 1);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        double maxVolumeInt = Double.parseDouble(maxVolume);
+
+        double volumeChange = 0 - maxVolumeInt;
+
+        String tempPath = NamesModel.TRIMMED_NORMALISED_DIRECTORY + "/output.wav";
+
+        if (volumeChange != 0) {
+            String normaliseCommand = "ffmpeg -i ./" + _path + " -af 'volume=" + volumeChange + "dB' " + "./" + tempPath;
+            BashCommand normalise = new BashCommand(normaliseCommand);
+            normalise.startProcess();
+            try {
+                normalise.getProcess().waitFor();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+        String trimCommand = "ffmpeg -y -i ./" + tempPath + " -af silenceremove=1:0:-30dB" + " ./" + _trimmedPath;
+        BashCommand trim = new BashCommand(trimCommand);
+        trim.startProcess();
+
+        try {
+            trim.getProcess().waitFor();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        String deleteTempCommand = "rm " + tempPath;
+        BashCommand delete = new BashCommand(deleteTempCommand);
+        delete.startProcess();
+
+        try {
+            delete.getProcess().waitFor();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }

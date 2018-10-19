@@ -82,5 +82,4 @@ public class CombinedName extends Name {
         return getName().replaceAll("%", " ");
     }
 
-
 }

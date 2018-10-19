@@ -285,6 +285,7 @@ public class ListenController {
         Name name = _currentPlaylistList.getSelectionModel().getSelectedItem();
         // check if name is null
         if (name != null){
+
             _frameController.startProgressBar(name.getRecordingLength());
             Task<Void> task = new Task<Void>() {
                 @Override

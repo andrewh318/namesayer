@@ -49,7 +49,6 @@ public class FrameController {
         initializeMoney();
         loadListen(_model);
         _currentScreen = Screen.LISTEN;
-
     }
 
     private void initializeMoney(){

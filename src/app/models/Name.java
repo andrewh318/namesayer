@@ -125,6 +125,4 @@ public class Name {
     public float getRecordingLength(){
         return getBestRecording().getRecordingLength();
     }
-
-
 }
