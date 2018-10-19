@@ -41,9 +41,6 @@ public class NamesModel {
         return _allPlaylists;
     }
 
-    // stores information about the money in the application as well as what themes user has unlocked
-    private ShopState _shopState;
-
 
     // renamed this from 'readDirectory' to setUp() toto prevent confusion
     public void setUp(){
@@ -55,7 +52,6 @@ public class NamesModel {
         deleteFolder(new File(NamesModel.TRIMMED_NORMALISED_DIRECTORY));
 
         createErrorFile();
-        _shopState = new ShopState();
 
         makeDirectories();
         readDirectories();
@@ -393,31 +389,6 @@ public class NamesModel {
                 e.printStackTrace();
             }
         }
-    }
-
-    // get money from application and write to text file
-    public void saveMoney(){
-        _shopState.saveMoneyToFile();
-    }
-
-    public int getMoney(){
-        return _shopState.getMoney();
-    }
-
-    public SimpleIntegerProperty getMoneyBinding(){
-        return _shopState.getMoneyBinding();
-    }
-
-    public void setMoney(int money){
-        _shopState.setMoney(money);
-    }
-
-    public boolean getPurpleUnlocked(){
-        return _shopState.getPurpleUnlocked();
-    }
-
-    public boolean getBlueUnlocked(){
-        return _shopState.getBlueUnlocked();
     }
 
     public void deleteFolder(File folder) {

@@ -25,33 +25,26 @@ import java.io.IOException;
 import java.util.Optional;
 
 public class ListenController {
-    @FXML
-    private JFXListView<Name> _allNamesList;
-    @FXML
-    private JFXListView<Name> _currentPlaylistList;
-    @FXML
-    private JFXListView<Playlist> _allPlaylists;
-    @FXML
-    private Label _currentPlaylistName;
+    @FXML private JFXListView<Name> _allNamesList;
+    @FXML private JFXListView<Name> _currentPlaylistList;
+    @FXML private JFXListView<Playlist> _allPlaylists;
+
+    @FXML private Label _currentPlaylistName;
 
     private FilteredList<Name> _filteredNamesList;
-    @FXML
-    private JFXButton _addButton;
-    private NamesModel _model;
-
-    @FXML
-    private JFXButton _newPlaylistButon;
-    @FXML
-    private JFXButton _deleteButton;
+    @FXML private JFXButton _addButton;
+    @FXML private JFXButton _newPlaylistButon;
+    @FXML private JFXButton _deleteButton;
 
     private static final int MAX_NAME_LENGTH = 50;
 
-    @FXML
-    private TextField _searchBar;
+    @FXML private TextField _searchBar;
 
     private Playlist _currentPlaylist;
 
     private FrameController _frameController;
+
+    private NamesModel _model;
 
     // injects the model into listen controller from frame
     // passes a reference of 'this' controller into the controller

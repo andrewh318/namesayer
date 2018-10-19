@@ -2,6 +2,7 @@ package app.controllers;
 
 import app.Main;
 import app.models.NamesModel;
+import app.models.ShopModel;
 import com.jfoenix.controls.JFXButton;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.fxml.FXML;
@@ -36,20 +37,22 @@ public class ShopController {
     }
 
     private NamesModel _model;
+    private ShopModel _shopModel;
 
 
-    public void setUp(NamesModel model){
+    public void setUp(NamesModel model, ShopModel shopModel){
         _model = model;
+        _shopModel = shopModel;
         initialButtonSetup();
     }
 
 
     // green button should be enabled while other two as disabled
     private void initialButtonSetup(){
-        if (!_model.getPurpleUnlocked()){
+        if (!_shopModel.getPurpleUnlocked()){
             purpleTheme.setDisable(true);
         }
-        if (!_model.getBlueUnlocked()){
+        if (!_shopModel.getBlueUnlocked()){
             blueTheme.setDisable(true);
         }
 
@@ -79,10 +82,10 @@ public class ShopController {
     }
 
     private boolean checkMoneyAvailable(int price){
-        if (_model.getMoney() >= price){
-            int currentMoney = _model.getMoney();
+        if (_shopModel.getMoney() >= price){
+            int currentMoney = _shopModel.getMoney();
             int newMoney = currentMoney - price;
-            _model.setMoney(newMoney);
+            _shopModel.setMoney(newMoney);
             return true;
         } else {
             return false;

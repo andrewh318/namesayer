@@ -2,6 +2,7 @@ package app.controllers;
 
 import app.models.NamesModel;
 
+import app.models.ShopModel;
 import com.jfoenix.controls.JFXProgressBar;
 import com.jfoenix.controls.JFXSlider;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -29,6 +30,7 @@ public class FrameController {
     @FXML private BorderPane borderPane;
 
     private NamesModel _model;
+    private ShopModel _shopModel;
     private ListenController _listenController;
 
     // reference to the stage used throughout the application
@@ -45,7 +47,8 @@ public class FrameController {
     private Screen _currentScreen;
 
     public void initialize(){
-        setUpModel();
+        setUpNamesModel();
+        setUpMoneyModel();
         initializeMoney();
         loadListen(_model);
         _currentScreen = Screen.LISTEN;
@@ -53,15 +56,19 @@ public class FrameController {
     }
 
     private void initializeMoney(){
-        SimpleIntegerProperty startingMoney = _model.getMoneyBinding();
+        SimpleIntegerProperty startingMoney = _shopModel.getMoneyBinding();
         _moneyLabel.textProperty().bind(startingMoney.asString());
 
     }
 
 
-    private void setUpModel(){
+    private void setUpNamesModel(){
         _model = new NamesModel();
         _model.setUp();
+    }
+
+    private void setUpMoneyModel(){
+        _shopModel = new ShopModel();
     }
 
     public void setStage(Stage stage){
@@ -93,7 +100,7 @@ public class FrameController {
             _stage.close();
         }
         // always save money on close
-        _model.saveMoney();
+        _shopModel.saveMoneyToFile();
         _model.deleteFolder(new File(NamesModel.TRIMMED_NORMALISED_DIRECTORY));
     }
 
@@ -142,7 +149,7 @@ public class FrameController {
                     invalidNamesString = invalidNamesString + invalidName + "\n";
                 }
 
-                showAlert("Error: the following names from playlist: " + fileName + "could not be found in the database", invalidNamesString);
+                showAlert("Error: the following names from playlist: " + fileName + " could not be found in the database", invalidNamesString);
             }
         }
     }
@@ -169,7 +176,7 @@ public class FrameController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/app/views/PracticeSetup.fxml"));
             Parent root = (Parent) loader.load();
             PracticeSetupController controller = (PracticeSetupController) loader.getController();
-            controller.setModel(model);
+            controller.setModels(model, _shopModel);
             controller.setPane(borderPane);
             controller.setUpComboBox();
             controller.setFrameController(this);
@@ -187,7 +194,7 @@ public class FrameController {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/app/views/Shop.fxml"));
                 Parent root = (Parent) loader.load();
                 ShopController controller = loader.getController();
-                controller.setUp(_model);
+                controller.setUp(_model, _shopModel);
                 shopScreen = root;
                 borderPane.setCenter(root);
             } catch (IOException e){

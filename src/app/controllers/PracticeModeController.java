@@ -31,7 +31,7 @@ public class PracticeModeController {
     @FXML private JFXButton _flagButton;
 
     private NamesModel _model;
-
+    private ShopModel _shopModel;
     @FXML
     private JFXComboBox<Recording> _userRecordings;
 
@@ -41,8 +41,9 @@ public class PracticeModeController {
         _frameController = controller;
     }
 
-    public void setModel(NamesModel model){
+    public void setModels(NamesModel model, ShopModel shopModel){
         _model = model;
+        _shopModel = shopModel;
     }
 
     public void setPane(BorderPane pane){
@@ -144,7 +145,7 @@ public class PracticeModeController {
             Parent root = (Parent) loader.load();
 
             PracticeSetupController controller = loader.getController();
-            controller.setModel(_model);
+            controller.setModels(_model, _shopModel);
             controller.setFrameController(_frameController);
             controller.setUpComboBox();
             controller.setPane(_pane);
@@ -166,7 +167,7 @@ public class PracticeModeController {
             // this is done on the application thread
             setButtonsDisable(false);
             // after recording completes update the user money
-            _model.setMoney(_model.getMoney() + 100);
+            _shopModel.setMoney(_shopModel.getMoney() + 100);
             updateScreen();
         });
         startRecordProgress();

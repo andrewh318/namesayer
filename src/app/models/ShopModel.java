@@ -4,12 +4,12 @@ import javafx.beans.property.SimpleIntegerProperty;
 
 import java.io.*;
 
-public class ShopState {
+public class ShopModel {
     private SimpleIntegerProperty currentMoney;
     private boolean isPurpleUnlocked = false;
     private boolean isBlueUnlocked = false;
 
-    public ShopState(){
+    public ShopModel(){
         currentMoney = new SimpleIntegerProperty();
         createMoneyFile();
     }

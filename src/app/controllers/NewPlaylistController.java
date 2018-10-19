@@ -12,10 +12,8 @@ import javafx.stage.Stage;
 public class NewPlaylistController {
     private ListenController _controller;
 
-    @FXML
-    private JFXButton _submitButton;
-    @FXML
-    private JFXTextField _textField;
+    @FXML private JFXButton _submitButton;
+    @FXML private JFXTextField _textField;
     // need to inject listen controller into this class
 
     public void initialize(){
