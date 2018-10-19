@@ -77,7 +77,7 @@
                         <Insets />
                      </HBox.margin>
                   </JFXButton>
-                  <Label fx:id="_moneyLabel" text="100" textFill="WHITE">
+                  <Label fx:id="_moneyLabel" alignment="CENTER" minHeight="29.0" minWidth="68.0" prefHeight="29.0" prefWidth="68.0" text="100" textFill="WHITE">
                      <font>
                         <Font size="23.0" />
                      </font>

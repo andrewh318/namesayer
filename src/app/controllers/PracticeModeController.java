@@ -37,12 +37,6 @@ public class PracticeModeController {
 
     private FrameController _frameController;
 
-    public void setPlaylist(Playlist playlist){
-        _practiceMode = new PracticeMode(playlist);
-        _playlistName.setText("Playlist: " + playlist.getName());
-        updateScreen();
-    }
-
     public void setFrameController(FrameController controller){
         _frameController = controller;
     }
@@ -54,6 +48,14 @@ public class PracticeModeController {
     public void setPane(BorderPane pane){
         _pane = pane;
     }
+
+
+    public void setPlaylist(Playlist playlist){
+        _practiceMode = new PracticeMode(playlist);
+        _playlistName.setText("Playlist: " + playlist.getName());
+        updateScreen();
+    }
+
 
     @FXML
     private void onNextButtonClicked(){
@@ -163,6 +165,8 @@ public class PracticeModeController {
             // update the view again to refresh combo box
             // this is done on the application thread
             setButtonsDisable(false);
+            // after recording completes update the user money
+            _model.setMoney(_model.getMoney() + 100);
             updateScreen();
         });
         startRecordProgress();
