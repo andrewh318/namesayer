@@ -132,7 +132,7 @@ public class PracticeModeController {
 
     @FXML
     private void onPlayButtonClicked(){
-        _practiceMode.playCurrentName();
+        _practiceMode.playCurrentName(_frameController.getVolume());
         // start progress indicator
         _frameController.startProgressBar(_practiceMode.getCurrentName().getRecordingLength());
 
@@ -179,7 +179,7 @@ public class PracticeModeController {
         // check if the item selected is valid
         if (recording != null){
             // play the recording
-            _practiceMode.playRecording(recording);
+            _practiceMode.playRecording(recording, _frameController.getVolume());
             // start the progress bar
             _frameController.startProgressBar(recording.getRecordingLength());
         } else {
@@ -205,7 +205,7 @@ public class PracticeModeController {
         Recording recording = _userRecordings.getSelectionModel().getSelectedItem();
         // a recording must be selected for comparison
         if (recording != null){
-            _practiceMode.compareNames(recording);
+            _practiceMode.compareNames(recording, _frameController.getVolume());
         } else {
             showAlert("Error: No recordings selected", "Please select a recording to compare");
         }

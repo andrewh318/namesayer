@@ -134,15 +134,15 @@ public class FrameController {
         if (f != null){
             // parse the txt file
             List<String> invalidNames = _model.readPlaylist(f);
-            if (invalidNames.size() > 0) {
+            if (!(invalidNames.isEmpty())) {
                 String fileName = f.getName().substring(0, f.getName().lastIndexOf("."));
 
                 String invalidNamesString = "";
                 for (String invalidName : invalidNames) {
-                    invalidNamesString = invalidNamesString + invalidName + "\n";
+                    invalidNamesString = invalidNamesString + invalidName.replaceAll("%"," ") + "\n";
                 }
 
-                showAlert("Error: the following names from playlist: " + fileName + "could not be found in the database", invalidNamesString);
+                showAlert("Error: the following names from playlist: " + fileName + " could not be found in the database", invalidNamesString);
             }
         }
     }

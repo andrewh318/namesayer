@@ -41,11 +41,11 @@ public class PracticeMode {
         return _currentName;
     }
 
-    public void playCurrentName(){
+    public void playCurrentName(double volume){
         Task<Void> task = new Task<Void>() {
             @Override
             public Void call() {
-                _currentName.playRecording();
+                _currentName.playRecording(volume);
                 return null;
             }
         };
@@ -72,11 +72,11 @@ public class PracticeMode {
         return task;
     }
 
-    public void playRecording(Recording recording){
+    public void playRecording(Recording recording, double volume){
         Task<Void> task = new Task<Void>(){
             @Override
             protected Void call() throws Exception {
-                recording.playRecording();
+                recording.playRecording(volume);
                 return null;
             }
         };
@@ -87,12 +87,12 @@ public class PracticeMode {
         _currentName.removeUserRecording(recording);
     }
 
-    public void compareNames(Recording recording){
+    public void compareNames(Recording recording, double volume){
         Task<Void> task = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
-                _currentName.playRecording();
-                recording.playRecording();
+                _currentName.playRecording(volume);
+                recording.playRecording(volume);
                 return null;
             }
         };

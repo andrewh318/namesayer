@@ -362,8 +362,9 @@ public class NamesModel {
 
             formattedName = formattedName + name + "%";
         }
-
-        formattedName = formattedName.substring(0, formattedName.length() - 1);
+        if (!(formattedName.isEmpty())) {
+            formattedName = formattedName.substring(0, formattedName.length() - 1);
+        }
 
         return formattedName;
     }
