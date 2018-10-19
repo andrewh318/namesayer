@@ -65,6 +65,9 @@ public class ShopController {
             purpleUnlock.setDisable(true);
             purpleTheme.setDisable(false);
             purpleIcon.setGlyphName(UNLOCK);
+
+            // set the global application state for shop
+            _shopModel.setPurpleUnlock(true);
         }
 
     }
@@ -76,9 +79,10 @@ public class ShopController {
             blueUnlock.setDisable(true);
             blueTheme.setDisable(false);
             blueIcon.setGlyphName(UNLOCK);
+
+            // set the global application state for shop
+            _shopModel.setBlueUnlocked(true);
         }
-
-
     }
 
     private boolean checkMoneyAvailable(int price){

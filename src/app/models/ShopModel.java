@@ -11,7 +11,7 @@ public class ShopModel {
 
     public ShopModel(){
         currentMoney = new SimpleIntegerProperty();
-        createMoneyFile();
+        createShopState();
     }
 
 
@@ -35,36 +35,63 @@ public class ShopModel {
         return isBlueUnlocked;
     }
 
-    // keeps track of the number of points user has accumulated
-    public void createMoneyFile(){
-        File file = new File(NamesModel.MONEYFILE);
+    public void setPurpleUnlock(boolean status){
+        isPurpleUnlocked = status;
+    }
+
+    public void setBlueUnlocked(boolean status){
+        isBlueUnlocked = status;
+    }
+
+    // reads in a serializable object and builds the application state
+    public void createShopState(){
+        File file = new File(NamesModel.APPLICATION_STATE);
         try {
             file.createNewFile();
-            // check if file is empty, skip the rest of steps
+            // check if file is empty, if it is set up application state to be default
             if (file.length() == 0){
+                setUpDefaultState();
                 return;
             } else {
-                // else if there is a value in teh file
-                BufferedReader reader = new BufferedReader(new FileReader(file));
-                String moneyFromFile = reader.readLine();
-                // check if it is a valid integer, throws exception if not
-                int money = Integer.parseInt(moneyFromFile);
-                // set the application global money to money from file
-                this.currentMoney.set(money);
+                // attempt to deserialize object
+                ShopSave save;
+                FileInputStream fileIn = new FileInputStream(NamesModel.APPLICATION_STATE);
+                ObjectInputStream in = new ObjectInputStream(fileIn);
+                save = (ShopSave) in.readObject();
+                in.close();
+                fileIn.close();
+
+                // build this application state from the proxy object
+                isPurpleUnlocked = save.isPurpleUnlocked();
+                isBlueUnlocked = save.isBlueUnlocked();
+                currentMoney.set(save.getMoney());
             }
         } catch(IOException e){
             e.printStackTrace();
-        } catch (NumberFormatException e){
-            // if money from file is not valid set money to default
-            this.currentMoney.set(0);
+        } catch(ClassNotFoundException e){
+            // if serialized file has been modified, just simply set up default application state
+            setUpDefaultState();
+            e.printStackTrace();
         }
     }
 
-    public void saveMoneyToFile(){
+    private void setUpDefaultState(){
+        currentMoney.set(NamesModel.DEFAULT_MONEY);
+        isPurpleUnlocked = false;
+        isBlueUnlocked = false;
+    }
+
+
+    public void saveStateToFile(){
         try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter(NamesModel.MONEYFILE));
-            writer.write(String.valueOf(currentMoney.get()));
-            writer.close();
+            // create a proxy object that implements serializable to hold application staet
+            ShopSave shopSave = new ShopSave(this.currentMoney.get(), this.isPurpleUnlocked, this.isBlueUnlocked);
+
+            FileOutputStream fileOut = new FileOutputStream(NamesModel.APPLICATION_STATE);
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            out.writeObject(shopSave);
+            out.close();
+            fileOut.close();
         } catch (IOException e){
             e.printStackTrace();
         }

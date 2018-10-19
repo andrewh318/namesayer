@@ -103,7 +103,7 @@ public class FrameController {
             _stage.close();
         }
         // always save money on close
-        _shopModel.saveMoneyToFile();
+        _shopModel.saveStateToFile();
         _model.deleteFolder(new File(NamesModel.TRIMMED_NORMALISED_DIRECTORY));
     }
 

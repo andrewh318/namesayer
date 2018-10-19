@@ -20,12 +20,12 @@ public class NamesModel {
     public static final String USERRECORDINGSDIRECTORY = "userNames";
     public static final String PLAYLISTS_DIRECTORY = "playlists";
     public static final String BADNAMESFILE = "BadNames.txt";
-    public static final String MONEYFILE = "UserMoney.txt";
+    public static final String APPLICATION_STATE = "ApplicationState.txt";
     public static final String DEFAULT_PLAYLIST_NAME = "Default Playlist";
     public static final String TRIMMED_NORMALISED_DIRECTORY = "trimmedNormalised";
     public static final String COMBINED_NAMES_DIRECTORY = "combinedNames";
 
-    public static final int DEFAULT_MONEY = 0;
+    public static final int DEFAULT_MONEY = 1000;
 
 
 
