@@ -1,7 +1,7 @@
 package app.controllers;
 
 import app.Main;
-import app.models.MoneySingleton;
+import app.models.NamesModel;
 import com.jfoenix.controls.JFXButton;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.fxml.FXML;
@@ -20,9 +20,6 @@ public class ShopController {
     @FXML private FontAwesomeIconView purpleIcon;
     @FXML private FontAwesomeIconView blueIcon;
 
-    public void initialize(){
-        initialButtonSetup();
-    }
     @FXML
     public void onBlueThemeClicked(){
         Main.setBlue();
@@ -38,15 +35,21 @@ public class ShopController {
         Main.setPurple();
     }
 
+    private NamesModel _model;
+
+
+    public void setUp(NamesModel model){
+        _model = model;
+        initialButtonSetup();
+    }
+
 
     // green button should be enabled while other two as disabled
     private void initialButtonSetup(){
-        // get money singleton instance which contains information about what buttons are unlocked
-        MoneySingleton singleton = MoneySingleton.getInstance();
-        if (!singleton.getPurpleUnlocked()){
+        if (!_model.getPurpleUnlocked()){
             purpleTheme.setDisable(true);
         }
-        if (!singleton.getBlueUnlocked()){
+        if (!_model.getBlueUnlocked()){
             blueTheme.setDisable(true);
         }
 
@@ -54,20 +57,35 @@ public class ShopController {
 
     @FXML
     private void onPurpleUnlockClicked(){
-        purpleUnlock.setText("Owned");
-        purpleUnlock.setDisable(true);
-        purpleTheme.setDisable(false);
+        if (checkMoneyAvailable(500)){
+            purpleUnlock.setText("Owned");
+            purpleUnlock.setDisable(true);
+            purpleTheme.setDisable(false);
+            purpleIcon.setGlyphName(UNLOCK);
+        }
 
-        purpleIcon.setGlyphName(UNLOCK);
     }
 
     @FXML
     private void onBlueUnlockClicked(){
-        blueUnlock.setText("Owned");
-        blueUnlock.setDisable(true);
-        blueTheme.setDisable(false);
+        if (checkMoneyAvailable(500)){
+            blueUnlock.setText("Owned");
+            blueUnlock.setDisable(true);
+            blueTheme.setDisable(false);
+            blueIcon.setGlyphName(UNLOCK);
+        }
 
-        blueIcon.setGlyphName(UNLOCK);
 
+    }
+
+    private boolean checkMoneyAvailable(int price){
+        if (_model.getMoney() >= price){
+            int currentMoney = _model.getMoney();
+            int newMoney = currentMoney - price;
+            _model.setMoney(newMoney);
+            return true;
+        } else {
+            return false;
+        }
     }
 }

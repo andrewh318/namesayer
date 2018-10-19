@@ -1,13 +1,9 @@
 package app.controllers;
 
-import app.models.Name;
-import app.models.NamesModel;
-import app.models.Playlist;
-import app.models.Recording;
+import app.models.*;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import javafx.concurrent.Task;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -18,35 +14,21 @@ import javafx.scene.layout.BorderPane;
 import java.io.IOException;
 
 public class PracticeModeController {
-    @FXML
-    private Label _playlistName;
-    private Playlist _playlist;
-    // keeps track of current name in playlist
-    private int _position = 0;
+    @FXML private Label _playlistName;
     private BorderPane _pane;
-    private Name _currentName;
+    private PracticeMode _practiceMode;
 
-    @FXML
-    private Label _nameLabel;
-    @FXML
-    private Label _recordingLabel;
-    @FXML
-    private JFXButton _nextButton;
-    @FXML
-    private JFXButton _previousButton;
+    @FXML private Label _nameLabel;
+    @FXML private Label _recordingLabel;
+    @FXML private JFXButton _nextButton;
+    @FXML private JFXButton _previousButton;
 
-    @FXML
-    private JFXButton _recordButton;
-    @FXML
-    private JFXButton _playButton;
-    @FXML
-    private JFXButton _compareButton;
-    @FXML
-    private JFXButton _playUserRecordingButton;
-    @FXML
-    private JFXButton _deleteUserRecordingButton;
-    @FXML
-    private JFXButton _flagButton;
+    @FXML private JFXButton _recordButton;
+    @FXML private JFXButton _playButton;
+    @FXML private JFXButton _compareButton;
+    @FXML private JFXButton _playUserRecordingButton;
+    @FXML private JFXButton _deleteUserRecordingButton;
+    @FXML private JFXButton _flagButton;
 
     private NamesModel _model;
 
@@ -54,14 +36,6 @@ public class PracticeModeController {
     private JFXComboBox<Recording> _userRecordings;
 
     private FrameController _frameController;
-
-    public void setPlaylist(Playlist playlist){
-        // Set the playlist
-        _playlist = playlist;
-        // set the text of the playlist
-        _playlistName.setText("Playlist: " + playlist.getName());
-        updateScreen();
-    }
 
     public void setFrameController(FrameController controller){
         _frameController = controller;
@@ -75,30 +49,41 @@ public class PracticeModeController {
         _pane = pane;
     }
 
+
+    public void setPlaylist(Playlist playlist){
+        _practiceMode = new PracticeMode(playlist);
+        _playlistName.setText("Playlist: " + playlist.getName());
+        updateScreen();
+    }
+
+
     @FXML
     private void onNextButtonClicked(){
-        _position = Math.floorMod(_position + 1, _playlist.getPlaylist().size());
+        _practiceMode.nextName();
         updateScreen();
     }
 
     @FXML
     private void onPreviousButtonClicked(){
-        _position = Math.floorMod(_position - 1, _playlist.getPlaylist().size());
+        _practiceMode.previousName();
         updateScreen();
     }
 
     // Updates the current name and label showed up screen
     // Should also populate the database
     private void updateScreen(){
+        int position = _practiceMode.getPosition();
+        int playlistItems = _practiceMode.getNumPlaylistItems();
+        Name currentName =_practiceMode.getCurrentName();
 
         // if the number of items is 1 then both buttons should be disabled
-        if (_playlist.getNumberOfItems() == 1){
+        if (playlistItems == 1){
           _nextButton.setDisable(true);
           _previousButton.setDisable(true);
-        } else if (_position == _playlist.getNumberOfItems()-1){
+        } else if (position == playlistItems-1){
             _previousButton.setDisable(false);
             _nextButton.setDisable(true);
-        } else if (_position == 0){
+        } else if (position == 0){
             _previousButton.setDisable(true);
             _nextButton.setDisable(false);
         } else {
@@ -106,19 +91,18 @@ public class PracticeModeController {
             _previousButton.setDisable(false);
         }
 
-        _currentName = _playlist.getPlaylist().get(_position);
-        _nameLabel.setText(_playlist.getPlaylistItemAt(_position));
+        _nameLabel.setText(currentName.getCleanName());
 
-        _userRecordings.setItems(_currentName.getUserRecordings());
+        _userRecordings.setItems(currentName.getUserRecordings());
         // display the first user recording on the top of the combo list (if it exists)
         _userRecordings.getSelectionModel().select(0);
 
         // display the current recording that is selected for name
-        Recording recording = _currentName.getBestRecording();
+        Recording recording = currentName.getBestRecording();
 
         // if recording is null then the current name is a combined name (no database recording exists)
         if (recording != null){
-            _recordingLabel.setText(_currentName.getBestRecording().toString());
+            _recordingLabel.setText(currentName.getBestRecording().toString());
         } else {
             _recordingLabel.setText("Custom Name");
         }
@@ -130,8 +114,9 @@ public class PracticeModeController {
     @FXML
     // flag the current recording playing
     private void onFlagButtonClicked(){
-        Recording currentRecording = _currentName.getBestRecording();
-        if (!_currentName.flagRecording()){
+        Name currentName = _practiceMode.getCurrentName();
+        Recording currentRecording = currentName.getBestRecording();
+        if (!currentName.flagRecording()){
             showAlert("Error: Cannot flag this item", "Custom names cannot be flagged");
         } else {
             // show confirmation of flag
@@ -147,17 +132,9 @@ public class PracticeModeController {
 
     @FXML
     private void onPlayButtonClicked(){
-        Task<Void> task = new Task<Void>() {
-            @Override
-            public Void call() {
-//                System.out.println(_currentName.getRecordingLength());
-                _currentName.playRecording(_frameController.getVolume());
-                return null;
-            }
-        };
-        new Thread(task).start();
+        _practiceMode.playCurrentName();
         // start progress indicator
-        _frameController.startProgressBar(_currentName.getRecordingLength());
+        _frameController.startProgressBar(_practiceMode.getCurrentName().getRecordingLength());
 
     }
     @FXML
@@ -183,31 +160,16 @@ public class PracticeModeController {
         // disable all buttons
         setButtonsDisable(true);
 
-        Task<Void> task = new Task<Void>() {
-            public Void call() {
-                Recording recording = _currentName.createRecordingObject();
-                _currentName.record(recording);
-                _model.normaliseAndTrimAudioFile(recording);
-
-                // user recordings are bounded to the GUI so need to add the recording on the application thread
-                Platform.runLater(() -> {
-                    _currentName.addUserRecording(recording);
-                });
-
-                return null;
-            }
-        };
-        new Thread(task).start();
+        Task<Void> task = _practiceMode.recordName(_model);
         task.setOnSucceeded(e -> {
             // update the view again to refresh combo box
             // this is done on the application thread
             setButtonsDisable(false);
+            // after recording completes update the user money
+            _model.setMoney(_model.getMoney() + 100);
             updateScreen();
         });
         startRecordProgress();
-
-
-
     }
 
     @FXML
@@ -217,17 +179,9 @@ public class PracticeModeController {
         // check if the item selected is valid
         if (recording != null){
             // play the recording
-            Task<Void> task = new Task<Void>(){
-                @Override
-                protected Void call() throws Exception {
-                    recording.playRecording(_frameController.getVolume());
-                    return null;
-                }
-            };
-            new Thread(task).start();
+            _practiceMode.playRecording(recording);
             // start the progress bar
             _frameController.startProgressBar(recording.getRecordingLength());
-
         } else {
             showAlert("Error: No recording selected", "Please select a recording to play");
         }
@@ -235,11 +189,10 @@ public class PracticeModeController {
 
     @FXML
     private void onUserRecordingDeleteButtonClicked(){
-        // get the recording that the user has selected
         Recording recording = _userRecordings.getSelectionModel().getSelectedItem();
         // delete the recording if its value is not null
         if (recording != null){
-            _currentName.removeUserRecording(recording);
+            _practiceMode.deleteRecording(recording);
             updateScreen();
         } else {
             showAlert("Error; No recording selected", "Please select a recording to delete");
@@ -247,21 +200,12 @@ public class PracticeModeController {
     }
 
     @FXML
+    // play the database recording followed by the currently selected user recording
     private void onCompareButtonClicked(){
-        // play the database recording followed by the currently selected user recording
         Recording recording = _userRecordings.getSelectionModel().getSelectedItem();
         // a recording must be selected for comparison
         if (recording != null){
-            Task<Void> task = new Task<Void>() {
-                @Override
-                protected Void call() throws Exception {
-                    _currentName.playRecording(_frameController.getVolume());
-                    recording.playRecording(_frameController.getVolume());
-                    return null;
-                }
-            };
-            new Thread(task).start();
-
+            _practiceMode.compareNames(recording);
         } else {
             showAlert("Error: No recordings selected", "Please select a recording to compare");
         }

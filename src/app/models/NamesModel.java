@@ -2,6 +2,7 @@
 
 package app.models;
 
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -24,7 +25,8 @@ public class NamesModel {
     public static final String DEFAULT_PLAYLIST_NAME = "Default Playlist";
     public static final String TRIMMED_NORMALISED_DIRECTORY = "trimmedNormalised";
     public static final String COMBINED_NAMES_DIRECTORY = "combinedNames";
-    public static final String DEFAULT_MONEY = "0";
+
+    public static final int DEFAULT_MONEY = 0;
 
 
 
@@ -40,6 +42,9 @@ public class NamesModel {
         return _allPlaylists;
     }
 
+    // stores information about the money in the application as well as what themes user has unlocked
+    private ShopState _shopState;
+
 
     // renamed this from 'readDirectory' to setUp() toto prevent confusion
     public void setUp(){
@@ -51,7 +56,7 @@ public class NamesModel {
         deleteFolder(new File(NamesModel.TRIMMED_NORMALISED_DIRECTORY));
 
         createErrorFile();
-        createMoneyFile();
+        _shopState = new ShopState();
 
         makeDirectories();
         readDirectories();
@@ -98,34 +103,7 @@ public class NamesModel {
         }
     }
 
-    // keeps track of the number of points user has accumulated
-    private void createMoneyFile(){
-        File file = new File(MONEYFILE);
-        try {
-            file.createNewFile();
-            // check if file is empty, skip the rest of steps
-            if (file.length() == 0){
-                return;
-//                BufferedWriter writer = new BufferedWriter(new FileWriter(file, false));
-//                writer.write(DEFAULT_MONEY);
-//                writer.close();
-            } else {
-                // else if there is a value in teh file
-                BufferedReader reader = new BufferedReader(new FileReader(file));
-                String moneyFromFile = reader.readLine();
-                // check if it is a valid integer, throws exception if not
-                int money = Integer.parseInt(moneyFromFile);
-                // set the application global money to money from file
-                MoneySingleton.getInstance().setMoney(money);
-            }
-        } catch(IOException e){
-            e.printStackTrace();
-        } catch (NumberFormatException e){
-            // if money from file is not valid set money to default
-            MoneySingleton.getInstance().setMoney(Integer.valueOf(DEFAULT_MONEY));
-        }
 
-    }
 
     private void readDirectories() {
 
@@ -435,16 +413,27 @@ public class NamesModel {
 
     // get money from application and write to text file
     public void saveMoney(){
-        int money = MoneySingleton.getInstance().getMoney();
+        _shopState.saveMoneyToFile();
+    }
 
-        try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter(MONEYFILE));
-            writer.write(String.valueOf(money));
-            writer.close();
-        } catch (IOException e){
-            e.printStackTrace();
-        }
+    public int getMoney(){
+        return _shopState.getMoney();
+    }
 
+    public SimpleIntegerProperty getMoneyBinding(){
+        return _shopState.getMoneyBinding();
+    }
+
+    public void setMoney(int money){
+        _shopState.setMoney(money);
+    }
+
+    public boolean getPurpleUnlocked(){
+        return _shopState.getPurpleUnlocked();
+    }
+
+    public boolean getBlueUnlocked(){
+        return _shopState.getBlueUnlocked();
     }
 
     public void deleteFolder(File folder) {

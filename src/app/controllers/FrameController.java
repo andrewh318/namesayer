@@ -1,11 +1,10 @@
 package app.controllers;
 
-import app.models.MoneySingleton;
 import app.models.NamesModel;
 
-import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXProgressBar;
 import com.jfoenix.controls.JFXSlider;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -27,16 +26,10 @@ enum Screen {
 }
 
 public class FrameController {
-    @FXML
-    private BorderPane borderPane;
+    @FXML private BorderPane borderPane;
 
     private NamesModel _model;
-
-    private boolean isListen;
-    private boolean isPractice;
     private ListenController _listenController;
-
-    @FXML private JFXButton _playButton;
 
     // reference to the stage used throughout the application
     private Stage _stage;
@@ -60,8 +53,8 @@ public class FrameController {
     }
 
     private void initializeMoney(){
-        int startingMoney = MoneySingleton.getInstance().getMoney();
-        _moneyLabel.setText(String.valueOf(startingMoney));
+        SimpleIntegerProperty startingMoney = _model.getMoneyBinding();
+        _moneyLabel.textProperty().bind(startingMoney.asString());
 
     }
 
@@ -75,8 +68,6 @@ public class FrameController {
         _stage = stage;
         setUpOnClose();
     }
-
-
 
 
     private void setUpOnClose(){
@@ -195,6 +186,8 @@ public class FrameController {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/app/views/Shop.fxml"));
                 Parent root = (Parent) loader.load();
+                ShopController controller = loader.getController();
+                controller.setUp(_model);
                 shopScreen = root;
                 borderPane.setCenter(root);
             } catch (IOException e){
@@ -209,7 +202,6 @@ public class FrameController {
 
     // duration is duration in seconds
     public void startProgressBar(float duration){
-
         Task<Void> task = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
@@ -224,8 +216,6 @@ public class FrameController {
         _progressBar.progressProperty().bind(task.progressProperty());
 
         new Thread(task).start();
-
-        //task.setOnSucceeded();
     }
 
     private void showAlert(String header, String content){
