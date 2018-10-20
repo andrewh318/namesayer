@@ -2,8 +2,10 @@ package app.models;
 
 import java.io.Serializable;
 
-// this class is used as a proxy object to generate a serialized version of the shop state
-// this state can then be read in on application start and used to generate the shop object
+/**
+ * This class is used as a proxy object to generate a serialized version of the shop state. This state can then be
+ * read back in on application start and used to generate the shop object
+ */
 public class ShopSave implements Serializable {
     private int money;
     private boolean isPurpleUnlocked;

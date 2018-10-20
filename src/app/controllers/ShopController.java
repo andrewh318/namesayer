@@ -48,9 +48,10 @@ public class ShopController {
         _shopModel = shopModel;
         initialButtonSetup();
     }
-
-
-    // reads in state from shop and sets up buttons correctly
+    
+    /**
+     * Reads in the state from the Shop model and then sets up the buttons correctly to reflect it.
+     */
     private void initialButtonSetup(){
         if (_shopModel.getPurpleUnlocked()){
             unlockPurple();
@@ -100,6 +101,11 @@ public class ShopController {
         blueIcon.setGlyphName(UNLOCK);
     }
 
+    /**
+     * Checks if the user can afford the theme they selected
+     * @param price Price of the theme they want to purchase
+     * @return Returns true if they can afford it, false otherwise
+     */
     private boolean checkMoneyAvailable(int price){
         if (_shopModel.getMoney() >= price){
             int currentMoney = _shopModel.getMoney();

@@ -4,12 +4,9 @@ package app.models;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.media.MediaPlayer;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -35,7 +32,10 @@ public class Name {
         _databaseRecordings.add(recording);
     }
 
-    // override toString so name will be printed correctly by list view
+    /**
+     * Overrides toString so name will be printed correctly by list view
+     * @return Returns name followed by how many repeated entries in database there are
+     */
     @Override
     public String toString(){
         // if theres only a single recording associated with a name, simply just display the name
@@ -47,20 +47,32 @@ public class Name {
         }
     }
 
-    // playRecording plays the best recording in the list of database recordings
+    /**
+     * Plays the best recording in the list of database recordings
+     * @param volume Volume in which the recoding should be played at
+     */
     public void playRecording(double volume){
         getBestRecording().playRecording(volume);
     }
 
+    /**
+     * Given a recording object, this method searches the list of recordings in this object and deletes it.
+     * @param recording Recording the user wants to delete
+     */
     public void removeUserRecording(Recording recording) {
+        // delete the recording object from this name object
         _userRecordings.remove(recording);
+        // delete the actual file from system
         File file = new File(recording.getPath());
         if (!file.delete()) {
             System.out.println("Could not delete file " + recording.getPath());
         }
     }
 
-    //Creates a custom user recording object using the current date and time of the system. Matches given format
+    /**
+     * Creates a custom user recording object using the current date and time of the system.
+     * @return
+     */
     public Recording createRecordingObject() {
         DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH-mm-ss");
         Date d = new Date();
@@ -79,7 +91,10 @@ public class Name {
         return new Recording(stringName, date, path, trimmedPath, time);
     }
 
-    // create an audio file in wav format based on a 5 second capture of the microphone
+    /**
+     * Creates an audio file in wav format based on a 5 second capture of the microphone
+     * @param recording The recording object that represents the name that will be recorded
+     */
     public void record(Recording recording){
 
         String audioCommand = "ffmpeg -f alsa -i default -t 5 " + "./" + recording.getPath();
@@ -106,6 +121,11 @@ public class Name {
     }
 
     // return the best database recording
+
+    /**
+     * Returns the best database recording in the list of names (determined by how many flags there are on each name)
+     * @return
+     */
     public Recording getBestRecording(){
         // loop through the all the recordings and find the one with the highest rating
         Recording bestRecording = _databaseRecordings.get(0);
@@ -118,6 +138,11 @@ public class Name {
     }
 
     // flags the current recording (best recording) as poor quality
+
+    /**
+     * Flags the current recording that is playing as poor quality
+     * @return
+     */
     public boolean flagRecording(){
         getBestRecording().flagAsBad();
         // return true as single names can be flagged

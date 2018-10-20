@@ -77,6 +77,11 @@ public class PracticeModeController {
 
     // Updates the current name and label showed up screen
     // Should also populate the database
+
+    /**
+     * Updates the current name and label showed on screen
+     * Also populates the combo box to reflect the current name
+     */
     private void updateScreen(){
         int position = _practiceMode.getPosition();
         int playlistItems = _practiceMode.getNumPlaylistItems();
@@ -118,7 +123,6 @@ public class PracticeModeController {
 
 
     @FXML
-    // flag the current recording playing
     private void onFlagButtonClicked(){
         Name currentName = _practiceMode.getCurrentName();
         Recording currentRecording = currentName.getBestRecording();
@@ -141,11 +145,13 @@ public class PracticeModeController {
         Task<Void> task = new Task<Void>() {
             @Override
             public Void call() {
+                // trim the name on a new thread
                 _practiceMode.getCurrentName().getBestRecording().normaliseAndTrimAudioFile();
                 return null;
             }
         };
         new Thread(task).start();
+        // after name has been trimmed, play it
         task.setOnSucceeded(e -> {
                 _practiceMode.playCurrentName(_frameController.getVolume());
                 // start progress indicator
@@ -155,6 +161,10 @@ public class PracticeModeController {
 
     }
     @FXML
+
+    /**
+     * Navigate user back to the previous screen so they can change their playlist
+     */
     private void onChangePlaylistButton(){
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/app/views/PracticeSetup.fxml"));
@@ -227,7 +237,9 @@ public class PracticeModeController {
     }
 
     @FXML
-    // play the database recording followed by the currently selected user recording
+    /**
+     * Playlist the database recoding followed by the currently selected user recording
+     */
     private void onCompareButtonClicked(){
         Recording recording = _userRecordings.getSelectionModel().getSelectedItem();
         // a recording must be selected for comparison
@@ -241,7 +253,7 @@ public class PracticeModeController {
                 }
             };
             new Thread(task).start();
-
+            // after both the database and user name has been normalized, play them consecutively
             task.setOnSucceeded(e -> {_practiceMode.compareNames(recording, _frameController.getVolume());
                 // need to get length of both the user recording and the database recording
                 float databaseNameLength = _practiceMode.getCurrentName().getRecordingLength();

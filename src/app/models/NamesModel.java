@@ -2,11 +2,9 @@
 
 package app.models;
 
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import javax.rmi.ssl.SslRMIClientSocketFactory;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,11 +41,9 @@ public class NamesModel {
     }
 
 
-    // renamed this from 'readDirectory' to setUp() toto prevent confusion
     public void setUp(){
         // remove all database/user names when directories are read
-        // to prevent double reading of names
-
+        // to prevent duplicate reading of names
         clearPlaylists();
 
         deleteFolder(new File(NamesModel.TRIMMED_NORMALISED_DIRECTORY));
@@ -62,6 +58,9 @@ public class NamesModel {
         setUpDefaultPlaylist();
     }
 
+    /**
+     * Makes the required directories that the application requiress
+     */
     private void makeDirectories() {
         new File(DATABASERECORDINGSDIRECTORY).mkdir();
         new File(USERRECORDINGSDIRECTORY).mkdir();
@@ -81,7 +80,10 @@ public class NamesModel {
         _userNames.clear();
     }
 
-
+    /**
+     * If there are no playlists previously (user either deleted the file or is there first time using the application)
+     * a default playlist will be created.
+     */
     private void setUpDefaultPlaylist(){
         if (_allPlaylists.size() == 0){
             // if there are no playlists create a default playlist

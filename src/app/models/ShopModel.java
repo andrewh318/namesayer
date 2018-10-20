@@ -44,13 +44,19 @@ public class ShopModel {
     }
 
     // in the case that there is no previous application state, this is the default status
+
+    /**
+     * In case thee is no previous application state, the shop state will be set to this default one
+     */
     private void setUpDefaultState(){
         currentMoney.set(NamesModel.DEFAULT_MONEY);
         isPurpleUnlocked = false;
         isBlueUnlocked = false;
     }
 
-    // reads in a serializable object and builds the application state
+    /**
+     * Reads in a serializable object and builds the application state
+     */
     public void createShopState(){
         File file = new File(NamesModel.APPLICATION_STATE);
         try {
@@ -82,8 +88,9 @@ public class ShopModel {
         }
     }
 
-
-    // saves the application state to a serialized object so it can be read back in
+    /**
+     * Saves the application state to a serialized object so it can be read back in
+     */
     public void saveStateToFile(){
         try {
             // create a proxy object that implements serializable to hold application staet
