@@ -46,7 +46,7 @@ public class ListenController {
     private FrameController _frameController;
 
     private NamesModel _model;
-
+    
     // injects the model into listen controller from frame
     // passes a reference of 'this' controller into the controller
     // sets up the required bindings
