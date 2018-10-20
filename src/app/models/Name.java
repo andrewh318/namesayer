@@ -6,7 +6,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.media.MediaPlayer;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -79,7 +82,7 @@ public class Name {
     // create an audio file in wav format based on a 5 second capture of the microphone
     public void record(Recording recording){
 
-        String audioCommand = "ffmpeg -loglevel panic -f alsa -i default -t 5 " + "./" + recording.getPath();
+        String audioCommand = "ffmpeg -f alsa -i default -t 5 " + "./" + recording.getPath();
         BashCommand create = new BashCommand(audioCommand);
         create.startProcess();
         try {
@@ -87,7 +90,6 @@ public class Name {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
     }
 
     public String getCleanName() {

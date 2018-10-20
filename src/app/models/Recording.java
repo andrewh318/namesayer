@@ -107,6 +107,7 @@ public class Recording {
     }
 
     public void normaliseAndTrimAudioFile() {
+        int targetDB = -15;
 
         String getVolumeCommand = "ffmpeg -i ./" + _path + " -af 'volumedetect' -vn -sn -dn -f null /dev/null |& grep 'max_volume:'";
         BashCommand getVol = new BashCommand(getVolumeCommand);
@@ -132,23 +133,23 @@ public class Recording {
 
         double maxVolumeInt = Double.parseDouble(maxVolume);
 
-        double volumeChange = 0 - maxVolumeInt;
+        double volumeChange = targetDB - maxVolumeInt;
 
         String tempPath = NamesModel.TRIMMED_NORMALISED_DIRECTORY + "/output.wav";
 
-        if (volumeChange != 0) {
-            String normaliseCommand = "ffmpeg -i ./" + _path + " -af 'volume=" + volumeChange + "dB' " + "./" + tempPath;
-            BashCommand normalise = new BashCommand(normaliseCommand);
-            normalise.startProcess();
-            try {
-                normalise.getProcess().waitFor();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+
+        String normaliseCommand = "ffmpeg -i ./" + _path + " -af 'volume=" + volumeChange + "dB' " + "./" + tempPath;
+        BashCommand normalise = new BashCommand(normaliseCommand);
+        normalise.startProcess();
+        try {
+            normalise.getProcess().waitFor();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
 
 
-        String trimCommand = "ffmpeg -y -i ./" + tempPath + " -af silenceremove=1:0:-25dB:detection=peak" + " ./" + _trimmedPath;
+        //trim
+        String trimCommand = "ffmpeg -y -i ./" + _path + " -af silenceremove=1:0:-40dB:detection=peak" + " ./" + _trimmedPath;
         BashCommand trim = new BashCommand(trimCommand);
         trim.startProcess();
 
@@ -167,5 +168,6 @@ public class Recording {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
     }
 }
