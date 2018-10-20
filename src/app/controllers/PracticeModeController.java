@@ -195,11 +195,20 @@ public class PracticeModeController {
         Recording recording = _userRecordings.getSelectionModel().getSelectedItem();
         // check if the item selected is valid
         if (recording != null){
+            Task<Void> task = new Task<Void>() {
+                @Override
+                public Void call() {
+                    recording.normaliseAndTrimAudioFile();
 
-                recording.normaliseAndTrimAudioFile();
-                _practiceMode.playRecording(recording, _frameController.getVolume());
+                    return null;
+                }
+            };
+            new Thread(task).start();
+
+            task.setOnSucceeded(e -> {_practiceMode.playRecording(recording, _frameController.getVolume());
                 // start the progress bar
-                _frameController.startProgressBar(recording.getRecordingLength());
+                _frameController.startProgressBar(recording.getRecordingLength());});
+
         } else {
             showAlert("Error: No recording selected", "Please select a recording to play");
         }
