@@ -9,6 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.BorderPane;
 
 import java.io.IOException;
@@ -36,6 +37,10 @@ public class PracticeModeController {
     private JFXComboBox<Recording> _userRecordings;
 
     private FrameController _frameController;
+
+    public void initialize(){
+        setUpToolTips();
+    }
 
     public void setFrameController(FrameController controller){
         _frameController = controller;
@@ -216,6 +221,12 @@ public class PracticeModeController {
         } else {
             showAlert("Error: No recordings selected", "Please select a recording to compare");
         }
+    }
+
+    private void setUpToolTips(){
+        final Tooltip recordToolTip = new Tooltip();
+        recordToolTip.setText("Click to start recording for 5 seconds");
+        _recordButton.setTooltip(recordToolTip);
     }
 
     private void startRecordProgress() {
