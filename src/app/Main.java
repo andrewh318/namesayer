@@ -11,7 +11,7 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
     public enum Theme {
-        GREEN, PURPLE, BLUE
+        GREEN, PURPLE, BLUE, RED, AQUA, YELLOW
     }
 
     public static Theme currentTheme = null;
@@ -50,6 +50,21 @@ public class Main extends Application {
                 root.getStylesheets().clear();
                 root.getStylesheets().add("/resources/styles/blue.css");
                 currentTheme = Theme.BLUE;
+                break;
+            case RED:
+                root.getStylesheets().clear();
+                root.getStylesheets().add("/resources/styles/red.css");
+                currentTheme = Theme.RED;
+                break;
+            case AQUA:
+                root.getStylesheets().clear();;
+                root.getStylesheets().add("/resources/styles/aqua.css");
+                currentTheme = Theme.AQUA;
+                break;
+            case YELLOW:
+                root.getStylesheets().clear();
+                root.getStylesheets().add("/resources/styles/yellow.css");
+                currentTheme = Theme.YELLOW;
                 break;
         }
     }

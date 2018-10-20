@@ -15,14 +15,22 @@ public class ShopController {
 
 
     @FXML private JFXButton purpleTheme;
-    @FXML private JFXButton greenTheme;
     @FXML private JFXButton blueTheme;
+    @FXML private JFXButton redTheme;
+    @FXML private JFXButton aquaTheme;
+    @FXML private JFXButton yellowTheme;
 
     @FXML private JFXButton purpleUnlock;
     @FXML private JFXButton blueUnlock;
+    @FXML private JFXButton redUnlock;
+    @FXML private JFXButton aquaUnlock;
+    @FXML private JFXButton yellowUnlock;
 
     @FXML private FontAwesomeIconView purpleIcon;
     @FXML private FontAwesomeIconView blueIcon;
+    @FXML private FontAwesomeIconView redIcon;
+    @FXML private FontAwesomeIconView aquaIcon;
+    @FXML private FontAwesomeIconView yellowIcon;
 
     @FXML
     public void onBlueThemeClicked(){
@@ -39,6 +47,22 @@ public class ShopController {
         Main.setTheme(Main.Theme.PURPLE, Main.programRoot);
     }
 
+    @FXML
+    public void onRedThemeClicked(){
+        Main.setTheme(Main.Theme.RED, Main.programRoot);
+    }
+
+    @FXML
+    public void onAquaThemeClicked(){
+        Main.setTheme(Main.Theme.AQUA, Main.programRoot);
+    }
+
+    @FXML
+    public void onYellowThemeClicked(){
+        Main.setTheme(Main.Theme.YELLOW, Main.programRoot);
+    }
+
+
     private NamesModel _model;
     private ShopModel _shopModel;
 
@@ -48,7 +72,7 @@ public class ShopController {
         _shopModel = shopModel;
         initialButtonSetup();
     }
-    
+
     /**
      * Reads in the state from the Shop model and then sets up the buttons correctly to reflect it.
      */
@@ -58,6 +82,15 @@ public class ShopController {
         }
         if (_shopModel.getBlueUnlocked()){
             unlockBlue();
+        }
+        if (_shopModel.getRedUnlocked()){
+            unlockRed();
+        }
+        if (_shopModel.getAquaUnlocked()){
+            unlockAqua();
+        }
+        if (_shopModel.getYellowUnlocked()){
+            unlockYellow();
         }
 
     }
@@ -87,6 +120,42 @@ public class ShopController {
         }
     }
 
+    @FXML
+    private void onRedUnlockClicked(){
+        if (checkMoneyAvailable(THEME_PRICE)){
+            unlockRed();
+            // set up global application state for shop
+            _shopModel.setRedUnlocked(true);
+        } else {
+            showAlert("Sorry: Not enough money", "This item costs: " + THEME_PRICE + " V Bucks \nYou" +
+                    " only have: " + _shopModel.getMoney() + " V Bucks");
+        }
+    }
+
+    @FXML
+    private void onAquaUnlockClicked(){
+        if (checkMoneyAvailable(THEME_PRICE)){
+            unlockAqua();
+            // set up global application state for shop
+            _shopModel.setAquaUnlocked(true);
+        } else {
+            showAlert("Sorry: Not enough money", "This item costs: " + THEME_PRICE + " V Bucks \nYou" +
+                    " only have: " + _shopModel.getMoney() + " V Bucks");
+        }
+    }
+
+    @FXML
+    private void onYellowUnlockClicked(){
+        if (checkMoneyAvailable(THEME_PRICE)){
+            unlockYellow();
+            // set up global application state for shop
+            _shopModel.setYellowUnlocked(true);
+        } else {
+            showAlert("Sorry: Not enough money", "This item costs: " + THEME_PRICE + " V Bucks \nYou" +
+                    " only have: " + _shopModel.getMoney() + " V Bucks");
+        }
+    }
+
     private void unlockPurple(){
         purpleUnlock.setDisable(true);
         purpleUnlock.setText(ITEM_OWNED);
@@ -99,6 +168,27 @@ public class ShopController {
         blueUnlock.setText(ITEM_OWNED);
         blueTheme.setDisable(false);
         blueIcon.setGlyphName(UNLOCK);
+    }
+
+    private void unlockRed(){
+        redUnlock.setDisable(true);
+        redUnlock.setText(ITEM_OWNED);
+        redTheme.setDisable(false);
+        redIcon.setGlyphName(UNLOCK);
+    }
+
+    private void unlockAqua(){
+        aquaUnlock.setDisable(true);
+        aquaUnlock.setText(ITEM_OWNED);
+        aquaTheme.setDisable(false);
+        aquaIcon.setGlyphName(UNLOCK);
+    }
+
+    private void unlockYellow(){
+        yellowUnlock.setDisable(true);
+        yellowUnlock.setText(ITEM_OWNED);
+        yellowTheme.setDisable(false);
+        yellowIcon.setGlyphName(UNLOCK);
     }
 
     /**

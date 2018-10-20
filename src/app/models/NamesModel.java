@@ -24,7 +24,7 @@ public class NamesModel {
     public static final String TRIMMED_NORMALISED_DIRECTORY = "trimmedNormalised";
     public static final String COMBINED_NAMES_DIRECTORY = "combinedNames";
 
-    public static final int DEFAULT_MONEY = 1000;
+    public static final int DEFAULT_MONEY = 1500;
 
 
 

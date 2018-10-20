@@ -151,11 +151,11 @@ public class PracticeModeController {
             }
         };
         new Thread(task).start();
+        _frameController.startProgressBar(_practiceMode.getCurrentName().getRecordingLength());
+
         // after name has been trimmed, play it
         task.setOnSucceeded(e -> {
                 _practiceMode.playCurrentName(_frameController.getVolume());
-                // start progress indicator
-                _frameController.startProgressBar(_practiceMode.getCurrentName().getRecordingLength());
             }
         );
 
