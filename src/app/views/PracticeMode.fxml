@@ -61,9 +61,9 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </JFXButton>
-            <JFXButton fx:id="_recordButton" buttonType="RAISED" contentDisplay="CENTER" onAction="#onRecordPressed" prefHeight="136.0" prefWidth="257.0" ripplerFill="WHITE" styleClass="themed-items" text=" ">
+            <JFXButton fx:id="_playButton" buttonType="RAISED" contentDisplay="CENTER" onAction="#onPlayButtonClicked" prefHeight="136.0" prefWidth="257.0" ripplerFill="WHITE" styleClass="themed-items" text=" ">
                <graphic>
-                  <FontAwesomeIconView fill="WHITE" glyphName="MICROPHONE" size="70" />
+                  <FontAwesomeIconView fill="WHITE" glyphName="PLAY" size="70" />
                </graphic>
                <cursor>
                   <Cursor fx:constant="HAND" />
@@ -106,7 +106,7 @@
       </HBox>
       <HBox alignment="CENTER" prefHeight="80.0" prefWidth="1024.0" spacing="30.0">
          <children>
-            <JFXButton fx:id="_compareButton" contentDisplay="CENTER" onAction="#onCompareButtonClicked" prefHeight="44.0" prefWidth="122.0" styleClass="themed-items" text="Compare" textFill="WHITE">
+            <JFXButton fx:id="_compareButton" contentDisplay="CENTER" onAction="#onCompareButtonClicked" prefHeight="52.0" prefWidth="144.0" styleClass="themed-items" text="Compare" textFill="WHITE">
                <font>
                   <Font size="20.0" />
                </font>
@@ -114,18 +114,18 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </JFXButton>
-            <JFXButton fx:id="_playButton" alignment="CENTER" contentDisplay="CENTER" onAction="#onPlayButtonClicked" prefHeight="44.0" prefWidth="122.0" styleClass="themed-items" text=" " textFill="WHITE">
+            <JFXButton fx:id="_recordButton" alignment="CENTER" contentDisplay="CENTER" onAction="#onRecordPressed" prefHeight="52.0" prefWidth="144.0" styleClass="themed-items" text=" " textFill="WHITE">
                <font>
                   <Font size="20.0" />
                </font>
                <graphic>
-                  <FontAwesomeIconView fill="WHITE" glyphName="PLAY" size="20" />
+                  <FontAwesomeIconView fill="WHITE" glyphName="MICROPHONE" size="30" />
                </graphic>
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
             </JFXButton>
-            <JFXButton fx:id="_flagButton" onAction="#onFlagButtonClicked" prefHeight="44.0" prefWidth="122.0" style="-fx-background-color: #A42B1B;" text="Flag" textFill="WHITE">
+            <JFXButton fx:id="_flagButton" onAction="#onFlagButtonClicked" prefHeight="52.0" prefWidth="144.0" style="-fx-background-color: #A42B1B;" text="Flag" textFill="WHITE">
                <font>
                   <Font size="20.0" />
                </font>

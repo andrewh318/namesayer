@@ -207,6 +207,12 @@ public class PracticeModeController {
         // a recording must be selected for comparison
         if (recording != null){
             _practiceMode.compareNames(recording);
+            // need to get length of both the user recording and the database recording
+            float databaseNameLength = _practiceMode.getCurrentName().getRecordingLength();
+            float userRecordingLength = recording.getRecordingLength();
+            float totalLength = databaseNameLength + userRecordingLength;
+            // start the progress bar
+            _frameController.startProgressBar(totalLength);
         } else {
             showAlert("Error: No recordings selected", "Please select a recording to compare");
         }

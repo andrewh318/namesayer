@@ -59,6 +59,7 @@ public class ListenController {
         setUpSearchBar();
         setUpCurrentPlaylistCellFactory();
         bindSearchKeys();
+        bindDeleteButtonsToDelete();
     }
 
     private void setUpListBindings(){
@@ -241,7 +242,7 @@ public class ListenController {
             Main.setTheme(Main.currentTheme, root);
 
             NewPlaylistController controller = loader.getController();
-            controller.setController(this);
+            controller.setController(this, _model);
             stage.setTitle("New Playlist");
             stage.setScene(new Scene(root));
             stage.initModality(Modality.APPLICATION_MODAL);
@@ -340,7 +341,22 @@ public class ListenController {
         }
     }
 
-
+    private void bindDeleteButtonsToDelete(){
+        _allPlaylists.setOnKeyPressed(e -> {
+            if (e.getCode().equals(KeyCode.DELETE) || e.getCode().equals(KeyCode.BACK_SPACE)){
+                if (_allPlaylists.getSelectionModel().getSelectedItem() != null){
+                    onDeletePlaylistButtonClicked();
+                }
+            }
+        });
+        _currentPlaylistList.setOnKeyPressed(e -> {
+            if (e.getCode().equals(KeyCode.DELETE) || e.getCode().equals(KeyCode.BACK_SPACE)){
+                if (_currentPlaylistList.getSelectionModel().getSelectedItem() != null){
+                    onDeleteButtonClicked();
+                }
+            }
+        });
+    }
     private void bindSearchKeys(){
         _searchBar.setOnKeyPressed(e -> {
             // bind autocomplete on enter
