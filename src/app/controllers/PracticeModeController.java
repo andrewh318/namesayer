@@ -141,7 +141,7 @@ public class PracticeModeController {
         Task<Void> task = new Task<Void>() {
             @Override
             public Void call() {
-                _practiceMode.getCurrentName().getBestRecording().normaliseAndTrimAudioFile();
+                _practiceMode.getCurrentName().normaliseBestRecording();
                 return null;
             }
         };
