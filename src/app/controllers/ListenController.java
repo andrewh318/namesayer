@@ -285,16 +285,28 @@ public class ListenController {
         Name name = _currentPlaylistList.getSelectionModel().getSelectedItem();
         // check if name is null
         if (name != null){
-
-            _frameController.startProgressBar(name.getRecordingLength());
             Task<Void> task = new Task<Void>() {
                 @Override
                 public Void call() {
-                    name.playRecording(_frameController.getVolume());
+                    name.normaliseBestRecording();
                     return null;
                 }
             };
             new Thread(task).start();
+
+            task.setOnSucceeded(e -> {
+                    _frameController.startProgressBar(name.getRecordingLength());
+                    Task<Void> task2 = new Task<Void>() {
+                        @Override
+                        public Void call() {
+                            name.playRecording(_frameController.getVolume());
+                            return null;
+                        }
+                    };
+                    new Thread(task2).start();
+            }
+            );
+
         } else {
             showAlert("Error: No name selected", "Please select a name to play");
         }

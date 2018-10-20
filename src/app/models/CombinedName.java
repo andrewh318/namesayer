@@ -20,7 +20,7 @@ public class CombinedName extends Name {
     @Override
     public void playRecording(double volume) {
         for (Name name : names) {
-            name.getBestRecording().playRecording(volume);
+            name.playRecording(volume);
         }
     }
 
@@ -80,6 +80,13 @@ public class CombinedName extends Name {
     @Override
     public String getCleanName() {
         return getName().replaceAll("%", " ");
+    }
+
+    @Override
+    public void normaliseBestRecording() {
+        for (Name name : names) {
+            name.getBestRecording().normaliseAndTrimAudioFile();
+        }
     }
 
 }

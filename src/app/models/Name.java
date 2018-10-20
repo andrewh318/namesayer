@@ -125,4 +125,8 @@ public class Name {
     public float getRecordingLength(){
         return getBestRecording().getRecordingLength();
     }
+
+    public void normaliseBestRecording() {
+        getBestRecording().normaliseAndTrimAudioFile();
+    }
 }

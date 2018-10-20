@@ -52,10 +52,10 @@ public class Recording {
         Media media = new Media(new File(_trimmedPath).toURI().toString());
         MediaPlayer mediaPlayer = new MediaPlayer(media);
         mediaPlayer.setVolume(volume);
-        mediaPlayer.setAutoPlay(true);
+        mediaPlayer.play();
         new MediaView(mediaPlayer);
         try {
-            Thread.sleep((long) media.getDuration().toMillis());
+            Thread.sleep((long) getRecordingLength() * 1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -148,7 +148,7 @@ public class Recording {
         }
 
 
-        String trimCommand = "ffmpeg -y -i ./" + tempPath + " -af silenceremove=1:0:-30dB" + " ./" + _trimmedPath;
+        String trimCommand = "ffmpeg -y -i ./" + tempPath + " -af silenceremove=1:0:-25dB:detection=peak" + " ./" + _trimmedPath;
         BashCommand trim = new BashCommand(trimCommand);
         trim.startProcess();
 

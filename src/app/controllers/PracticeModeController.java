@@ -132,10 +132,20 @@ public class PracticeModeController {
 
     @FXML
     private void onPlayButtonClicked(){
-        _practiceMode.getCurrentName().getBestRecording().normaliseAndTrimAudioFile();
-        _practiceMode.playCurrentName(_frameController.getVolume());
-        // start progress indicator
-        _frameController.startProgressBar(_practiceMode.getCurrentName().getRecordingLength());
+        Task<Void> task = new Task<Void>() {
+            @Override
+            public Void call() {
+                _practiceMode.getCurrentName().getBestRecording().normaliseAndTrimAudioFile();
+                return null;
+            }
+        };
+        new Thread(task).start();
+        task.setOnSucceeded(e -> {
+                _practiceMode.playCurrentName(_frameController.getVolume());
+                // start progress indicator
+                _frameController.startProgressBar(_practiceMode.getCurrentName().getRecordingLength());
+            }
+        );
 
     }
     @FXML
@@ -179,11 +189,21 @@ public class PracticeModeController {
         Recording recording = _userRecordings.getSelectionModel().getSelectedItem();
         // check if the item selected is valid
         if (recording != null){
-            recording.normaliseAndTrimAudioFile();
-            // play the recording
-            _practiceMode.playRecording(recording, _frameController.getVolume());
-            // start the progress bar
-            _frameController.startProgressBar(recording.getRecordingLength());
+            Task<Void> task = new Task<Void>() {
+                @Override
+                public Void call() {
+                    recording.normaliseAndTrimAudioFile();
+                    return null;
+                }
+            };
+            new Thread(task).start();
+
+            task.setOnSucceeded(event -> {
+                        _practiceMode.playRecording(recording, _frameController.getVolume());
+                        // start the progress bar
+                        _frameController.startProgressBar(recording.getRecordingLength());
+                    }
+            );
         } else {
             showAlert("Error: No recording selected", "Please select a recording to play");
         }
@@ -205,11 +225,20 @@ public class PracticeModeController {
     // play the database recording followed by the currently selected user recording
     private void onCompareButtonClicked(){
         Recording recording = _userRecordings.getSelectionModel().getSelectedItem();
-        recording.normaliseAndTrimAudioFile();
-        _practiceMode.getCurrentName().getBestRecording().normaliseAndTrimAudioFile();
         // a recording must be selected for comparison
         if (recording != null){
-            _practiceMode.compareNames(recording, _frameController.getVolume());
+            Task<Void> task = new Task<Void>() {
+                @Override
+                public Void call() {
+                    recording.normaliseAndTrimAudioFile();
+                    _practiceMode.getCurrentName().normaliseBestRecording();
+                    return null;
+                }
+            };
+            new Thread(task).start();
+
+            task.setOnSucceeded(e -> {_practiceMode.compareNames(recording, _frameController.getVolume());});
+
         } else {
             showAlert("Error: No recordings selected", "Please select a recording to compare");
         }
