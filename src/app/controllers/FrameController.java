@@ -1,7 +1,9 @@
 package app.controllers;
 
+import app.Main;
 import app.models.NamesModel;
 
+import app.models.ShopModel;
 import com.jfoenix.controls.JFXProgressBar;
 import com.jfoenix.controls.JFXSlider;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -9,11 +11,13 @@ import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -29,6 +33,7 @@ public class FrameController {
     @FXML private BorderPane borderPane;
 
     private NamesModel _model;
+    private ShopModel _shopModel;
     private ListenController _listenController;
 
     // reference to the stage used throughout the application
@@ -45,22 +50,27 @@ public class FrameController {
     private Screen _currentScreen;
 
     public void initialize(){
-        setUpModel();
+        setUpNamesModel();
+        setUpMoneyModel();
         initializeMoney();
         loadListen(_model);
         _currentScreen = Screen.LISTEN;
     }
 
     private void initializeMoney(){
-        SimpleIntegerProperty startingMoney = _model.getMoneyBinding();
+        SimpleIntegerProperty startingMoney = _shopModel.getMoneyBinding();
         _moneyLabel.textProperty().bind(startingMoney.asString());
 
     }
 
 
-    private void setUpModel(){
+    private void setUpNamesModel(){
         _model = new NamesModel();
         _model.setUp();
+    }
+
+    private void setUpMoneyModel(){
+        _shopModel = new ShopModel();
     }
 
     public void setStage(Stage stage){
@@ -92,7 +102,7 @@ public class FrameController {
             _stage.close();
         }
         // always save money on close
-        _model.saveMoney();
+        _shopModel.saveStateToFile();
         _model.deleteFolder(new File(NamesModel.TRIMMED_NORMALISED_DIRECTORY));
     }
 
@@ -120,6 +130,11 @@ public class FrameController {
             loadShop();
             _currentScreen = Screen.SHOP;
         }
+    }
+
+    @FXML
+    private void onTestMicButtonClicked(){
+        loadTestMic();
     }
 
     @FXML
@@ -168,7 +183,7 @@ public class FrameController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/app/views/PracticeSetup.fxml"));
             Parent root = (Parent) loader.load();
             PracticeSetupController controller = (PracticeSetupController) loader.getController();
-            controller.setModel(model);
+            controller.setModels(model, _shopModel);
             controller.setPane(borderPane);
             controller.setUpComboBox();
             controller.setFrameController(this);
@@ -186,7 +201,7 @@ public class FrameController {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/app/views/Shop.fxml"));
                 Parent root = (Parent) loader.load();
                 ShopController controller = loader.getController();
-                controller.setUp(_model);
+                controller.setUp(_model, _shopModel);
                 shopScreen = root;
                 borderPane.setCenter(root);
             } catch (IOException e){
@@ -195,8 +210,26 @@ public class FrameController {
         } else {
             borderPane.setCenter(shopScreen);
         }
+    }
 
+    private void loadTestMic(){
+        // load new playlist FXML
+        Stage stage = new Stage();
+        Parent root;
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/app/views/TestMic.fxml"));
+            root = (Parent) loader.load();
 
+            // need to set CSS for this node as its a new stage
+            Main.setTheme(Main.currentTheme, root);
+
+            stage.setTitle("Test Mic");
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     // duration is duration in seconds

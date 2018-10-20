@@ -3,6 +3,7 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXListView?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
@@ -43,7 +44,7 @@
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <Label fx:id="_currentPlaylistName" alignment="TOP_LEFT" prefHeight="30.0" prefWidth="207.0" styleClass="themed-text" textFill="#157766">
+                  <Label fx:id="_currentPlaylistName" prefHeight="30.0" prefWidth="207.0" styleClass="themed-text" textFill="#157766">
                      <font>
                         <Font size="20.0" />
                      </font>
@@ -62,11 +63,17 @@
                            <font>
                               <Font size="16.0" />
                            </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
                         </JFXButton>
                         <JFXButton fx:id="_deletePlaylistButton" onAction="#onDeletePlaylistButtonClicked" prefHeight="39.0" prefWidth="120.0" styleClass="themed-items" text="Delete" textFill="WHITE">
                            <font>
                               <Font size="16.0" />
                            </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
                         </JFXButton>
                      </children>
                   </HBox>
@@ -85,6 +92,9 @@
                            <HBox.margin>
                               <Insets left="20.0" />
                            </HBox.margin>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
                         </JFXButton>
                      </children>
                   </HBox>
@@ -99,11 +109,17 @@
                            <font>
                               <Font size="16.0" />
                            </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
                         </JFXButton>
                         <JFXButton fx:id="_deleteButton" onAction="#onDeleteButtonClicked" prefHeight="37.0" prefWidth="95.0" styleClass="themed-items" text="Delete" textFill="WHITE">
                            <font>
                               <Font size="16.0" />
                            </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
                         </JFXButton>
                      </children>
                   </HBox>

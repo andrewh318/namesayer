@@ -1,5 +1,6 @@
 package app.controllers;
 
+import app.Main;
 import app.models.Name;
 import app.models.NamesModel;
 import app.models.Playlist;
@@ -25,33 +26,26 @@ import java.io.IOException;
 import java.util.Optional;
 
 public class ListenController {
-    @FXML
-    private JFXListView<Name> _allNamesList;
-    @FXML
-    private JFXListView<Name> _currentPlaylistList;
-    @FXML
-    private JFXListView<Playlist> _allPlaylists;
-    @FXML
-    private Label _currentPlaylistName;
+    @FXML private JFXListView<Name> _allNamesList;
+    @FXML private JFXListView<Name> _currentPlaylistList;
+    @FXML private JFXListView<Playlist> _allPlaylists;
+
+    @FXML private Label _currentPlaylistName;
 
     private FilteredList<Name> _filteredNamesList;
-    @FXML
-    private JFXButton _addButton;
-    private NamesModel _model;
-
-    @FXML
-    private JFXButton _newPlaylistButon;
-    @FXML
-    private JFXButton _deleteButton;
+    @FXML private JFXButton _addButton;
+    @FXML private JFXButton _newPlaylistButon;
+    @FXML private JFXButton _deleteButton;
 
     private static final int MAX_NAME_LENGTH = 50;
 
-    @FXML
-    private TextField _searchBar;
+    @FXML private TextField _searchBar;
 
     private Playlist _currentPlaylist;
 
     private FrameController _frameController;
+
+    private NamesModel _model;
 
     // injects the model into listen controller from frame
     // passes a reference of 'this' controller into the controller
@@ -65,6 +59,7 @@ public class ListenController {
         setUpSearchBar();
         setUpCurrentPlaylistCellFactory();
         bindSearchKeys();
+        bindDeleteButtonsToDelete();
     }
 
     private void setUpListBindings(){
@@ -242,8 +237,12 @@ public class ListenController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/app/views/NewPlaylist.fxml"));
             root = (Parent) loader.load();
+
+            // need to set CSS for this node as its a new stage
+            Main.setTheme(Main.currentTheme, root);
+
             NewPlaylistController controller = loader.getController();
-            controller.setController(this);
+            controller.setController(this, _model);
             stage.setTitle("New Playlist");
             stage.setScene(new Scene(root));
             stage.initModality(Modality.APPLICATION_MODAL);
@@ -340,12 +339,6 @@ public class ListenController {
         }
     }
 
-    private void showAlert(String header, String content){
-        Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-        errorAlert.setHeaderText(header);
-        errorAlert.setContentText(content);
-        errorAlert.showAndWait();
-    }
 
     // show delete confirmation box, returns whether or not user clicks confirm
     private boolean isDeleteConfirmed(){
@@ -361,7 +354,22 @@ public class ListenController {
         }
     }
 
-
+    private void bindDeleteButtonsToDelete(){
+        _allPlaylists.setOnKeyPressed(e -> {
+            if (e.getCode().equals(KeyCode.DELETE) || e.getCode().equals(KeyCode.BACK_SPACE)){
+                if (_allPlaylists.getSelectionModel().getSelectedItem() != null){
+                    onDeletePlaylistButtonClicked();
+                }
+            }
+        });
+        _currentPlaylistList.setOnKeyPressed(e -> {
+            if (e.getCode().equals(KeyCode.DELETE) || e.getCode().equals(KeyCode.BACK_SPACE)){
+                if (_currentPlaylistList.getSelectionModel().getSelectedItem() != null){
+                    onDeleteButtonClicked();
+                }
+            }
+        });
+    }
     private void bindSearchKeys(){
         _searchBar.setOnKeyPressed(e -> {
             // bind autocomplete on enter
@@ -452,6 +460,14 @@ public class ListenController {
             });
             _allNamesList.setItems(_filteredNamesList);
         });
+    }
+
+
+    private void showAlert(String header, String content){
+        Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+        errorAlert.setHeaderText(header);
+        errorAlert.setContentText(content);
+        errorAlert.showAndWait();
     }
 }
 

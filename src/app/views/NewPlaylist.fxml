@@ -14,7 +14,7 @@
          </font>
       </Label>
       <JFXTextField fx:id="_textField" focusColor="#157766" layoutX="80.0" layoutY="78.0" prefHeight="45.0" prefWidth="263.0" />
-      <JFXButton fx:id="_submitButton" layoutX="177.0" layoutY="152.0" onAction="#onSubmitButtonClicked" styleClass="themed-items" stylesheets="@../../resources/styles/green.css" text="Create" textFill="WHITE">
+      <JFXButton fx:id="_submitButton" layoutX="177.0" layoutY="152.0" onAction="#onSubmitButtonClicked" styleClass="themed-items" text="Create" textFill="WHITE">
          <font>
             <Font size="16.0" />
          </font>

@@ -2,6 +2,7 @@ package app.controllers;
 
 import app.models.NamesModel;
 import app.models.Playlist;
+import app.models.ShopModel;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import javafx.fxml.FXML;
@@ -13,18 +14,18 @@ import javafx.scene.layout.BorderPane;
 import java.io.IOException;
 
 public class PracticeSetupController {
-    @FXML
-    private JFXButton _continueButton;
-    @FXML
-    private JFXComboBox<Playlist> _comboBox;
+    @FXML private JFXButton _continueButton;
+    @FXML private JFXComboBox<Playlist> _comboBox;
     private BorderPane _borderPane;
 
     private NamesModel _model;
+    private ShopModel _shopModel;
     private FrameController _controller;
 
 
-    public void setModel(NamesModel model){
+    public void setModels(NamesModel model, ShopModel shopModel){
         _model = model;
+        _shopModel = shopModel;
     }
 
     public void setUpComboBox(){
@@ -56,7 +57,7 @@ public class PracticeSetupController {
                 Parent root = (Parent) loader.load();
                 PracticeModeController controller = loader.getController();
                 controller.setPlaylist(playlist);
-                controller.setModel(_model);
+                controller.setModels(_model, _shopModel);
                 controller.setFrameController(_controller);
                 controller.setPane(_borderPane);
                 _borderPane.setCenter(root);

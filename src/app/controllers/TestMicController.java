@@ -1,0 +1,89 @@
+package app.controllers;
+
+import app.models.Recording;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXProgressBar;
+import javafx.concurrent.Task;
+import javafx.fxml.FXML;
+import javafx.stage.Stage;
+
+import javax.sound.sampled.*;
+
+public class TestMicController {
+    private TargetDataLine _line;
+    @FXML private JFXButton closeButton;
+    @FXML private JFXProgressBar micLevel;
+
+    public void initialize(){
+        setUpMicInput();
+        Task<Void> task = new Task<Void>() {
+            @Override
+            public Void call() {
+                while (true){
+                    if (isCancelled()){
+                        break;
+                    } else {
+                        double micLevel = getMicLevel();
+                        updateProgress(micLevel, 1);
+                    }
+                }
+                return null;
+            }
+        };
+        micLevel.progressProperty().bind(task.progressProperty());
+        new Thread(task).start();
+
+    }
+    @FXML
+    private void onCloseButtonClicked(){
+        Stage stage = (Stage) closeButton.getScene().getWindow();
+        stage.close();
+
+    }
+
+    //Calculates the rms level of the mic based on a byte array created in setUpMicInput
+    public double calculateRMSLevel(byte[] audioData) {
+        // audioData might be buffered data read from a data line
+        long lSum = 0;
+        for(int i=0; i<audioData.length; i++)
+            lSum = lSum + audioData[i];
+
+        double dAvg = lSum / audioData.length;
+
+        double sumMeanSquare = 0d;
+        for(int j=0; j<audioData.length; j++)
+            sumMeanSquare = sumMeanSquare + Math.pow(audioData[j] - dAvg, 2d);
+
+        double averageMeanSquare = sumMeanSquare / audioData.length;
+        return ((Math.pow(averageMeanSquare,0.5d) + 0.5) / 100);
+    }
+
+    //Reads data from the microphone
+    public void setUpMicInput() {
+
+        // Open a TargetDataLine for getting microphone input & sound level
+        _line = null;
+        AudioFormat format = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED,44100, 16, 2, 4, 44100, false);
+        DataLine.Info info = new DataLine.Info(TargetDataLine.class, format); //     format is an AudioFormat object
+        if (!AudioSystem.isLineSupported(info)) {
+            System.out.println("The line is not supported.");
+        }
+        // Obtain and open the line.
+        try {
+            _line = (TargetDataLine) AudioSystem.getLine(info);
+            _line.open(format);
+            _line.start();
+        } catch (LineUnavailableException ex) {
+            System.out.println("The TargetDataLine is Unavailable.");
+        }
+
+    }
+
+    //gets the current level of the mic
+    public double getMicLevel() {
+        byte[] bytes = new byte[_line.getBufferSize() / 5];
+        _line.read(bytes, 0, bytes.length);
+        return calculateRMSLevel(bytes);
+    }
+
+}
