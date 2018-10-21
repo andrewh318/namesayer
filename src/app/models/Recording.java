@@ -149,7 +149,7 @@ public class Recording {
 
 
         //trim
-        String trimCommand = "ffmpeg -y -i ./" + _path + " -af silenceremove=1:0:-40dB:detection=peak" + " ./" + _trimmedPath;
+        String trimCommand = "ffmpeg -y -i ./" + _path + " -af silenceremove=1:0:-40dB " + " ./" + _trimmedPath;
         BashCommand trim = new BashCommand(trimCommand);
         trim.startProcess();
 
