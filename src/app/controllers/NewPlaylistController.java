@@ -25,6 +25,9 @@ public class NewPlaylistController {
         bindEnterKey();
     }
 
+    /**
+     * Allows user to press enter to automatically submit the playlist name they entered
+     */
     private void bindEnterKey(){
         _textField.setOnKeyPressed(new EventHandler<KeyEvent>()
         {
@@ -38,7 +41,12 @@ public class NewPlaylistController {
             }
         });
     }
-    // need to inject listen controller into this class, as well as the list of playlists
+
+    /**
+     * Method called from Listen controller to inject requied information into this class
+     * @param controller ListenController so playlist can be created from this class
+     * @param model Model containing information about user created playlists
+     */
     public void setController(ListenController controller, NamesModel model){
         _controller = controller;
         _model = model;
@@ -47,12 +55,14 @@ public class NewPlaylistController {
     @FXML
     private void onSubmitButtonClicked(){
         String name;
+        // if use did not enter any name, call playlist 'default playlist'
         if (_textField.getText().length() == 0){
             name = NamesModel.DEFAULT_PLAYLIST_NAME;
         } else {
             name = _textField.getText();
         }
 
+        // show an alert if playlist already exists, otherwise create the playlist
         if (checkIfPlaylistNameExists(name)){
             // show an error saying playlist already exists
             showAlert("Error: Playlist aleady exists", "Please choose a new playlist name");
@@ -69,6 +79,11 @@ public class NewPlaylistController {
 
     }
 
+    /**
+     * Searches all playlist to see if name already exists
+     * @param playlistName Playlist name user entered
+     * @return Returns true if name already exists, false otherwise.
+     */
     private boolean checkIfPlaylistNameExists(String playlistName){
         List<Playlist> playlists = _model.getPlaylists();
 

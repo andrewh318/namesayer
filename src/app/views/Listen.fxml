@@ -85,7 +85,7 @@
                   <HBox alignment="CENTER" prefHeight="93.0" prefWidth="485.0">
                      <children>
                         <TextField fx:id="_searchBar" prefHeight="39.0" prefWidth="281.0" />
-                        <JFXButton fx:id="_addButton" onAction="#onAddButtonClicked" prefHeight="37.0" prefWidth="95.0" styleClass="themed-items" text="Add" textFill="WHITE">
+                        <JFXButton fx:id="_addButton" onAction="#onAddButtonClicked" prefHeight="37.0" prefWidth="83.0" styleClass="themed-items" text="Add" textFill="WHITE">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -100,12 +100,12 @@
                   </HBox>
                </children>
             </VBox>
-            <VBox prefHeight="548.0" prefWidth="275.0" style="-fx-background-color: efefef;">
+            <VBox prefHeight="593.0" prefWidth="311.0" style="-fx-background-color: efefef;">
                <children>
-                  <JFXListView fx:id="_currentPlaylistList" prefHeight="562.0" prefWidth="275.0" style="-fx-background-color: efefef;" />
-                  <HBox alignment="CENTER" prefHeight="93.0" prefWidth="275.0" spacing="30.0">
+                  <JFXListView fx:id="_currentPlaylistList" prefHeight="562.0" prefWidth="284.0" style="-fx-background-color: efefef;" />
+                  <HBox alignment="CENTER" prefHeight="93.0" prefWidth="275.0" spacing="15.0">
                      <children>
-                        <JFXButton onAction="#onPlayCLicked" prefHeight="37.0" prefWidth="95.0" styleClass="themed-items" text="Play" textFill="WHITE">
+                        <JFXButton onAction="#onPlayCLicked" prefHeight="37.0" prefWidth="83.0" styleClass="themed-items" text="Play" textFill="WHITE">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -113,7 +113,15 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </JFXButton>
-                        <JFXButton fx:id="_deleteButton" onAction="#onDeleteButtonClicked" prefHeight="37.0" prefWidth="95.0" styleClass="themed-items" text="Delete" textFill="WHITE">
+                        <JFXButton fx:id="_deleteButton" onAction="#onDeleteButtonClicked" prefHeight="37.0" prefWidth="83.0" styleClass="themed-items" text="Delete" textFill="WHITE">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </JFXButton>
+                        <JFXButton onAction="#onShuffleClicked" prefHeight="37.0" prefWidth="83.0" styleClass="themed-items" text="Shuffle" textFill="WHITE">
                            <font>
                               <Font size="16.0" />
                            </font>

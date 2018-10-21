@@ -2,9 +2,11 @@
 
 package app.models;
 
+import javafx.concurrent.Task;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
+import javafx.util.Duration;
 
 import javax.sound.sampled.*;
 import java.io.*;
@@ -29,15 +31,9 @@ public class Recording {
         return _name;
     }
 
-    public String getDate(){
-        return _date;
-    }
-
     public String getPath(){
         return _path;
     }
-
-    public String getTrimmedPath() { return _trimmedPath; }
 
     //Bad quality is appended to the string representation of the recording when the _bad field is true
     @Override
@@ -46,16 +42,12 @@ public class Recording {
         return string;
     }
 
-    //Uses AudioClip and syncLatch to play a recording and not allow overlap when this method is called twice on the
-    //same thread
+
     public void playRecording(double volume) {
-        Media media = new Media(new File(_trimmedPath).toURI().toString());
-        MediaPlayer mediaPlayer = new MediaPlayer(media);
-        mediaPlayer.setVolume(volume);
-        mediaPlayer.play();
-        new MediaView(mediaPlayer);
+        BashCommand playRecording = new BashCommand("ffplay -loglevel panic -autoexit -nodisp -i '" + _trimmedPath + "'");
+        playRecording.startProcess();
         try {
-            Thread.sleep((long) media.getDuration().toMillis());
+            playRecording.getProcess().waitFor();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -88,15 +80,18 @@ public class Recording {
     }
 
     public float getRecordingLength(){
-        // gets the recording length of the TRIMMED files
+        // gets the recording length of the _trimmed_ files
         File audioFile = new File(_trimmedPath);
         try {
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(audioFile);
             AudioFormat format = audioInputStream.getFormat();
+
             long audioFilelength = audioFile.length();
             int frameSize = format.getFrameSize();
             float frameRate = format.getFrameRate();
+
             float durationInSeconds = (audioFilelength / (frameSize * frameRate));
+
             return durationInSeconds;
         } catch (UnsupportedAudioFileException e) {
             e.printStackTrace();
@@ -134,6 +129,7 @@ public class Recording {
         double maxVolumeInt = Double.parseDouble(maxVolume);
 
         double volumeChange = targetDB - maxVolumeInt;
+        System.out.println("Volume change: " + volumeChange);
 
         String tempPath = NamesModel.TRIMMED_NORMALISED_DIRECTORY + "/output.wav";
 
@@ -149,7 +145,7 @@ public class Recording {
 
 
         //trim
-        String trimCommand = "ffmpeg -y -i ./" + _path + " -af silenceremove=1:0:-40dB:detection=peak" + " ./" + _trimmedPath;
+        String trimCommand = "ffmpeg -y -i ./" + _path + " -af silenceremove=1:0:-40dB" + " ./" + _trimmedPath;
         BashCommand trim = new BashCommand(trimCommand);
         trim.startProcess();
 

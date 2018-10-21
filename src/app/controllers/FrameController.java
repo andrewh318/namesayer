@@ -25,6 +25,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Enum representing the different states of the application.
+ */
 enum Screen {
     LISTEN, PRACTICE, SHOP
 }
@@ -49,6 +52,8 @@ public class FrameController {
 
     private Screen _currentScreen;
 
+
+
     public void initialize(){
         setUpNamesModel();
         setUpMoneyModel();
@@ -57,6 +62,9 @@ public class FrameController {
         _currentScreen = Screen.LISTEN;
     }
 
+    /**
+     * Sets up the global application money state by binding the text label to the money field in Shop Model
+     */
     private void initializeMoney(){
         SimpleIntegerProperty startingMoney = _shopModel.getMoneyBinding();
         _moneyLabel.textProperty().bind(startingMoney.asString());
@@ -86,6 +94,10 @@ public class FrameController {
         });
     }
 
+    /**
+     * On close request, application prompts user to save playlists created in the session
+     * Application also saves the money user has accumulated and what themes they have unlocked
+     */
     private void closeRequest(){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmation");
@@ -138,6 +150,9 @@ public class FrameController {
     }
 
     @FXML
+    /**
+     * Opens a file chooser to allow user to select a playlist to upload (only text files acepteD)
+     */
     private void onUploadButtonClicked(){
         FileChooser fc = new FileChooser();
         fc.setTitle("Open Playlist File");
@@ -165,11 +180,10 @@ public class FrameController {
     private void loadListen(NamesModel model){
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/app/views/Listen.fxml"));
-            Parent root = (Parent) loader.load();
-            _listenController = (ListenController) loader.getController();
+            Parent root = loader.load();
+            _listenController = loader.getController();
             _listenController.setModel(model, this);
             borderPane.setCenter(root);
-
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -178,11 +192,19 @@ public class FrameController {
 
     // pass a reference of the border pane into the practice set up controller so it can change the scene to
     // practice mode
+
+    /**
+     * Loads the practice set up screen and injects the model and border pane into it
+     * @param model Practice mode requires the application model so user can select what playlist they want to practice
+     * @param borderPane Practice mode requires reference to the border pane so it can switch scenes to the practice mode
+     */
     private void loadPractice(NamesModel model, BorderPane borderPane){
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/app/views/PracticeSetup.fxml"));
-            Parent root = (Parent) loader.load();
-            PracticeSetupController controller = (PracticeSetupController) loader.getController();
+            Parent root = loader.load();
+            PracticeSetupController controller = loader.getController();
+
+            // initializes practice set up by passing it the required objects it needs
             controller.setModels(model, _shopModel);
             controller.setPane(borderPane);
             controller.setUpComboBox();
@@ -194,7 +216,10 @@ public class FrameController {
     }
 
 
-    // we only want to instantiate the shop screen once, if its already been laoded before just get the old reference
+    /**
+     * Loads the shop screen. We only want to instantiate the shop once so if it has already been loaded befoe we
+     * simply get the old reference to it.
+     */
     private void loadShop(){
         if (shopScreen == null){
             try {
@@ -232,7 +257,10 @@ public class FrameController {
         }
     }
 
-    // duration is duration in seconds
+    /**
+     * Method is called from the listen screen and practice screen when a user plays or makes a recording
+     * @param duration Duration of the progress bar in seconds
+     */
     public void startProgressBar(float duration){
         Task<Void> task = new Task<Void>() {
             @Override
@@ -255,8 +283,6 @@ public class FrameController {
         errorAlert.setHeaderText(header);
         errorAlert.setContentText(content);
         errorAlert.showAndWait();
-    }
-    public void setVolume(float volume){
     }
 
     public double getVolume() {

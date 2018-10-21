@@ -2,11 +2,9 @@
 
 package app.models;
 
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import javax.rmi.ssl.SslRMIClientSocketFactory;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +24,7 @@ public class NamesModel {
     public static final String TRIMMED_NORMALISED_DIRECTORY = "trimmedNormalised";
     public static final String COMBINED_NAMES_DIRECTORY = "combinedNames";
 
-    public static final int DEFAULT_MONEY = 1000;
+    public static final int DEFAULT_MONEY = 1500;
 
 
 
@@ -43,11 +41,9 @@ public class NamesModel {
     }
 
 
-    // renamed this from 'readDirectory' to setUp() toto prevent confusion
     public void setUp(){
         // remove all database/user names when directories are read
-        // to prevent double reading of names
-
+        // to prevent duplicate reading of names
         clearPlaylists();
 
         deleteFolder(new File(NamesModel.TRIMMED_NORMALISED_DIRECTORY));
@@ -62,6 +58,9 @@ public class NamesModel {
         setUpDefaultPlaylist();
     }
 
+    /**
+     * Makes the required directories that the application requiress
+     */
     private void makeDirectories() {
         new File(DATABASERECORDINGSDIRECTORY).mkdir();
         new File(USERRECORDINGSDIRECTORY).mkdir();
@@ -81,7 +80,10 @@ public class NamesModel {
         _userNames.clear();
     }
 
-
+    /**
+     * If there are no playlists previously (user either deleted the file or is there first time using the application)
+     * a default playlist will be created.
+     */
     private void setUpDefaultPlaylist(){
         if (_allPlaylists.size() == 0){
             // if there are no playlists create a default playlist
@@ -147,7 +149,10 @@ public class NamesModel {
     }
 
 
-
+    /**
+     * Method that reads a file in the combined recordings folder.
+     * @param file
+     */
     private void readCombinedRecording(File file) {
 
         //Parse the file name and create a new recording object
@@ -163,28 +168,28 @@ public class NamesModel {
         if (combinedName == null) {
             combinedName = new CombinedName(recording.getName());
             _combinedNames.add(combinedName);
+            
+            //Split name of recording by the replacement for space, "%"
+            String[] stringNames = recording.getName().split("%");
+
+            //Find the name object corresponding to each string and add it to the combined Name
+            for (String stringName : stringNames) {
+                stringName = stringName.trim();
+                stringName = stringName.toLowerCase();
+                stringName = stringName.substring(0, 1).toUpperCase() + stringName.substring(1);
+
+                Name name = searchListOfName(_databaseNames, stringName);
+
+                if (name != null) {
+                    combinedName.addName(name);
+                } else {
+                    System.out.println(name + "not found in database.");
+                }
+            }
         }
 
         //Add the recording to the name object
         combinedName.addUserRecording(recording);
-
-        //Split name of recording by the replacement for space, "%"
-        String[] stringNames = recording.getName().split("%");
-
-        //Find the name object corresponding to each string and add it to the combined Name
-        for (String stringName : stringNames) {
-            stringName = stringName.trim();
-            stringName = stringName.toLowerCase();
-            stringName = stringName.substring(0, 1).toUpperCase() + stringName.substring(1);
-
-            Name name = searchListOfName(_databaseNames, stringName);
-
-            if (name != null) {
-                combinedName.addName(name);
-            } else {
-                System.out.println(name + "not found in database.");
-            }
-        }
     }
 
     private int countBadRecordings(Recording recording) {
@@ -289,7 +294,6 @@ public class NamesModel {
     //an existing databasename, or a new combined name.
 
     public Name findName(String names) {
-
         //If the string is empty return null
         if (names.isEmpty()){
             return null;
@@ -305,6 +309,7 @@ public class NamesModel {
 
             if (combinedName == null) {
                 combinedName = new CombinedName(names);
+
             } else {
                 return combinedName;
             }
@@ -331,6 +336,7 @@ public class NamesModel {
             }
         }
 
+        _combinedNames.add(combinedName);
         //Return the new combined name
         return combinedName;
 

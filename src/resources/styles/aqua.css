@@ -1,0 +1,28 @@
+.themed-items{
+    -fx-background-color: #22a6b3;
+}
+
+.themed-text{
+    -fx-text-fill: #22a6b3;
+}
+
+.jfx-progress-bar > .bar {
+    -fx-background-color: #22a6b3;
+}
+
+.jfx-slider > .colored-track {
+    -fx-background-color: #22a6b3;
+}
+
+.jfx-slider > .animated-thumb {
+    -fx-background-color: #22a6b3;
+}
+
+.jfx-slider > .thumb {
+    -fx-background-color: #22a6b3;
+}
+
+.jfx-slider .slider-value {
+    -fx-fill: #22a6b3;
+    -fx-stroke: white;
+}
