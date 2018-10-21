@@ -147,7 +147,10 @@ public class NamesModel {
     }
 
 
-
+    /**
+     * Method that reads a file in the combined recordings folder.
+     * @param file
+     */
     private void readCombinedRecording(File file) {
 
         //Parse the file name and create a new recording object
@@ -163,28 +166,28 @@ public class NamesModel {
         if (combinedName == null) {
             combinedName = new CombinedName(recording.getName());
             _combinedNames.add(combinedName);
+            
+            //Split name of recording by the replacement for space, "%"
+            String[] stringNames = recording.getName().split("%");
+
+            //Find the name object corresponding to each string and add it to the combined Name
+            for (String stringName : stringNames) {
+                stringName = stringName.trim();
+                stringName = stringName.toLowerCase();
+                stringName = stringName.substring(0, 1).toUpperCase() + stringName.substring(1);
+
+                Name name = searchListOfName(_databaseNames, stringName);
+
+                if (name != null) {
+                    combinedName.addName(name);
+                } else {
+                    System.out.println(name + "not found in database.");
+                }
+            }
         }
 
         //Add the recording to the name object
         combinedName.addUserRecording(recording);
-
-        //Split name of recording by the replacement for space, "%"
-        String[] stringNames = recording.getName().split("%");
-
-        //Find the name object corresponding to each string and add it to the combined Name
-        for (String stringName : stringNames) {
-            stringName = stringName.trim();
-            stringName = stringName.toLowerCase();
-            stringName = stringName.substring(0, 1).toUpperCase() + stringName.substring(1);
-
-            Name name = searchListOfName(_databaseNames, stringName);
-
-            if (name != null) {
-                combinedName.addName(name);
-            } else {
-                System.out.println(name + "not found in database.");
-            }
-        }
     }
 
     private int countBadRecordings(Recording recording) {
@@ -289,7 +292,6 @@ public class NamesModel {
     //an existing databasename, or a new combined name.
 
     public Name findName(String names) {
-
         //If the string is empty return null
         if (names.isEmpty()){
             return null;
@@ -305,6 +307,7 @@ public class NamesModel {
 
             if (combinedName == null) {
                 combinedName = new CombinedName(names);
+
             } else {
                 return combinedName;
             }
@@ -331,6 +334,7 @@ public class NamesModel {
             }
         }
 
+        _combinedNames.add(combinedName);
         //Return the new combined name
         return combinedName;
 

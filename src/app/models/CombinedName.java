@@ -19,6 +19,7 @@ public class CombinedName extends Name {
 
     @Override
     public void playRecording(double volume) {
+        System.out.println("Number of names " + names.size());
         for (Name name : names) {
             name.playRecording(volume);
         }
@@ -88,5 +89,4 @@ public class CombinedName extends Name {
             name.getBestRecording().normaliseAndTrimAudioFile();
         }
     }
-
 }

@@ -2,9 +2,11 @@
 
 package app.models;
 
+import javafx.concurrent.Task;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
+import javafx.util.Duration;
 
 import javax.sound.sampled.*;
 import java.io.*;
@@ -49,13 +51,10 @@ public class Recording {
     //Uses AudioClip and syncLatch to play a recording and not allow overlap when this method is called twice on the
     //same thread
     public void playRecording(double volume) {
-        Media media = new Media(new File(_trimmedPath).toURI().toString());
-        MediaPlayer mediaPlayer = new MediaPlayer(media);
-        mediaPlayer.setVolume(volume);
-        mediaPlayer.play();
-        new MediaView(mediaPlayer);
+        BashCommand playRecording = new BashCommand("ffplay -loglevel panic -autoexit -nodisp -i '" + _trimmedPath + "'");
+        playRecording.startProcess();
         try {
-            Thread.sleep((long) getRecordingLength() * 1000);
+            playRecording.getProcess().waitFor();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -134,6 +133,7 @@ public class Recording {
         double maxVolumeInt = Double.parseDouble(maxVolume);
 
         double volumeChange = targetDB - maxVolumeInt;
+        System.out.println("Volume change: " + volumeChange);
 
         String tempPath = NamesModel.TRIMMED_NORMALISED_DIRECTORY + "/output.wav";
 
