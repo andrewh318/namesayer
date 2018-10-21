@@ -256,12 +256,13 @@ public class ListenController {
         Parent root;
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/app/views/NewPlaylist.fxml"));
-            root = (Parent) loader.load();
+            root = loader.load();
 
             // need to set CSS for this node as its a new stage
             Main.setTheme(Main.currentTheme, root);
 
             NewPlaylistController controller = loader.getController();
+            //pass a reference of 'this' controller into the playlist controller so it can create a new playlist
             controller.setController(this, _model);
             stage.setTitle("New Playlist");
             stage.setScene(new Scene(root));

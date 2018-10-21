@@ -195,9 +195,6 @@ public class FrameController {
 
     }
 
-    // pass a reference of the border pane into the practice set up controller so it can change the scene to
-    // practice mode
-
     /**
      * Loads the practice set up screen and injects the model and border pane into it
      * @param model Practice mode requires the application model so user can select what playlist they want to practice
@@ -242,6 +239,9 @@ public class FrameController {
         }
     }
 
+    /**
+     * Loads the test mic screen and applies the appopriate css file to it
+     */
     private void loadTestMic(){
         // load new playlist FXML
         Stage stage = new Stage();
