@@ -1,6 +1,7 @@
 package app.controllers;
 
 import app.Main;
+import app.models.BashCommand;
 import app.models.Name;
 import app.models.NamesModel;
 import app.models.Playlist;
@@ -22,7 +23,10 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Optional;
 
 public class ListenController {

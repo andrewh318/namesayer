@@ -1,12 +1,17 @@
 package app.controllers;
 
 import app.Main;
+import app.models.BashCommand;
 import app.models.NamesModel;
 
 import app.models.ShopModel;
 import com.jfoenix.controls.JFXProgressBar;
 import com.jfoenix.controls.JFXSlider;
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,8 +25,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,6 +61,7 @@ public class FrameController {
     public void initialize(){
         setUpNamesModel();
         setUpMoneyModel();
+        setUpVolumeSlider();
         initializeMoney();
         loadListen(_model);
         _currentScreen = Screen.LISTEN;
@@ -288,18 +293,37 @@ public class FrameController {
     public double getVolume() {
         return _volumeSlider.getValue();
     }
-    /*
-    public void setUpVolumeSlider() {
+
+
+    private void setUpVolumeSlider(){
+        String getVolume = "amixer get Master | awk '$0~/%/{print $4}' | tr -d '[]%'";
+        BashCommand cmd = new BashCommand(getVolume);
+        cmd.startProcess();
+
+        Process volumeInit = cmd.getProcess();
+
+
+        InputStream inputStream = volumeInit.getInputStream();
+        BufferedReader reader = new BufferedReader((new InputStreamReader(inputStream)));
+        String volumeLevel = null;
+        try {
+            volumeLevel = reader.readLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        double volume = Double.parseDouble(volumeLevel);
+        _volumeSlider.setValue(volume);
+
         _volumeSlider.valueProperty().addListener(new ChangeListener<Number>() {
-            public void changed(ObservableValue<? extends Number> ov,
-                                Number old_val, Number new_val) {
-                System.out.println(new_val.doubleValue());
-                opacityValue.setText(String.format("%.2f", new_val));
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                double volume = newValue.doubleValue() * 100;
+                String cmd = "amixer set 'Master' " + volume + "%";
+                BashCommand setMaster = new BashCommand(cmd);
+                setMaster.startProcess();
             }
         });
     }
-    */
-
-
 
 }
