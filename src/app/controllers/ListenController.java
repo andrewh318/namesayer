@@ -103,6 +103,9 @@ public class ListenController {
                     if (searchText.contains(" ")) {
                         lastNameofSearchText = searchText.substring(searchText.lastIndexOf(" ") + 1);
                         beginningOfSearchText = searchText.substring(0, searchText.lastIndexOf(" ") + 1);
+                    } else if (searchText.contains("-")) {
+                        lastNameofSearchText = searchText.substring(searchText.lastIndexOf("-") + 1);
+                        beginningOfSearchText = searchText.substring(0, searchText.lastIndexOf("-") + 1);
                     } else {
                         lastNameofSearchText = searchText;
                         beginningOfSearchText = "";

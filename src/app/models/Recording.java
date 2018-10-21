@@ -25,6 +25,7 @@ public class Recording {
         _path = path;
         _trimmedPath = trimmedPath;
         _time = time;
+        countBadRecordings();
     }
 
     public String getName(){
@@ -58,10 +59,6 @@ public class Recording {
         _numOfBadRecordings++;
         // write bad recording to file
         writeToFile();
-    }
-
-    public void setBadRecordings(int num){
-        _numOfBadRecordings = num;
     }
 
     public int getBadRecordings(){
@@ -99,6 +96,27 @@ public class Recording {
             e.printStackTrace();
         }
         return 0;
+    }
+
+    private void countBadRecordings() {
+        // Read the bad names file to see if the recording has any bad ratings associated with it
+        BufferedReader br;
+        // Count of how many bad recordings there are
+        int numOfBadRecordings = 0;
+        try {
+            br = new BufferedReader(new FileReader(NamesModel.BADNAMESFILE));
+            String st;
+            while ((st = br.readLine()) != null) {
+                // compare the recording to the current name
+                if (st.equals(this.toString())){
+                    numOfBadRecordings++;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        _numOfBadRecordings = numOfBadRecordings;
     }
 
     public void normaliseAndTrimAudioFile() {

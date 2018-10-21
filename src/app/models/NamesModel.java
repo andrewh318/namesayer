@@ -101,8 +101,9 @@ public class NamesModel {
         }
     }
 
-
-
+    /**
+     * Loops through all the files in the directories, and call the appropriate read method on each file.
+     */
     private void readDirectories() {
 
         for (File file : new File(DATABASERECORDINGSDIRECTORY).listFiles()) {
@@ -124,7 +125,11 @@ public class NamesModel {
 
     }
 
-
+    /**
+     * Parses the fileName of a file, and creates a recording object based on the extracted information.
+     * @param file The file to be parsed. Must have the filename format of the database names.
+     * @return The created recording object.
+     */
     private Recording parseFilename(File file) {
         String fileName = "";
         try {
@@ -150,8 +155,9 @@ public class NamesModel {
 
 
     /**
-     * Method that reads a file in the combined recordings folder.
-     * @param file
+     * Method that reads a combined recording wav file. Creates a new combinedName object if it is not already
+     * in the database, otherwise adds the recording to the existing combinedName object.
+     * @param file The combined recording file to be read.
      */
     private void readCombinedRecording(File file) {
 
@@ -192,29 +198,12 @@ public class NamesModel {
         combinedName.addUserRecording(recording);
     }
 
-    private int countBadRecordings(Recording recording) {
-        // Read the bad names file to see if the recording has any bad ratings associated with it
-        BufferedReader br;
-        // Count of how many bad recordings there are
-        int numOfBadRecordings = 0;
-        try {
-            br = new BufferedReader(new FileReader(BADNAMESFILE));
-            String st;
-            while ((st = br.readLine()) != null) {
-                // compare the recording to the current name
-                if (st.equals(recording.toString())){
-                    numOfBadRecordings++;
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
-        return numOfBadRecordings;
-    }
-
-    //Parses a wav file specified by filename, creates a recording object, and adds it to the appropriate name object
-    //in the database
+    /**
+     * Method that reads a database recording wav file. Creates a recording object, and adds it to the appropriate
+     * existing name object, otherwise adds it to a new name object.
+     * @param file The database recording wav file to be read.
+     */
     private void readDatabaseRecording(File file) {
 
         Recording recording = parseFilename(file);
@@ -222,10 +211,6 @@ public class NamesModel {
         if (recording == null) {
             return;
         }
-
-        int numBadRecordings = countBadRecordings(recording);
-
-        recording.setBadRecordings(numBadRecordings);
 
         Name name = searchListOfName(_databaseNames, recording.getName());
 
@@ -238,6 +223,11 @@ public class NamesModel {
         name.addDatabaseRecording(recording);
     }
 
+    /**
+     * Method that reads a user recording wav file. Creates a recording object, and adds it to the appropriate
+     * existing name object.
+     * @param file The user recording wav file to be read.
+     */
     public void readUserRecording(File file) {
         Recording recording = parseFilename(file);
 
@@ -254,7 +244,11 @@ public class NamesModel {
         }
     }
 
-    //Method that reads a playlist file
+    /**
+     * Reads a playlist text file, creates a playlist object, and adds all valid names into the playlist.
+     * @param file The playlist text file to be read.
+     * @return a list of invalid names that cant be read into the playlist.
+     */
     public List<String> readPlaylist(File file) {
 
         String playlistName = file.getName().substring(0, file.getName().lastIndexOf('.'));
@@ -289,9 +283,13 @@ public class NamesModel {
         return invalidNames;
     }
 
-
-    //Method that reads in a string in the playlist or search bar format, and returns either an existing combined name,
-    //an existing databasename, or a new combined name.
+    /**
+     * Method that reads in a string in the playlist or search bar format, and returns either an existing combined name,
+     * an existing databasename, or a new combined name. Returns null if one or more of the individual names are not
+     * in the database.
+     * @param names a string of names. Can be a single name or multiple names separated by spaces.
+     * @return The name object that the string corresponds to, or null if it is invalid
+     */
 
     public Name findName(String names) {
         //If the string is empty return null
@@ -343,6 +341,13 @@ public class NamesModel {
 
     }
 
+    /**
+     * A name string is passed in. Removes all excess spaces and replaces single spaces with %. Capitalises the first
+     * letter of each word.
+     * @param names The names string in the format in which it is typed in the search bar or as part of a playlist file.
+     * @return A formatted version of the input name that matches the format in all name objects in the database. Can be
+     * then used as an input to findName.
+     */
     public String formatNamesString (String names) {
 
         String formattedName = "";
@@ -353,9 +358,12 @@ public class NamesModel {
         for (String name : namesArray) {
             name = name.trim();
             name = name.toLowerCase();
-            name = name.substring(0, 1).toUpperCase() + name.substring(1);
+            if (name.length() > 0) {
+                name = name.substring(0, 1).toUpperCase() + name.substring(1);
+                formattedName = formattedName + name + "%";
+            }
 
-            formattedName = formattedName + name + "%";
+
         }
         if (!(formattedName.isEmpty())) {
             formattedName = formattedName.substring(0, formattedName.length() - 1);
@@ -364,15 +372,9 @@ public class NamesModel {
         return formattedName;
     }
 
-
-    public void addPlaylist(Playlist playlist){
-        _allPlaylists.add(playlist);
-    }
-
-    public void deletePlaylist(Playlist playlist){
-        _allPlaylists.remove(playlist);
-    }
-
+    /**
+     * Saves all of the playlists stores as objects in the application to text files.
+     */
     public void savePlaylists(){
         ObservableList<Playlist> playlists = this.getPlaylists();
 
@@ -407,6 +409,10 @@ public class NamesModel {
         }
     }
 
+    /**
+     * Deletes a folder and its contents.
+     * @param folder The file object representing the directory to be deleted
+     */
     public void deleteFolder(File folder) {
         File[] files = folder.listFiles();
         if(files!=null) { //some JVMs return null for empty dirs
@@ -421,6 +427,12 @@ public class NamesModel {
         folder.delete();
     }
 
+    /**
+     * Searches any list of Name objects by the string representation of a name.
+     * @param namesList The list of Name objects to be searched.
+     * @param stringName The string name of the name you wish to find.
+     * @return The name that is found, or null if it is not found
+     */
     private Name searchListOfName(List<Name> namesList, String stringName) {
 
         for (Name name : namesList) {
@@ -432,5 +444,11 @@ public class NamesModel {
         return null;
     }
 
+    public void addPlaylist(Playlist playlist){
+        _allPlaylists.add(playlist);
+    }
 
+    public void deletePlaylist(Playlist playlist){
+        _allPlaylists.remove(playlist);
+    }
 }
