@@ -55,7 +55,7 @@ public class Recording {
         mediaPlayer.play();
         new MediaView(mediaPlayer);
         try {
-            Thread.sleep((long) getRecordingLength() * 1000);
+            Thread.sleep((long) media.getDuration().toMillis());
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
