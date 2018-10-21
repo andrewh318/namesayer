@@ -13,19 +13,21 @@ public class ShopController {
     public static final String ITEM_OWNED = "Owned";
     public static final int THEME_PRICE = 500;
 
-
+    // buttons that change the application theme
     @FXML private JFXButton purpleTheme;
     @FXML private JFXButton blueTheme;
     @FXML private JFXButton redTheme;
     @FXML private JFXButton aquaTheme;
     @FXML private JFXButton yellowTheme;
 
+    // button that unlocks the theme
     @FXML private JFXButton purpleUnlock;
     @FXML private JFXButton blueUnlock;
     @FXML private JFXButton redUnlock;
     @FXML private JFXButton aquaUnlock;
     @FXML private JFXButton yellowUnlock;
 
+    // icon that either shows if a theme is locked or unlocked
     @FXML private FontAwesomeIconView purpleIcon;
     @FXML private FontAwesomeIconView blueIcon;
     @FXML private FontAwesomeIconView redIcon;
