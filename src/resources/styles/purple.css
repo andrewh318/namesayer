@@ -3,7 +3,7 @@
 }
 
 .themed-text{
-    -fx-text-fill: #6c5ce7;
+    -fx-text-fill:#6c5ce7;
 }
 
 .jfx-progress-bar > .bar {

@@ -11,13 +11,10 @@
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="648.0" prefWidth="1024.0" style="-fx-background-color: #E9E9EA;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.ShopController">
    <children>
-      <Label alignment="CENTER" prefHeight="86.0" prefWidth="1024.0" text="Shop">
+      <Label alignment="BOTTOM_CENTER" prefHeight="60.0" prefWidth="1024.0" text="Shop">
          <font>
-            <Font size="59.0" />
+            <Font size="40.0" />
          </font>
-         <padding>
-            <Insets top="60.0" />
-         </padding>
       </Label>
       <HBox alignment="CENTER" prefHeight="277.0" prefWidth="1024.0" spacing="50.0">
          <children>
@@ -133,5 +130,121 @@
                </children>
             </VBox>
          </children></HBox>
+      <HBox alignment="CENTER" prefHeight="277.0" prefWidth="1024.0" spacing="50.0">
+         <children>
+            <VBox alignment="TOP_CENTER" prefHeight="189.0" prefWidth="341.3">
+               <children>
+                  <JFXButton fx:id="redTheme" alignment="CENTER" disable="true" onAction="#onRedThemeClicked" prefHeight="131.0" prefWidth="162.0" ripplerFill="WHITE" style="-fx-background-color: #B53471; -fx-background-radius: 20;" text=" " textFill="WHITE">
+                     <font>
+                        <Font size="5.0" />
+                     </font>
+                     <graphic>
+                        <FontAwesomeIconView fx:id="redIcon" fill="WHITE" glyphName="LOCK" size="40" />
+                     </graphic>
+                     <VBox.margin>
+                        <Insets top="30.0" />
+                     </VBox.margin>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </JFXButton>
+                  <VBox alignment="CENTER" prefHeight="63.0" prefWidth="308.0">
+                     <children>
+                        <Label alignment="CENTER" prefHeight="16.0" prefWidth="159.0" text="Very Berry">
+                           <font>
+                              <Font size="19.0" />
+                           </font>
+                        </Label>
+                        <Label alignment="CENTER" nodeOrientation="RIGHT_TO_LEFT" text="500" />
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" prefHeight="63.0" prefWidth="308.0">
+                     <children>
+                        <JFXButton fx:id="redUnlock" onAction="#onRedUnlockClicked" prefHeight="43.0" prefWidth="103.0" style="-fx-background-color: #8395a7;" text="Unlock" textFill="WHITE" />
+                     </children>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </VBox>
+               </children>
+            </VBox>
+            <VBox alignment="TOP_CENTER" prefHeight="189.0" prefWidth="341.3">
+               <children>
+                  <JFXButton fx:id="yellowTheme" alignment="CENTER" disable="true" onAction="#onYellowThemeClicked" prefHeight="131.0" prefWidth="162.0" style="-fx-background-color: #f0932b; -fx-background-radius: 20;" text=" " textFill="WHITE">
+                     <font>
+                        <Font size="5.0" />
+                     </font>
+                     <graphic>
+                        <FontAwesomeIconView fx:id="yellowIcon" fill="WHITE" glyphName="LOCK" size="40" />
+                     </graphic>
+                     <VBox.margin>
+                        <Insets top="30.0" />
+                     </VBox.margin>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </JFXButton>
+                  <VBox alignment="CENTER" prefHeight="63.0" prefWidth="308.0">
+                     <children>
+                        <Label alignment="CENTER" prefHeight="16.0" prefWidth="159.0" text="Quince Jelly">
+                           <font>
+                              <Font size="19.0" />
+                           </font>
+                        </Label>
+                        <Label alignment="CENTER" nodeOrientation="RIGHT_TO_LEFT" text="500" />
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" prefHeight="63.0" prefWidth="308.0">
+                     <children>
+                        <JFXButton fx:id="yellowUnlock" onAction="#onYellowUnlockClicked" prefHeight="43.0" prefWidth="103.0" style="-fx-background-color: #8395a7;" text="Unlock" textFill="WHITE">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </JFXButton>
+                     </children>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </VBox>
+               </children>
+            </VBox>
+            <VBox alignment="TOP_CENTER" prefHeight="189.0" prefWidth="341.3">
+               <children>
+                  <JFXButton fx:id="aquaTheme" alignment="CENTER" disable="true" onAction="#onAquaThemeClicked" prefHeight="131.0" prefWidth="162.0" style="-fx-background-color: #22a6b3; -fx-background-radius: 20;" text=" " textFill="WHITE">
+                     <font>
+                        <Font size="5.0" />
+                     </font>
+                     <graphic>
+                        <FontAwesomeIconView fx:id="aquaIcon" fill="WHITE" glyphName="LOCK" size="40" />
+                     </graphic>
+                     <VBox.margin>
+                        <Insets top="30.0" />
+                     </VBox.margin>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </JFXButton>
+                  <VBox alignment="CENTER" prefHeight="63.0" prefWidth="308.0">
+                     <children>
+                        <Label alignment="CENTER" prefHeight="16.0" prefWidth="159.0" text="Blue Curacao">
+                           <font>
+                              <Font size="19.0" />
+                           </font>
+                        </Label>
+                        <Label alignment="CENTER" nodeOrientation="RIGHT_TO_LEFT" text="500" />
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" prefHeight="63.0" prefWidth="308.0">
+                     <children>
+                        <JFXButton fx:id="aquaUnlock" onAction="#onAquaUnlockClicked" prefHeight="43.0" prefWidth="103.0" style="-fx-background-color: #8395a7;" text="Unlock" textFill="WHITE" />
+                     </children>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </VBox>
+               </children>
+            </VBox>
+         </children>
+      </HBox>
    </children>
 </VBox>

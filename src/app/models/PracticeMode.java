@@ -8,7 +8,10 @@ public class PracticeMode {
     private Name _currentName;
     private Playlist _playlist;
 
-    // on construction the practice mode object is passed in a playlist
+    /**
+     * On construction the practice mode takes in a playlist
+     * @param playlist Playlist that the user selected to practice
+     */
     public PracticeMode(Playlist playlist){
         _playlist = playlist;
         // initialize position to 0
@@ -17,13 +20,17 @@ public class PracticeMode {
 
     }
 
-    // increments the position forward one
+    /**
+     * Increments the position forward by one
+     */
     public void nextName(){
         _position = Math.floorMod(_position + 1, _playlist.getPlaylist().size());
         _currentName = _playlist.getPlaylist().get(_position);
     }
 
-    // decrements the position backward one
+    /**
+     * Decrements the position backward by one
+     */
     public void previousName(){
         _position = Math.floorMod(_position - 1, _playlist.getPlaylist().size());
         _currentName = _playlist.getPlaylist().get(_position);

@@ -18,6 +18,9 @@ public class CombinedName extends Name {
 
 
     @Override
+    /**
+     * Plays each recording consecutively
+     */
     public void playRecording(double volume) {
         System.out.println("Number of names " + names.size());
         for (Name name : names) {
@@ -26,7 +29,9 @@ public class CombinedName extends Name {
     }
 
     @Override
-    // loop over all the names in the list, sum the length of all the best recordings
+    /**
+     * Loops over all the names in teh list of names, sums the length of all the best recordings
+     */
     public float getRecordingLength(){
         float totalLength = 0;
         for (Name name : names){
@@ -41,6 +46,9 @@ public class CombinedName extends Name {
     }
 
     @Override
+    /**
+     * Creates a recording object that encapsulates the state of a recording for 'this' name
+     */
     public Recording createRecordingObject() {
         DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH-mm-ss");
         Date d = new Date();
@@ -61,17 +69,26 @@ public class CombinedName extends Name {
 
 
     @Override
+    /**
+     * Overriding toString as when combined names are read in from file, need to replace % with spaces.
+     */
     public String toString() {
         return super.getName().replaceAll("%", " ");
     }
 
-    // there should be no best recording for combined names
+    /**
+     * There should be no best recording for combined names
+     * @return Always returns null so class that calls this method knows it is a combined name
+     */
     @Override
     public Recording getBestRecording(){
         return null;
     }
 
-    // users cannot flag custom namse
+    /**
+     * Users can not flag combined names
+     * @return Always returns false.
+     */
     @Override
     public boolean flagRecording(){
         // custom names cannot be flagged
@@ -84,6 +101,9 @@ public class CombinedName extends Name {
     }
 
     @Override
+    /**
+     * Loops through each name, and normalizes each one
+     */
     public void normaliseBestRecording() {
         for (Name name : names) {
             name.getBestRecording().normaliseAndTrimAudioFile();

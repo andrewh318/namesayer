@@ -46,10 +46,13 @@ public class ListenController {
     private FrameController _frameController;
 
     private NamesModel _model;
-    
-    // injects the model into listen controller from frame
-    // passes a reference of 'this' controller into the controller
-    // sets up the required bindings
+
+
+    /**
+     * Injects the model into listen controller from frame and sets up the required bindings
+     * @param model Model containing information about the global application state
+     * @param controller Reference to the frame so progress bar can be used
+     */
     public void setModel(NamesModel model, FrameController controller){
         _model = model;
         _frameController = controller;
@@ -63,8 +66,11 @@ public class ListenController {
     }
 
     private void setUpListBindings(){
+        // get the list of database names and created playlists from the model
         ObservableList<Name> nameList = _model.getDatabaseNames();
         ObservableList<Playlist> allPlaylists = _model.getPlaylists();
+
+        // bind the list view
         _allPlaylists.setItems(allPlaylists);
         // by default set current playlist to the first playlist in all playlists
         _currentPlaylist = allPlaylists.get(0);
@@ -77,7 +83,11 @@ public class ListenController {
     }
 
 
-
+    /**
+     * Sets up double click listener for all names list view and current playlist list view.
+     * On double click on a name in the names list, it should autocomplete it in the search box
+     * On double click on a name in the current playlist, it should play it.
+     */
     private void setUpDoubleClickListeners(){
         // set up double click to add names into search box
         _allNamesList.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -89,6 +99,7 @@ public class ListenController {
                     String lastNameofSearchText;
                     String beginningOfSearchText;
 
+                    // remove the last name in the search box and replace it with the name user has selected
                     if (searchText.contains(" ")) {
                         lastNameofSearchText = searchText.substring(searchText.lastIndexOf(" ") + 1);
                         beginningOfSearchText = searchText.substring(0, searchText.lastIndexOf(" ") + 1);
@@ -99,9 +110,12 @@ public class ListenController {
 
                     String nameString = _allNamesList.getSelectionModel().getSelectedItem().getName();
 
+                    // append the name user has selected into the search box
                     if (nameString.toLowerCase().startsWith(lastNameofSearchText.toLowerCase())) {
                         _searchBar.setText(beginningOfSearchText + nameString + " ");
                     }
+
+                    // return cursor back to search box
                     _searchBar.requestFocus();
                     _searchBar.end();
                 }
@@ -176,10 +190,13 @@ public class ListenController {
     }
 
 
-
+    /**
+     * Allows playlist names to be edited upon double click
+     */
     private void setUpEditableCells(){
         _allPlaylists.setEditable(true);
 
+        // custom cell factory to display playlist information
         _allPlaylists.setCellFactory(listView ->{
             TextFieldListCell<Playlist> cell = new TextFieldListCell<>();
             cell.setConverter(new StringConverter<Playlist>() {
@@ -197,7 +214,6 @@ public class ListenController {
             });
             return cell;
         });
-
 
         _allPlaylists.setOnEditCommit(t ->{
             Playlist playlist = t.getNewValue();
@@ -312,7 +328,15 @@ public class ListenController {
 
     }
 
-    // this method is called from the new playlist controller
+    @FXML
+    private void onShuffleClicked(){
+        _currentPlaylist.shufflePlaylist();
+    }
+
+    /**
+     * Method is called from the NewPlaylist controller, to add a new playlist
+     * @param name Name of playlist user entered
+     */
     public void createNewPlaylist(String name){
         Playlist playlist = new Playlist(name);
         _model.addPlaylist(playlist);
@@ -340,7 +364,6 @@ public class ListenController {
     }
 
 
-    // show delete confirmation box, returns whether or not user clicks confirm
     private boolean isDeleteConfirmed(){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmation");
@@ -354,6 +377,9 @@ public class ListenController {
         }
     }
 
+    /**
+     * Allows users to select a playlist or name in playlist and click either backspace or delete to trigger delete
+     */
     private void bindDeleteButtonsToDelete(){
         _allPlaylists.setOnKeyPressed(e -> {
             if (e.getCode().equals(KeyCode.DELETE) || e.getCode().equals(KeyCode.BACK_SPACE)){
@@ -370,6 +396,10 @@ public class ListenController {
             }
         });
     }
+
+    /**
+     * Allow users to click space bar to autocomplete name to first in list while typing
+     */
     private void bindSearchKeys(){
         _searchBar.setOnKeyPressed(e -> {
             // bind autocomplete on enter
@@ -430,6 +460,9 @@ public class ListenController {
         });
     }
 
+    /**
+     * Sets up the filtered list so as user types, the list view will update to reflect the changes.
+     */
     private void setUpSearchBar() {
         _searchBar.textProperty().addListener((observable, oldValue, newValue) ->{
             _filteredNamesList.setPredicate(element -> {
