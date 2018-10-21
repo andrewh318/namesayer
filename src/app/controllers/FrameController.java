@@ -248,7 +248,7 @@ public class FrameController {
         Parent root;
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/app/views/TestMic.fxml"));
-            root = (Parent) loader.load();
+            root = loader.load();
 
             // need to set CSS for this node as its a new stage
             Main.setTheme(Main.currentTheme, root);
@@ -294,8 +294,12 @@ public class FrameController {
         return _volumeSlider.getValue();
     }
 
-
+    /**
+     * Sets up volume slider for the application. Slider controls system volume.
+     * Reference: https://www.youtube.com/watch?v=X9mEBGXX3dA
+     */
     private void setUpVolumeSlider(){
+        // command to get the current system volume
         String getVolume = "amixer get Master | awk '$0~/%/{print $4}' | tr -d '[]%'";
         BashCommand cmd = new BashCommand(getVolume);
         cmd.startProcess();
@@ -313,11 +317,14 @@ public class FrameController {
         }
 
         double volume = Double.parseDouble(volumeLevel);
+        // set the application volume on start up to reflect the system volume
         _volumeSlider.setValue(volume);
 
+        // listener to change the system volume every time the application volume changse
         _volumeSlider.valueProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                // multiply by 100 because scale is 0-1 but system volume is 0-100
                 double volume = newValue.doubleValue() * 100;
                 String cmd = "amixer set 'Master' " + volume + "%";
                 BashCommand setMaster = new BashCommand(cmd);
