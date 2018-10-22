@@ -7,6 +7,10 @@ import app.models.NamesModel;
 import app.models.ShopModel;
 import com.jfoenix.controls.JFXProgressBar;
 import com.jfoenix.controls.JFXSlider;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -24,6 +28,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.*;
 import java.util.List;
@@ -42,6 +47,7 @@ public class FrameController {
     private NamesModel _model;
     private ShopModel _shopModel;
     private ListenController _listenController;
+    private Timeline _progressTimeline;
 
     // reference to the stage used throughout the application
     private Stage _stage;
@@ -276,25 +282,21 @@ public class FrameController {
      * @param duration Duration of the progress bar in seconds
      */
     public void startProgressBar(float duration){
-        Task<Void> task = new Task<Void>() {
-            @Override
-            protected Void call() throws Exception {
-                for (int i = 0; i < duration*1000; i++){
-                    updateProgress(i+1, duration*1000);
-                    Thread.sleep(1);
-                }
-                return null;
-            }
-        };
-        _progressBar.progressProperty().unbind();
-        _progressBar.progressProperty().bind(task.progressProperty());
+        _progressTimeline = new Timeline(
+                new KeyFrame(Duration.ZERO, new KeyValue(_progressBar.progressProperty(), 0)),
+                new KeyFrame(Duration.seconds(duration), e-> {
 
-        new Thread(task).start();
+                }, new KeyValue(_progressBar.progressProperty(), 1))
+        );
+        _progressTimeline.setCycleCount(1);
+        _progressTimeline.play();
     }
 
     public void resetProgressBar() {
-        _progressBar.progressProperty().unbind();
-        _progressBar.setProgress(0d);
+        if (_progressTimeline != null) {
+            _progressTimeline.stop();
+        }
+        _progressBar.setProgress(1d);
     }
 
     private void showAlert(String header, String content){
@@ -339,7 +341,7 @@ public class FrameController {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
                 // multiply by 100 because scale is 0-1 but system volume is 0-100
-                double volume = newValue.doubleValue() * 100;
+                double volume = newValue.doubleValue();
                 String cmd = "amixer set 'Master' " + volume + "%";
                 BashCommand setMaster = new BashCommand(cmd);
                 setMaster.startProcess();

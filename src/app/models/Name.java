@@ -49,10 +49,9 @@ public class Name implements Comparable {
 
     /**
      * Plays the best recording in the list of database recordings
-     * @param volume Volume in which the recoding should be played at
      */
-    public void playRecording(double volume){
-        getBestRecording().playRecording(volume);
+    public void playRecording(){
+        getBestRecording().playRecording();
     }
 
     /**
@@ -97,7 +96,7 @@ public class Name implements Comparable {
      */
     public Process record(Recording recording) {
 
-        String audioCommand = "ffmpeg -f alsa -i default -t 5 " + "./" + recording.getPath();
+        String audioCommand = "ffmpeg -f alsa -i default -t " + NamesModel.MAX_RECORDING_SECS + " " + "./" + recording.getPath();
         BashCommand create = new BashCommand(audioCommand);
         create.startProcess();
 
@@ -108,16 +107,9 @@ public class Name implements Comparable {
         return getName();
     }
 
-
-    public ObservableList<Recording> getDatabaseRecordings(){
-        return _databaseRecordings;
-    }
-
     public ObservableList<Recording> getUserRecordings(){
         return _userRecordings;
     }
-
-    // return the best database recording
 
     /**
      * Returns the best database recording in the list of names (determined by how many flags there are on each name)
@@ -159,9 +151,4 @@ public class Name implements Comparable {
         Name name = (Name) o;
         return getName().compareTo(name.getName());
     }
-
-    /*@Override
-    public int compareTo(Name name) {
-        return 0;
-    }*/
 }

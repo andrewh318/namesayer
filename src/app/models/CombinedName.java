@@ -21,10 +21,10 @@ public class CombinedName extends Name {
     /**
      * Plays each recording consecutively
      */
-    public void playRecording(double volume) {
+    public void playRecording() {
         System.out.println("Number of names " + names.size());
         for (Name name : names) {
-            name.playRecording(volume);
+            name.playRecording();
         }
     }
 

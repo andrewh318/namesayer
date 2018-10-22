@@ -8,11 +8,11 @@ import javafx.collections.ObservableList;
 public class Playlist {
     private ObservableList<Name> _playlist = FXCollections.observableArrayList();
     private String _playlistName;
-    private int _position;
 
     public Playlist(String name){
         _playlistName = name;
     }
+
     public ObservableList<Name> getPlaylist(){
         return _playlist;
     }
@@ -24,10 +24,6 @@ public class Playlist {
     @Override
     public String toString(){
         return _playlistName;
-    }
-
-    public String getPlaylistItemAt(int index){
-        return _playlist.get(index).getCleanName();
     }
 
     public void addName(Name name){

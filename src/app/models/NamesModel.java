@@ -12,7 +12,6 @@ import java.util.List;
 
 public class NamesModel {
     private ObservableList<Name> _databaseNames = FXCollections.observableArrayList();
-    private ObservableList<Name> _userNames = FXCollections.observableArrayList();
     private ObservableList<Playlist> _allPlaylists = FXCollections.observableArrayList();
     private ObservableList<Name> _combinedNames = FXCollections.observableArrayList();
 
@@ -24,6 +23,8 @@ public class NamesModel {
     public static final String DEFAULT_PLAYLIST_NAME = "Default Playlist";
     public static final String TRIMMED_NORMALISED_DIRECTORY = "trimmedNormalised";
     public static final String COMBINED_NAMES_DIRECTORY = "combinedNames";
+    public static final String TEMP_PATH = TRIMMED_NORMALISED_DIRECTORY + "/output.wav";
+    public static final int MAX_RECORDING_SECS = 7;
 
     public static final int DEFAULT_MONEY = 1500;
 
@@ -33,15 +34,13 @@ public class NamesModel {
         return _databaseNames;
     }
 
-    public ObservableList<Name> getUserNames() {
-        return _userNames;
-    }
-
     public ObservableList<Playlist> getPlaylists() {
         return _allPlaylists;
     }
 
-
+    /**
+     * Calling this method executes all tasks necessary for setting up the model.
+     */
     public void setUp(){
         // remove all database/user names when directories are read
         // to prevent duplicate reading of names
@@ -53,13 +52,14 @@ public class NamesModel {
 
         makeDirectories();
         readDirectories();
+        //Sort the databaseNames alphabetically
         Collections.sort(_databaseNames);
 
         setUpDefaultPlaylist();
     }
 
     /**
-     * Makes the required directories that the application requiress
+     * Makes all of the directories that the application requires
      */
     private void makeDirectories() {
         new File(DATABASERECORDINGSDIRECTORY).mkdir();
@@ -73,11 +73,13 @@ public class NamesModel {
         new File(TRIMMED_NORMALISED_DIRECTORY + "/" + COMBINED_NAMES_DIRECTORY).mkdir();
     }
 
+    /**
+     * Clears all data from the model.
+     */
     private void clearPlaylists() {
         _allPlaylists.clear();
         _combinedNames.clear();
         _databaseNames.clear();
-        _userNames.clear();
     }
 
     /**
@@ -92,6 +94,9 @@ public class NamesModel {
         }
     }
 
+    /**
+     * Create a file to write bad quality information into.
+     */
     private void createErrorFile() {
         File file = new File(BADNAMESFILE);
         try {
@@ -148,15 +153,14 @@ public class NamesModel {
             //Creates a new recording object with the extracted information
             return new Recording(stringName, date, path, trimmedPath, time);
         } catch (Exception e) {
-            System.out.println("Could not read file " + fileName);
             return null;
         }
     }
 
 
     /**
-     * Method that reads a combined recording wav file. Creates a new combinedName object if it is not already
-     * in the database, otherwise adds the recording to the existing combinedName object.
+     * Method that reads a combined recording wav file. Creates a new recording object, and adds it to a new
+     * combinedName object if it is not already in the database, or an existing combinedName object if it is.
      * @param file The combined recording file to be read.
      */
     private void readCombinedRecording(File file) {
@@ -284,13 +288,12 @@ public class NamesModel {
     }
 
     /**
-     * Method that reads in a string in the playlist or search bar format, and returns either an existing combined name,
-     * an existing databasename, or a new combined name. Returns null if one or more of the individual names are not
+     * Method that reads in a string in the playlist or search bar format, and returns either an existing CombinedName,
+     * an existing Name, or a new CombinedName. Returns null if one or more of the individual names are not
      * in the database.
      * @param names a string of names. Can be a single name or multiple names separated by spaces.
      * @return The name object that the string corresponds to, or null if it is invalid
      */
-
     public Name findName(String names) {
         //If the string is empty return null
         if (names.isEmpty()){

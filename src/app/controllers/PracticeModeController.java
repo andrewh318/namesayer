@@ -150,13 +150,13 @@ public class PracticeModeController {
             @Override
             public Void call() {
                 // trim the name on a new thread
-                _practiceMode.getCurrentName().getBestRecording().normaliseAndTrimAudioFile();
+                _practiceMode.getCurrentName().normaliseBestRecording();
                 return null;
             }
         };
         new Thread(task).start();
         task.setOnSucceeded(e -> {
-                _practiceMode.playCurrentName(_frameController.getVolume());
+                _practiceMode.playCurrentName();
                 // start progress indicator
                 _frameController.startProgressBar(_practiceMode.getCurrentName().getRecordingLength());
             }
@@ -290,8 +290,8 @@ public class PracticeModeController {
     }
 
     private void startRecordProgress() {
-        // call the progress bar with a 5 second timer
-        _frameController.startProgressBar(5);
+        // call the progress bar to run for the length of the max recording time
+        _frameController.startProgressBar(NamesModel.MAX_RECORDING_SECS);
     }
 
     private void setButtonsDisable(Boolean disable) {

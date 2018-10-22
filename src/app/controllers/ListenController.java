@@ -325,7 +325,7 @@ public class ListenController {
                     Task<Void> task2 = new Task<Void>() {
                         @Override
                         public Void call() {
-                            name.playRecording(_frameController.getVolume());
+                            name.playRecording();
                             return null;
                         }
                     };

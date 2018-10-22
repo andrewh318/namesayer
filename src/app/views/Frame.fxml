@@ -109,7 +109,7 @@
                   <Insets left="25.0" right="5.0" />
                </HBox.margin>
             </FontAwesomeIconView>
-            <JFXSlider fx:id="_volumeSlider" indicatorPosition="RIGHT" max="1.0" prefHeight="3.0" prefWidth="252.0" value="0.5">
+            <JFXSlider fx:id="_volumeSlider" indicatorPosition="RIGHT" prefHeight="3.0" prefWidth="252.0">
                <HBox.margin>
                   <Insets right="30.0" />
                </HBox.margin>
