@@ -2,6 +2,7 @@ package app.models;
 
 import javafx.application.Platform;
 import javafx.concurrent.Task;
+import javafx.scene.control.Button;
 
 public class PracticeMode {
     private int _position = 0;
@@ -59,13 +60,21 @@ public class PracticeMode {
         new Thread(task).start();
     }
 
-    public Task<Void> recordName(NamesModel model){
+    public Task<Void> recordName(Button recordButton){
         Task<Void> task = new Task<Void>() {
             @Override
             public Void call() {
                 Recording recording = _currentName.createRecordingObject();
-                _currentName.record(recording);
-                recording.normaliseAndTrimAudioFile();
+                Process recordProcess = _currentName.record(recording);
+                //Change the action of the record button to destroy the process as it is now a stop button
+                recordButton.setOnAction(e -> {
+                    recordProcess.destroy();
+                });
+                try {
+                    recordProcess.waitFor();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
 
                 // user recordings are bounded to the GUI so need to add the recording on the application thread
                 Platform.runLater(() -> {

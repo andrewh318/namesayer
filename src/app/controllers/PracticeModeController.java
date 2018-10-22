@@ -3,6 +3,7 @@ package app.controllers;
 import app.models.*;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -32,6 +33,7 @@ public class PracticeModeController {
     @FXML private JFXButton _playUserRecordingButton;
     @FXML private JFXButton _deleteUserRecordingButton;
     @FXML private JFXButton _flagButton;
+    @FXML private FontAwesomeIconView _recordIcon;
 
     private NamesModel _model;
     private ShopModel _shopModel;
@@ -185,19 +187,31 @@ public class PracticeModeController {
 
     @FXML
     private void onRecordPressed() {
-        // disable all buttons
+        // disable all buttons and cha
         setButtonsDisable(true);
+        //Chance the icon on the record button to a stop icon
+        _recordIcon.setGlyphName("STOP");
 
-        Task<Void> task = _practiceMode.recordName(_model);
+        //Start the recording task
+        Task<Void> task = _practiceMode.recordName(_recordButton);
+        //Start the progress bar
+        startRecordProgress();
         task.setOnSucceeded(e -> {
             // update the view again to refresh combo box
             // this is done on the application thread
             setButtonsDisable(false);
+            //Change the button back to a microphone icon
+            _recordIcon.setGlyphName("MICROPHONE");
+            //Change the action of the button back to start recording
+            _recordButton.setOnAction(e2 -> {onRecordPressed();});
             // after recording completes update the user money
             _shopModel.setMoney(_shopModel.getMoney() + 100);
+            //Reset the progress bar to 0
+            _frameController.resetProgressBar();
             updateScreen();
         });
-        startRecordProgress();
+
+
     }
 
     @FXML
@@ -277,14 +291,10 @@ public class PracticeModeController {
 
     private void startRecordProgress() {
         // call the progress bar with a 5 second timer
-        setButtonsDisable(true);
         _frameController.startProgressBar(5);
-
-
     }
 
     private void setButtonsDisable(Boolean disable) {
-        _recordButton.setDisable(disable);
         _nextButton.setDisable(disable);
         _previousButton.setDisable(disable);
         _playButton.setDisable(disable);

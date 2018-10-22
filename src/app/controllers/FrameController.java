@@ -292,6 +292,11 @@ public class FrameController {
         new Thread(task).start();
     }
 
+    public void resetProgressBar() {
+        _progressBar.progressProperty().unbind();
+        _progressBar.setProgress(0d);
+    }
+
     private void showAlert(String header, String content){
         Alert errorAlert = new Alert(Alert.AlertType.ERROR);
         errorAlert.setHeaderText(header);

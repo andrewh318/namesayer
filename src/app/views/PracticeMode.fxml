@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="648.0" prefWidth="1024.0" style="-fx-background-color: efefef;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.PracticeModeController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="648.0" prefWidth="1024.0" style="-fx-background-color: efefef;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.PracticeModeController">
    <children>
       <HBox alignment="CENTER_LEFT" prefHeight="69.0" prefWidth="1024.0">
          <children>
@@ -119,7 +119,7 @@
                   <Font size="20.0" />
                </font>
                <graphic>
-                  <FontAwesomeIconView fill="WHITE" glyphName="MICROPHONE" size="30" />
+                  <FontAwesomeIconView fx:id="_recordIcon" fill="WHITE" glyphName="MICROPHONE" size="30" />
                </graphic>
                <cursor>
                   <Cursor fx:constant="HAND" />

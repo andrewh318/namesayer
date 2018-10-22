@@ -95,16 +95,13 @@ public class Name implements Comparable {
      * Creates an audio file in wav format based on a 5 second capture of the microphone
      * @param recording The recording object that represents the name that will be recorded
      */
-    public void record(Recording recording){
+    public Process record(Recording recording) {
 
         String audioCommand = "ffmpeg -f alsa -i default -t 5 " + "./" + recording.getPath();
         BashCommand create = new BashCommand(audioCommand);
         create.startProcess();
-        try {
-            create.getProcess().waitFor();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+
+        return create.getProcess();
     }
 
     public String getCleanName() {
