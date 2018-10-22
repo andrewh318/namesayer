@@ -18,6 +18,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldListCell;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -27,6 +28,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.CollationElementIterator;
+import java.util.Collections;
 import java.util.Optional;
 
 public class ListenController {
@@ -61,7 +64,7 @@ public class ListenController {
         _model = model;
         _frameController = controller;
         setUpListBindings();
-        setUpDoubleClickListeners();
+        setUpClickToComplete();
         setUpEditableCells();
         setUpSearchBar();
         setUpCurrentPlaylistCellFactory();
@@ -92,12 +95,12 @@ public class ListenController {
      * On double click on a name in the names list, it should autocomplete it in the search box
      * On double click on a name in the current playlist, it should play it.
      */
-    private void setUpDoubleClickListeners(){
+    private void setUpClickToComplete(){
         // set up double click to add names into search box
         _allNamesList.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent click) {
-                if (click.getClickCount() == 2){
+                if (click.getClickCount() == 1){
                     String searchText = _searchBar.getText();
 
                     String lastNameofSearchText;
@@ -291,7 +294,7 @@ public class ListenController {
             showAlert("Error: No playlist selected", "Please select a playlist to delete");
         } else {
             // show delete confirmation
-            if (isDeleteConfirmed()){
+            if (isDeleteConfirmed("Are you sure you want to delete your playlist " + playlist + "?")){
                 // delete playlist
                 _model.deletePlaylist(playlist);
                 // get new playlist selected and display as current playlist
@@ -362,7 +365,7 @@ public class ListenController {
         Name name = _currentPlaylistList.getSelectionModel().getSelectedItem();
         Playlist playlist = _allPlaylists.getSelectionModel().getSelectedItem();
         if (name != null){
-            if (isDeleteConfirmed()){
+            if (isDeleteConfirmed("Are you sure you want to delete " + name.getCleanName() + " from the playlist " + playlist + "?")){
                 playlist.deleteName(name);
             }
         } else {
@@ -372,11 +375,11 @@ public class ListenController {
     }
 
 
-    private boolean isDeleteConfirmed(){
+    private boolean isDeleteConfirmed(String message){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmation");
         alert.setHeaderText(null);
-        alert.setContentText("Are you sure you want to delete?");
+        alert.setContentText(message);
         Optional<ButtonType> action = alert.showAndWait();
         if (action.get() == ButtonType.OK){
             return true;
@@ -411,11 +414,11 @@ public class ListenController {
     private void bindSearchKeys(){
         _searchBar.setOnKeyPressed(e -> {
             // bind autocomplete on enter
-            if (e.getCode().equals(KeyCode.SPACE)){
+            if (e.getCode().equals(KeyCode.TAB)){
                 // check if list is empty
                 int numOfListItems = _allNamesList.getItems().size();
                 if (numOfListItems != 0){
-                    String autoCompleteName = _allNamesList.getItems().get(0).getName();
+                    String autoCompleteName = _allNamesList.getItems().get(0).getName() + " ";
                     // get the last index of space in the search bar
                     String searchBarText = _searchBar.getText();
                     int lastIndexOfSpace = searchBarText.lastIndexOf(' ');
@@ -460,6 +463,7 @@ public class ListenController {
                     }
                     _searchBar.requestFocus();
                     _searchBar.end();
+                    e.consume();
                 }
             // bind auto submit on enter
             } else if (e.getCode().equals(KeyCode.ENTER)){

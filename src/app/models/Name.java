@@ -11,7 +11,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Name {
+public class Name implements Comparable {
     private String _name;
     private ObservableList<Recording> _databaseRecordings = FXCollections.observableArrayList();
     private ObservableList<Recording> _userRecordings = FXCollections.observableArrayList();
@@ -156,4 +156,15 @@ public class Name {
     public void normaliseBestRecording() {
         getBestRecording().normaliseAndTrimAudioFile();
     }
+
+    @Override
+    public int compareTo(Object o) {
+        Name name = (Name) o;
+        return getName().compareTo(name.getName());
+    }
+
+    /*@Override
+    public int compareTo(Name name) {
+        return 0;
+    }*/
 }

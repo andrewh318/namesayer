@@ -7,6 +7,7 @@ import javafx.collections.ObservableList;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class NamesModel {
@@ -52,8 +53,7 @@ public class NamesModel {
 
         makeDirectories();
         readDirectories();
-
-
+        Collections.sort(_databaseNames);
 
         setUpDefaultPlaylist();
     }

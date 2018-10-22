@@ -109,14 +109,25 @@ public class FrameController {
         alert.setHeaderText(null);
         alert.setContentText("Do you want to save all created playlists?");
 
+        ButtonType yes = new ButtonType("Yes");
+        ButtonType no = new ButtonType("No");
+        ButtonType cancel = new ButtonType("Cancel");
+
+        // Remove default ButtonTypes
+        alert.getButtonTypes().clear();
+
+        alert.getButtonTypes().addAll(yes, no, cancel);
+
 
         Optional<ButtonType> action = alert.showAndWait();
 
-        if (action.get() == ButtonType.OK){
+        if (action.get() == yes){
             _model.savePlaylists();
             _stage.close();
-        } else {
+        } else if(action.get() == no){
             _stage.close();
+        } else if (action.get() == cancel) {
+            alert.close();
         }
         // always save money on close
         _shopModel.saveStateToFile();
@@ -129,8 +140,6 @@ public class FrameController {
             loadPractice(_model, borderPane);
             _currentScreen = Screen.PRACTICE;
         }
-
-
     }
 
     @FXML

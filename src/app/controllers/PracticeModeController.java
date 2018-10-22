@@ -8,11 +8,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.BorderPane;
 
 import java.io.IOException;
+import java.util.Optional;
 
 public class PracticeModeController {
     @FXML private Label _playlistName;
@@ -228,8 +230,10 @@ public class PracticeModeController {
         Recording recording = _userRecordings.getSelectionModel().getSelectedItem();
         // delete the recording if its value is not null
         if (recording != null){
-            _practiceMode.deleteRecording(recording);
-            updateScreen();
+            if (isDeleteConfirmed()) {
+                _practiceMode.deleteRecording(recording);
+                updateScreen();
+            }
         } else {
             showAlert("Error; No recording selected", "Please select a recording to delete");
         }
@@ -295,6 +299,19 @@ public class PracticeModeController {
         errorAlert.setHeaderText(header);
         errorAlert.setContentText(content);
         errorAlert.showAndWait();
+    }
+
+    private boolean isDeleteConfirmed(){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation");
+        alert.setHeaderText(null);
+        alert.setContentText("Are you sure you want to delete your recording " + _userRecordings.getSelectionModel().getSelectedItem() +"?");
+        Optional<ButtonType> action = alert.showAndWait();
+        if (action.get() == ButtonType.OK){
+            return true;
+        } else {
+            return false;
+        }
     }
 
 
