@@ -133,7 +133,7 @@ public class NamesModel {
     /**
      * Parses the fileName of a file, and creates a recording object based on the extracted information.
      * @param file The file to be parsed. Must have the filename format of the database names.
-     * @return The created recording object.
+     * @return The created recording object. If the file name not in the correct format, it will return null.
      */
     private Recording parseFilename(File file) {
         String fileName = "";
@@ -235,12 +235,15 @@ public class NamesModel {
     public void readUserRecording(File file) {
         Recording recording = parseFilename(file);
 
+        //If parseFilename returns null the recording could not be created correctly so dont add to a name object.
         if (recording == null) {
             return;
         }
 
         Name name = searchListOfName(_databaseNames, recording.getName());
 
+        //If the name is not in the database don't add it, as you cannot have a user recording without a database
+        //recording.
         if (name == null) {
             System.out.println("Name not found");
         } else {
@@ -255,23 +258,24 @@ public class NamesModel {
      */
     public List<String> readPlaylist(File file) {
 
+        //Parse the playlist filename to get its name and create a playlist object
         String playlistName = file.getName().substring(0, file.getName().lastIndexOf('.'));
-
         Playlist playlist = new Playlist(playlistName);
 
+        //Create a list of invalid names to be returned
         List<String> invalidNames = new ArrayList<String>();
 
+        //For each line in the file
         BufferedReader br;
         try {
             br = new BufferedReader(new FileReader(file));
             String st;
             while ((st = br.readLine()) != null) {
-
+                //Format the name
                 st = formatNamesString(st);
-
+                //Find the name in the database
                 Name name = findName(st);
-
-
+                //If the name could not be found, add it to the invalid names otherwise add it to the playlist
                 if (name == null) {
                     invalidNames.add(st);
                 } else {
@@ -282,6 +286,7 @@ public class NamesModel {
             e.printStackTrace();
         }
 
+        //Add the playlist to the list of all playlists
         addPlaylist(playlist);
 
         return invalidNames;
@@ -366,7 +371,6 @@ public class NamesModel {
                 formattedName = formattedName + name + "%";
             }
 
-
         }
         if (!(formattedName.isEmpty())) {
             formattedName = formattedName.substring(0, formattedName.length() - 1);
@@ -443,7 +447,6 @@ public class NamesModel {
                 return name;
             }
         }
-
         return null;
     }
 

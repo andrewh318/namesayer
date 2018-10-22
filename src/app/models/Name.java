@@ -55,7 +55,8 @@ public class Name implements Comparable {
     }
 
     /**
-     * Given a recording object, this method searches the list of recordings in this object and deletes it.
+     * Given a recording object, this method searches the list of recordings in this object and deletes it. Also deletes
+     * the file.
      * @param recording Recording the user wants to delete
      */
     public void removeUserRecording(Recording recording) {
@@ -69,8 +70,9 @@ public class Name implements Comparable {
     }
 
     /**
-     * Creates a custom user recording object using the current date and time of the system.
-     * @return
+     * Creates a custom user recording object using the current date and time of the system. Uses the same format as
+     * the database recordings
+     * @return The created recording object.
      */
     public Recording createRecordingObject() {
         DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH-mm-ss");
@@ -91,8 +93,9 @@ public class Name implements Comparable {
     }
 
     /**
-     * Creates an audio file in wav format based on a 5 second capture of the microphone
-     * @param recording The recording object that represents the name that will be recorded
+     * Creates an audio file in wav format based on a maximum 7 second capture of the microphone
+     * @param recording The recording object that represents the name that will be recorded.
+     * @return The process created by the ffmpeg command.
      */
     public Process record(Recording recording) {
 
@@ -112,8 +115,8 @@ public class Name implements Comparable {
     }
 
     /**
-     * Returns the best database recording in the list of names (determined by how many flags there are on each name)
-     * @return
+     * Finds the best database recording in the list of names (determined by how many flags there are on each name)
+     * @return the best database recording object
      */
     public Recording getBestRecording(){
         // loop through the all the recordings and find the one with the highest rating
@@ -130,7 +133,7 @@ public class Name implements Comparable {
 
     /**
      * Flags the current recording that is playing as poor quality
-     * @return
+     * @return true indiciating the name has been successfully flagged
      */
     public boolean flagRecording(){
         getBestRecording().flagAsBad();
@@ -146,6 +149,11 @@ public class Name implements Comparable {
         getBestRecording().normaliseAndTrimAudioFile();
     }
 
+    /**
+     * Overriden compareTo method means we can sort the objects easily in lexographical order.
+     * @param o The name object to be compared with this name object.
+     * @return An int indicating the order of the two objects. (-1,0,1)
+     */
     @Override
     public int compareTo(Object o) {
         Name name = (Name) o;

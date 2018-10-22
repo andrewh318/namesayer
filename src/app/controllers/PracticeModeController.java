@@ -79,9 +79,6 @@ public class PracticeModeController {
         updateScreen();
     }
 
-    // Updates the current name and label showed up screen
-    // Should also populate the database
-
     /**
      * Updates the current name and label showed on screen
      * Also populates the combo box to reflect the current name
@@ -121,11 +118,12 @@ public class PracticeModeController {
         } else {
             _recordingLabel.setText("Custom Name");
         }
-
     }
 
 
-
+    /**
+     * Flags the current name and shows a confirmation alert.
+     */
     @FXML
     private void onFlagButtonClicked(){
         Name currentName = _practiceMode.getCurrentName();
@@ -144,6 +142,9 @@ public class PracticeModeController {
         }
     }
 
+    /**
+     * Normalises the recording then calls play in the practice mode class and starts the progress bar
+     */
     @FXML
     private void onPlayButtonClicked(){
         Task<Void> task = new Task<Void>() {
@@ -185,6 +186,9 @@ public class PracticeModeController {
         }
     }
 
+    /**
+     * Records the audio, changes the behaviour and icon of the record button, handles progress bar
+     */
     @FXML
     private void onRecordPressed() {
         // disable all buttons and cha
@@ -194,8 +198,10 @@ public class PracticeModeController {
 
         //Start the recording task
         Task<Void> task = _practiceMode.recordName(_recordButton);
+
         //Start the progress bar
         startRecordProgress();
+
         task.setOnSucceeded(e -> {
             // update the view again to refresh combo box
             // this is done on the application thread
@@ -214,6 +220,9 @@ public class PracticeModeController {
 
     }
 
+    /**
+     * Play the current user recording.
+     */
     @FXML
     private void setOnUserRecordingPlayButtonClicked(){
         // get the current recording that the user has selected
@@ -230,7 +239,7 @@ public class PracticeModeController {
             };
             new Thread(task).start();
 
-            task.setOnSucceeded(e -> {_practiceMode.playRecording(recording, _frameController.getVolume());
+            task.setOnSucceeded(e -> {_practiceMode.playRecording(recording);
                 // start the progress bar
                 _frameController.startProgressBar(recording.getRecordingLength());});
 
@@ -239,6 +248,9 @@ public class PracticeModeController {
         }
     }
 
+    /**
+     * Delete the current user recording and ask for confirmation
+     */
     @FXML
     private void onUserRecordingDeleteButtonClicked(){
         Recording recording = _userRecordings.getSelectionModel().getSelectedItem();
@@ -253,10 +265,11 @@ public class PracticeModeController {
         }
     }
 
-    @FXML
+
     /**
-     * Playlist the database recoding followed by the currently selected user recording
+     * Play the database recoding followed by the currently selected user recording
      */
+    @FXML
     private void onCompareButtonClicked(){
         Recording recording = _userRecordings.getSelectionModel().getSelectedItem();
         // a recording must be selected for comparison
@@ -271,7 +284,7 @@ public class PracticeModeController {
             };
             new Thread(task).start();
             // after both the database and user name has been normalized, play them consecutively
-            task.setOnSucceeded(e -> {_practiceMode.compareNames(recording, _frameController.getVolume());
+            task.setOnSucceeded(e -> {_practiceMode.compareNames(recording);
                 // need to get length of both the user recording and the database recording
                 float databaseNameLength = _practiceMode.getCurrentName().getRecordingLength();
                 float userRecordingLength = recording.getRecordingLength();
@@ -285,7 +298,7 @@ public class PracticeModeController {
 
     private void setUpToolTips(){
         final Tooltip recordToolTip = new Tooltip();
-        recordToolTip.setText("Click to start recording for 5 seconds");
+        recordToolTip.setText("Click to start recording a maximum of " + NamesModel.MAX_RECORDING_SECS + " seconds");
         _recordButton.setTooltip(recordToolTip);
     }
 

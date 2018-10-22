@@ -1,12 +1,13 @@
+//The majority of the code in this class is from the URL below with some changes.
+// https://stackoverflow.com/questions/15870666/calculating-microphone-volume-trying-to-find-max
+
 package app.controllers;
 
-import app.models.Recording;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXProgressBar;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.stage.Stage;
-
 import javax.sound.sampled.*;
 
 public class TestMicController {
@@ -14,6 +15,9 @@ public class TestMicController {
     @FXML private JFXButton closeButton;
     @FXML private JFXProgressBar micLevel;
 
+    /**
+     * Initialize the mic input and enter the main while loop that checks the mic level from the system.
+     */
     public void initialize(){
         setUpMicInput();
         Task<Void> task = new Task<Void>() {
@@ -32,16 +36,12 @@ public class TestMicController {
         };
         micLevel.progressProperty().bind(task.progressProperty());
         new Thread(task).start();
-
-    }
-    @FXML
-    private void onCloseButtonClicked(){
-        Stage stage = (Stage) closeButton.getScene().getWindow();
-        stage.close();
-
     }
 
-    //Calculates the rms level of the mic based on a byte array created in setUpMicInput
+
+    /**
+     * Calculates the rms level of the mic based on a byte array created in setUpMicInput
+     */
     public double calculateRMSLevel(byte[] audioData) {
         // audioData might be buffered data read from a data line
         long lSum = 0;
@@ -58,7 +58,9 @@ public class TestMicController {
         return ((Math.pow(averageMeanSquare,0.5d) + 0.5) / 100);
     }
 
-    //Reads data from the microphone
+    /**
+     * Reads data from the microphone
+     */
     public void setUpMicInput() {
 
         // Open a TargetDataLine for getting microphone input & sound level
@@ -79,11 +81,20 @@ public class TestMicController {
 
     }
 
-    //gets the current level of the mic
+    /**
+     * Gets the current level of the mic
+     * @return the mic level as a double
+     */
     public double getMicLevel() {
         byte[] bytes = new byte[_line.getBufferSize() / 5];
         _line.read(bytes, 0, bytes.length);
         return calculateRMSLevel(bytes);
     }
 
+    @FXML
+    private void onCloseButtonClicked(){
+        Stage stage = (Stage) closeButton.getScene().getWindow();
+        stage.close();
+
+    }
 }

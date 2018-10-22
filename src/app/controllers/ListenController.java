@@ -93,7 +93,6 @@ public class ListenController {
     /**
      * Sets up double click listener for all names list view and current playlist list view.
      * On double click on a name in the names list, it should autocomplete it in the search box
-     * On double click on a name in the current playlist, it should play it.
      */
     private void setUpClickToComplete(){
         // set up double click to add names into search box
@@ -160,6 +159,9 @@ public class ListenController {
         }
     }
 
+    /**
+     * Add name to the playlist or show an error message if the name is invalid
+     */
     @FXML
     private void onAddButtonClicked(){
         // get the number of characters in the search bar
@@ -238,7 +240,6 @@ public class ListenController {
     }
 
     private void setUpCurrentPlaylistCellFactory(){
-
         _currentPlaylistList.setCellFactory(param -> new ListCell<Name>(){
             @Override
             protected void updateItem(Name names, boolean empty){
@@ -281,6 +282,9 @@ public class ListenController {
 
     }
 
+    /**
+     * Deletes the playlist, or shows an error message if there is only playlist or if there is no playlist selected
+     */
     @FXML
     private void onDeletePlaylistButtonClicked(){
         // get the current playlist selected
@@ -306,6 +310,9 @@ public class ListenController {
 
     }
 
+    /**
+     * Plays the selected recording in the playlist.
+     */
     @FXML
     public void onPlayCLicked() {
         Name name = _currentPlaylistList.getSelectionModel().getSelectedItem();
@@ -336,7 +343,6 @@ public class ListenController {
         } else {
             showAlert("Error: No name selected", "Please select a name to play");
         }
-
     }
 
     @FXML
@@ -409,7 +415,7 @@ public class ListenController {
     }
 
     /**
-     * Allow users to click space bar to autocomplete name to first in list while typing
+     * Allow users to click the tab key to autocomplete name to first in list while typing
      */
     private void bindSearchKeys(){
         _searchBar.setOnKeyPressed(e -> {

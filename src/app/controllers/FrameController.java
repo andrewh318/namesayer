@@ -181,7 +181,7 @@ public class FrameController {
 
 
         if (f != null){
-            // parse the txt file
+            // parse the txt file, and create an error message including all names that could not be read in
             List<String> invalidNames = _model.readPlaylist(f);
             if (!(invalidNames.isEmpty())) {
                 String fileName = f.getName().substring(0, f.getName().lastIndexOf("."));
@@ -191,12 +191,16 @@ public class FrameController {
                     invalidNamesString = invalidNamesString + invalidName.replaceAll("%"," ") + "\n";
                 }
 
-                showAlert("Error: the following names from playlist: " + fileName + " could not be found in the database", invalidNamesString);
+                showAlert("Error: the following names from playlist: " + fileName +
+                        " could not be found in the database", invalidNamesString);
             }
         }
     }
 
-
+    /**
+     * Loads the manage screen and injects the model into it.
+     * @param model The manage screen requires the application model so user can view and edit playlists
+     */
     private void loadListen(NamesModel model){
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/app/views/Listen.fxml"));
@@ -234,7 +238,7 @@ public class FrameController {
 
 
     /**
-     * Loads the shop screen. We only want to instantiate the shop once so if it has already been loaded befoe we
+     * Loads the shop screen. We only want to instantiate the shop once so if it has already been loaded before we
      * simply get the old reference to it.
      */
     private void loadShop(){
@@ -255,7 +259,7 @@ public class FrameController {
     }
 
     /**
-     * Loads the test mic screen and applies the appopriate css file to it
+     * Loads the test mic screen and applies the appropriate css file to it
      */
     private void loadTestMic(){
         // load new playlist FXML
@@ -292,22 +296,14 @@ public class FrameController {
         _progressTimeline.play();
     }
 
+    /**
+     * Calling this method stops the progress bar if it is running, and sets the progress to full.
+     */
     public void resetProgressBar() {
         if (_progressTimeline != null) {
             _progressTimeline.stop();
         }
         _progressBar.setProgress(1d);
-    }
-
-    private void showAlert(String header, String content){
-        Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-        errorAlert.setHeaderText(header);
-        errorAlert.setContentText(content);
-        errorAlert.showAndWait();
-    }
-
-    public double getVolume() {
-        return _volumeSlider.getValue();
     }
 
     /**
@@ -321,7 +317,6 @@ public class FrameController {
         cmd.startProcess();
 
         Process volumeInit = cmd.getProcess();
-
 
         InputStream inputStream = volumeInit.getInputStream();
         BufferedReader reader = new BufferedReader((new InputStreamReader(inputStream)));
@@ -340,13 +335,19 @@ public class FrameController {
         _volumeSlider.valueProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                // multiply by 100 because scale is 0-1 but system volume is 0-100
                 double volume = newValue.doubleValue();
                 String cmd = "amixer set 'Master' " + volume + "%";
                 BashCommand setMaster = new BashCommand(cmd);
                 setMaster.startProcess();
             }
         });
+    }
+
+    private void showAlert(String header, String content){
+        Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+        errorAlert.setHeaderText(header);
+        errorAlert.setContentText(content);
+        errorAlert.showAndWait();
     }
 
 }

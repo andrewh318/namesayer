@@ -60,6 +60,11 @@ public class PracticeMode {
         new Thread(task).start();
     }
 
+    /**
+     * Calls methods to create the recording object, record audio, and changes the behaviour of the record button.
+     * @param recordButton the record button
+     * @return the task that this method runs on
+     */
     public Task<Void> recordName(Button recordButton){
         Task<Void> task = new Task<Void>() {
             @Override
@@ -88,10 +93,10 @@ public class PracticeMode {
         return task;
     }
 
-    public void playRecording(Recording recording, double volume){
+    public void playRecording(Recording recording){
         Task<Void> task = new Task<Void>(){
             @Override
-            protected Void call() throws Exception {
+            protected Void call() {
                 recording.playRecording();
                 return null;
             }
@@ -103,10 +108,11 @@ public class PracticeMode {
         _currentName.removeUserRecording(recording);
     }
 
-    public void compareNames(Recording recording, double volume){
+
+    public void compareNames(Recording recording){
         Task<Void> task = new Task<Void>() {
             @Override
-            protected Void call() throws Exception {
+            protected Void call() {
                 _currentName.playRecording();
                 recording.playRecording();
                 return null;
