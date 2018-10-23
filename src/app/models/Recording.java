@@ -25,7 +25,7 @@ public class Recording {
         countBadRecordings();
     }
 
-    private void countBadRecordings() {
+    private void countBadRecordings(){
         // Read the bad names file to see if the recording has any bad ratings associated with it
         BufferedReader br;
         // Count of how many bad recordings there are
@@ -46,7 +46,7 @@ public class Recording {
         _numOfBadRecordings = numOfBadRecordings;
     }
 
-    public void playRecording() {
+    public void playRecording(){
         BashCommand playRecording = new BashCommand("ffplay -loglevel panic -autoexit -nodisp -i '" + _trimmedPath + "'");
         playRecording.startProcess();
         try {
@@ -55,7 +55,6 @@ public class Recording {
             e.printStackTrace();
         }
     }
-
 
     public void flagAsBad() {
         _numOfBadRecordings++;
@@ -149,7 +148,6 @@ public class Recording {
             e.printStackTrace();
         }
     }
-
 
     /**
      * Creates a new file containing a version of the recording with all silence quieter than -35db removed.
