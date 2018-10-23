@@ -16,7 +16,6 @@ public class CombinedName extends Name {
      * Plays each recording consecutively
      */
     public void playRecording(){
-        System.out.println("Number of names " + _names.size());
         for (Name name : _names) {
             name.playRecording();
         }
