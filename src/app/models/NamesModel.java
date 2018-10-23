@@ -182,6 +182,7 @@ public class NamesModel {
             //Find the name object corresponding to each string and add it to the combined Name
             for (String stringName : stringNames) {
                 stringName = stringName.trim();
+                stringName = stringName.toLowerCase();
                 stringName = stringName.substring(0, 1).toUpperCase() + stringName.substring(1);
 
                 Name name = searchListOfName(_databaseNames, stringName);
@@ -359,6 +360,7 @@ public class NamesModel {
 
         for (String name : namesArray) {
             name = name.trim();
+            name = name.toLowerCase();
             if (name.length() > 0) {
                 name = name.substring(0, 1).toUpperCase() + name.substring(1);
                 formattedName = formattedName + name + "%";
