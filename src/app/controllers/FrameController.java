@@ -19,18 +19,22 @@ import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.*;
+import java.net.URL;
 import java.util.List;
 import java.util.Optional;
 
@@ -256,6 +260,19 @@ public class FrameController {
         } else {
             borderPane.setCenter(shopScreen);
         }
+    }
+
+    @FXML
+    private void loadHelp(){
+        Stage stage = new Stage();
+        final WebView browser = new WebView();
+        final WebEngine webEngine = browser.getEngine();
+        Scene scene = new Scene(browser);
+        stage.setScene(scene);
+        URL url = this.getClass().getResource("/resources/UserManual.html");
+        webEngine.load(url.toString());
+        stage.setTitle("User Manual");
+        stage.show();
     }
 
     /**
