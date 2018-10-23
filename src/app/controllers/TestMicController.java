@@ -1,5 +1,4 @@
-//The majority of the code in this class is from the URL below with some changes.
-// https://stackoverflow.com/questions/15870666/calculating-microphone-volume-trying-to-find-max
+
 
 package app.controllers;
 
@@ -11,6 +10,13 @@ import javafx.stage.Stage;
 
 import javax.sound.sampled.*;
 
+/**
+ * This class is the controller for the test mic screen. It is responsible for displaying the current microphone level
+ * to the user.
+ * The majority of the code in this class is from the URL below with some changes.
+ * https://stackoverflow.com/questions/15870666/calculating-microphone-volume-trying-to-find-max
+ * @author: Andrew Hu and Vincent Tunnell
+ */
 public class TestMicController {
     private TargetDataLine _line;
     @FXML private JFXButton closeButton;

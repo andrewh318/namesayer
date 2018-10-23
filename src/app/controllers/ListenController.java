@@ -22,6 +22,11 @@ import javafx.util.StringConverter;
 import java.io.IOException;
 import java.util.Optional;
 
+/**
+ * This class is the controller for the manage screen. It is responsible for handling, creating playlists,
+ * interacting with database and adding names to playlists.
+ * @author: Andrew Hu and Vincent Tunnell
+ */
 public class ListenController {
     @FXML private JFXListView<Name> _allNamesList;
     @FXML private JFXListView<Name> _currentPlaylistList;

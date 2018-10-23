@@ -8,8 +8,13 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 
-
+/**
+ * Entry point into the application. Is also responsible for keeping track of what theme the application is currently
+ * in, as well as handling theme changes
+ * @author: Andrew Hu and Vincent Tunnell
+ */
 public class Main extends Application {
+    // the different themes available in the application
     public enum Theme {
         GREEN, PURPLE, BLUE, RED, AQUA, YELLOW
     }

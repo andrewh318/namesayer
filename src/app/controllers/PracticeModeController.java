@@ -17,6 +17,11 @@ import javafx.scene.layout.BorderPane;
 import java.io.IOException;
 import java.util.Optional;
 
+/**
+ * This class is the controller for the practice mode. it is responsible for handling user interaction when
+ * listening to database recordings, recording attempts, flagging/comparing recordings.
+ * @author: Andrew Hu and Vincent Tunnell
+ */
 public class PracticeModeController {
     @FXML private Label _playlistName;
     @FXML private Label _nameLabel;

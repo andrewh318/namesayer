@@ -8,6 +8,11 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 
+/**
+ * This is the controller for the shop screen. It is responsible for handling user purchasing themes and switching
+ * global application design.
+ * @author: Andrew Hu and Vincent Tunnell
+ */
 public class ShopController {
     public static final String UNLOCK = "UNLOCK";
     public static final String ITEM_OWNED = "Owned";

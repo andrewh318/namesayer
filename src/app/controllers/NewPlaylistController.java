@@ -11,6 +11,11 @@ import javafx.stage.Stage;
 
 import java.util.List;
 
+/**
+ * This class is the controller for the new playlist screen. It is responsible for taking information from the
+ * creation screen and creating a new playlist in the manage screen.
+ * @author: Andrew Hu and Vincent Tunnell
+ */
 public class NewPlaylistController {
     @FXML private JFXButton _submitButton;
     @FXML private JFXTextField _textField;

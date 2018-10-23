@@ -4,6 +4,11 @@ import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.scene.control.Button;
 
+/**
+ * This class is the model for the practice mode. It keeps track of the current name that is playing and also handles
+ * playing, recording and deleting.
+ * @author: Andrew Hu and Vincent Tunnell
+ */
 public class PracticeMode {
     private int _position = 0;
     private Name _currentName;

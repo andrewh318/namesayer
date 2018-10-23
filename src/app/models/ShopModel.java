@@ -4,6 +4,11 @@ import javafx.beans.property.SimpleIntegerProperty;
 
 import java.io.*;
 
+/**
+ * This class represents the global application state for user money and what themes they have unlocked. It is instantiated
+ * upon application launch.
+ * @author: Andrew Hu and Vincent Tunnell
+ */
 public class ShopModel {
     private SimpleIntegerProperty currentMoney;
     private boolean _isPurpleUnlocked = false;

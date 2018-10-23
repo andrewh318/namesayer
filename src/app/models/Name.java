@@ -10,6 +10,11 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * This class represents a single name instance. It is responsible for passing commands down to the individual recording
+ * objects. it also ensures that the best recording for any given name is always played.
+ * @author: Andrew Hu and Vincent Tunnell
+ */
 public class Name implements Comparable {
     private String _name;
     private ObservableList<Recording> _databaseRecordings = FXCollections.observableArrayList();

@@ -10,6 +10,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * This class reads the database and parses the information into lists representing database recordings, user recordings
+ * and playlists. All classes hold a reference to a singular NamesModel object which is how global application state
+ * is communicated between screens.
+ * @author: Andrew Hu and Vincent Tunnell
+ */
 public class NamesModel {
     private ObservableList<Name> _databaseNames = FXCollections.observableArrayList();
     private ObservableList<Playlist> _allPlaylists = FXCollections.observableArrayList();

@@ -8,6 +8,11 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.*;
 
+/**
+ * This class represents a single recording instance for a name (both database and user recordings). Recording objects
+ * handle their own playing, trimming and normalizing. It also keeps track of the number 'flags' it has.
+ * @author: Andrew Hu and Vincent Tunnell
+ */
 public class Recording {
     private String _name;
     private String _date;

@@ -39,6 +39,10 @@ enum Screen {
     LISTEN, PRACTICE, SHOP
 }
 
+/**
+ * Controller for the frame of the application. Responsible for injecting the models into each of the sub scenes.
+ * @author: Andrew Hu and Vincent Tunnell
+ */
 public class FrameController {
     @FXML private BorderPane borderPane;
 

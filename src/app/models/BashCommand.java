@@ -1,5 +1,9 @@
 package app.models;
 
+/**
+ * This class is a helper class that executes bash commands and reduces boiler plate code.
+ * @author: Andrew Hu and Vincent Tunnell
+ */
 public class BashCommand {
     private String _cmd;
     private Process _process;

@@ -6,6 +6,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * This class represents an instance of a combined name (custom names). It is responsible for transferring commands
+ * to the individual recording objects.
+ * @author: Andrew Hu and Vincent Tunnell
+ */
 public class CombinedName extends Name {
     private List<Name> _names = new ArrayList<>();
 
