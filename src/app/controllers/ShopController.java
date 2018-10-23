@@ -94,7 +94,6 @@ public class ShopController {
         if (_shopModel.getYellowUnlocked()){
             unlockYellow();
         }
-
     }
 
     @FXML
@@ -107,7 +106,6 @@ public class ShopController {
             showAlert("Sorry: Not enough money", "This item costs: " + THEME_PRICE + " V Bucks \nYou" +
                     " only have: " + _shopModel.getMoney() + " V Bucks");
         }
-
     }
 
     @FXML

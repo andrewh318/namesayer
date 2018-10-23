@@ -15,28 +15,21 @@ public class NamesModel {
     private ObservableList<Playlist> _allPlaylists = FXCollections.observableArrayList();
     private ObservableList<Name> _combinedNames = FXCollections.observableArrayList();
 
-    public static final String DATABASERECORDINGSDIRECTORY = "names";
-    public static final String USERRECORDINGSDIRECTORY = "userNames";
+    public static final String DATABASE_RECORDINGS_DIRECTORY = "names";
+    public static final String USER_RECORDINGS_DIRECTORY = "userNames";
     public static final String PLAYLISTS_DIRECTORY = "playlists";
-    public static final String BADNAMESFILE = "BadNames.txt";
+    public static final String BAD_NAMES_FILE = "BadNames.txt";
     public static final String APPLICATION_STATE = "ApplicationState.txt";
     public static final String DEFAULT_PLAYLIST_NAME = "Default Playlist";
     public static final String TRIMMED_NORMALISED_DIRECTORY = "trimmedNormalised";
     public static final String COMBINED_NAMES_DIRECTORY = "combinedNames";
     public static final String TEMP_PATH = TRIMMED_NORMALISED_DIRECTORY + "/output.wav";
     public static final int MAX_RECORDING_SECS = 7;
-
     public static final int DEFAULT_MONEY = 1500;
 
+    public ObservableList<Name> getDatabaseNames(){ return _databaseNames; }
 
-
-    public ObservableList<Name> getDatabaseNames() {
-        return _databaseNames;
-    }
-
-    public ObservableList<Playlist> getPlaylists() {
-        return _allPlaylists;
-    }
+    public ObservableList<Playlist> getPlaylists(){ return _allPlaylists; }
 
     /**
      * Calling this method executes all tasks necessary for setting up the model.
@@ -61,22 +54,22 @@ public class NamesModel {
     /**
      * Makes all of the directories that the application requires
      */
-    private void makeDirectories() {
-        new File(DATABASERECORDINGSDIRECTORY).mkdir();
-        new File(USERRECORDINGSDIRECTORY).mkdir();
+    private void makeDirectories(){
+        new File(DATABASE_RECORDINGS_DIRECTORY).mkdir();
+        new File(USER_RECORDINGS_DIRECTORY).mkdir();
         new File(PLAYLISTS_DIRECTORY).mkdir();
         new File(COMBINED_NAMES_DIRECTORY).mkdir();
 
         new File(TRIMMED_NORMALISED_DIRECTORY).mkdir();
-        new File(TRIMMED_NORMALISED_DIRECTORY + "/" + DATABASERECORDINGSDIRECTORY).mkdir();
-        new File(TRIMMED_NORMALISED_DIRECTORY + "/" + USERRECORDINGSDIRECTORY).mkdir();
+        new File(TRIMMED_NORMALISED_DIRECTORY + "/" + DATABASE_RECORDINGS_DIRECTORY).mkdir();
+        new File(TRIMMED_NORMALISED_DIRECTORY + "/" + USER_RECORDINGS_DIRECTORY).mkdir();
         new File(TRIMMED_NORMALISED_DIRECTORY + "/" + COMBINED_NAMES_DIRECTORY).mkdir();
     }
 
     /**
      * Clears all data from the model.
      */
-    private void clearPlaylists() {
+    private void clearPlaylists(){
         _allPlaylists.clear();
         _combinedNames.clear();
         _databaseNames.clear();
@@ -97,8 +90,8 @@ public class NamesModel {
     /**
      * Create a file to write bad quality information into.
      */
-    private void createErrorFile() {
-        File file = new File(BADNAMESFILE);
+    private void createErrorFile(){
+        File file = new File(BAD_NAMES_FILE);
         try {
             file.createNewFile();
         } catch(Exception e) {
@@ -109,13 +102,13 @@ public class NamesModel {
     /**
      * Loops through all the files in the directories, and call the appropriate read method on each file.
      */
-    private void readDirectories() {
+    private void readDirectories(){
 
-        for (File file : new File(DATABASERECORDINGSDIRECTORY).listFiles()) {
+        for (File file : new File(DATABASE_RECORDINGS_DIRECTORY).listFiles()) {
             readDatabaseRecording(file);
         }
 
-        for (File file : new File(USERRECORDINGSDIRECTORY).listFiles()) {
+        for (File file : new File(USER_RECORDINGS_DIRECTORY).listFiles()) {
             readUserRecording(file);
         }
 
@@ -126,8 +119,6 @@ public class NamesModel {
         for (File file : new File(PLAYLISTS_DIRECTORY).listFiles()) {
             readPlaylist(file);
         }
-
-
     }
 
     /**
@@ -135,7 +126,7 @@ public class NamesModel {
      * @param file The file to be parsed. Must have the filename format of the database names.
      * @return The created recording object. If the file name not in the correct format, it will return null.
      */
-    private Recording parseFilename(File file) {
+    private Recording parseFilename(File file){
         String fileName = "";
         try {
             fileName = file.getName();
@@ -163,7 +154,7 @@ public class NamesModel {
      * combinedName object if it is not already in the database, or an existing combinedName object if it is.
      * @param file The combined recording file to be read.
      */
-    private void readCombinedRecording(File file) {
+    private void readCombinedRecording(File file){
 
         //Parse the file name and create a new recording object
         Recording recording = parseFilename(file);
@@ -208,7 +199,7 @@ public class NamesModel {
      * existing name object, otherwise adds it to a new name object.
      * @param file The database recording wav file to be read.
      */
-    private void readDatabaseRecording(File file) {
+    private void readDatabaseRecording(File file){
 
         Recording recording = parseFilename(file);
 
@@ -232,7 +223,7 @@ public class NamesModel {
      * existing name object.
      * @param file The user recording wav file to be read.
      */
-    public void readUserRecording(File file) {
+    public void readUserRecording(File file){
         Recording recording = parseFilename(file);
 
         //If parseFilename returns null the recording could not be created correctly so dont add to a name object.
@@ -256,7 +247,7 @@ public class NamesModel {
      * @param file The playlist text file to be read.
      * @return a list of invalid names that cant be read into the playlist.
      */
-    public List<String> readPlaylist(File file) {
+    public List<String> readPlaylist(File file){
 
         //Parse the playlist filename to get its name and create a playlist object
         String playlistName = file.getName().substring(0, file.getName().lastIndexOf('.'));
@@ -299,7 +290,7 @@ public class NamesModel {
      * @param names a string of names. Can be a single name or multiple names separated by spaces.
      * @return The name object that the string corresponds to, or null if it is invalid
      */
-    public Name findName(String names) {
+    public Name findName(String names){
         //If the string is empty return null
         if (names.isEmpty()){
             return null;
@@ -345,8 +336,6 @@ public class NamesModel {
         _combinedNames.add(combinedName);
         //Return the new combined name
         return combinedName;
-
-
     }
 
     /**
@@ -356,7 +345,7 @@ public class NamesModel {
      * @return A formatted version of the input name that matches the format in all name objects in the database. Can be
      * then used as an input to findName.
      */
-    public String formatNamesString (String names) {
+    public String formatNamesString (String names){
 
         String formattedName = "";
 
@@ -420,7 +409,7 @@ public class NamesModel {
      * Deletes a folder and its contents.
      * @param folder The file object representing the directory to be deleted
      */
-    public void deleteFolder(File folder) {
+    public void deleteFolder(File folder){
         File[] files = folder.listFiles();
         if(files!=null) { //some JVMs return null for empty dirs
             for(File f: files) {
@@ -440,7 +429,7 @@ public class NamesModel {
      * @param stringName The string name of the name you wish to find.
      * @return The name that is found, or null if it is not found
      */
-    private Name searchListOfName(List<Name> namesList, String stringName) {
+    private Name searchListOfName(List<Name> namesList, String stringName){
 
         for (Name name : namesList) {
             if (name.getName().equals(stringName)) {

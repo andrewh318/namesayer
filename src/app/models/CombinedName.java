@@ -1,7 +1,5 @@
 package app.models;
 
-import javafx.scene.media.MediaPlayer;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -9,21 +7,17 @@ import java.util.Date;
 import java.util.List;
 
 public class CombinedName extends Name {
+    private List<Name> _names = new ArrayList<>();
 
-    private List<Name> names = new ArrayList<>();
-
-    public CombinedName(String name) {
-        super(name);
-    }
-
+    public CombinedName(String name){ super(name); }
 
     @Override
     /**
      * Plays each recording consecutively
      */
-    public void playRecording() {
-        System.out.println("Number of names " + names.size());
-        for (Name name : names) {
+    public void playRecording(){
+        System.out.println("Number of names " + _names.size());
+        for (Name name : _names) {
             name.playRecording();
         }
     }
@@ -34,22 +28,20 @@ public class CombinedName extends Name {
      */
     public float getRecordingLength(){
         float totalLength = 0;
-        for (Name name : names){
+        for (Name name : _names){
             float length = name.getRecordingLength();
             totalLength = totalLength + length;
         }
         return totalLength;
     }
 
-    public void addName(Name name) {
-        names.add(name);
-    }
+    public void addName(Name name){ _names.add(name); }
 
     @Override
     /**
      * Creates a recording object that encapsulates the state of a recording for 'this' name
      */
-    public Recording createRecordingObject() {
+    public Recording createRecordingObject(){
         DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH-mm-ss");
         Date d = new Date();
         String dateAndTime = dateFormat.format(d);
@@ -72,18 +64,14 @@ public class CombinedName extends Name {
     /**
      * Overriding toString as when combined names are read in from file, need to replace % with spaces.
      */
-    public String toString() {
-        return super.getName().replaceAll("%", " ");
-    }
+    public String toString(){ return super.getName().replaceAll("%", " "); }
 
     /**
      * There should be no best recording for combined names
      * @return Always returns null so class that calls this method knows it is a combined name
      */
     @Override
-    public Recording getBestRecording(){
-        return null;
-    }
+    public Recording getBestRecording(){ return null; }
 
     /**
      * Users can not flag combined names
@@ -95,17 +83,19 @@ public class CombinedName extends Name {
         return false;
     }
 
+    /**
+     * Gets a clean representation of the combined name with spaces between names
+     * @return clean representation of combined name
+     */
     @Override
-    public String getCleanName() {
-        return getName().replaceAll("%", " ");
-    }
+    public String getCleanName(){ return getName().replaceAll("%", " "); }
 
     @Override
     /**
      * Loops through each name, and normalizes each one
      */
-    public void normaliseBestRecording() {
-        for (Name name : names) {
+    public void normaliseBestRecording(){
+        for (Name name : _names) {
             name.getBestRecording().normaliseAndTrimAudioFile();
         }
     }

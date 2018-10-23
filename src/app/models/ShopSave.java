@@ -8,40 +8,30 @@ import java.io.Serializable;
  */
 public class ShopSave implements Serializable {
     private int money;
-    private boolean isPurpleUnlocked;
-    private boolean isBlueUnlocked;
-    private boolean isRedUnlocked;
-    private boolean isAquaUnlocked;
-    private boolean isYellowUnlocked;
+    private boolean _isPurpleUnlocked;
+    private boolean _isBlueUnlocked;
+    private boolean _isRedUnlocked;
+    private boolean _isAquaUnlocked;
+    private boolean _isYellowUnlocked;
 
     public ShopSave(int money, boolean isPurple, boolean isBlue, boolean isRed, boolean isAqua, boolean isYellow){
         this.money = money;
-        this.isPurpleUnlocked = isPurple;
-        this.isBlueUnlocked = isBlue;
-        this.isRedUnlocked = isRed;
-        this.isAquaUnlocked = isAqua;
-        this.isYellowUnlocked = isYellow;
+        this._isPurpleUnlocked = isPurple;
+        this._isBlueUnlocked = isBlue;
+        this._isRedUnlocked = isRed;
+        this._isAquaUnlocked = isAqua;
+        this._isYellowUnlocked = isYellow;
     }
 
-    public int getMoney() {
-        return money;
-    }
+    public int getMoney(){ return money; }
 
-    public boolean isPurpleUnlocked() {
-        return isPurpleUnlocked;
-    }
+    public boolean isPurpleUnlocked(){ return _isPurpleUnlocked; }
 
-    public boolean isBlueUnlocked() {
-        return isBlueUnlocked;
-    }
+    public boolean isBlueUnlocked(){ return _isBlueUnlocked; }
 
-    public boolean isRedUnlocked(){
-        return isRedUnlocked;
-    }
-    public boolean isAquaUnlocked(){
-        return isAquaUnlocked;
-    }
-    public boolean isYellowUnlocked(){
-        return isYellowUnlocked;
-    }
+    public boolean isRedUnlocked(){ return _isRedUnlocked; }
+
+    public boolean isAquaUnlocked(){ return _isAquaUnlocked; }
+
+    public boolean isYellowUnlocked(){ return _isYellowUnlocked; }
 }

@@ -1,16 +1,13 @@
 package app.controllers;
 
 import app.Main;
-import app.models.BashCommand;
 import app.models.Name;
 import app.models.NamesModel;
 import app.models.Playlist;
-import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.concurrent.Task;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -18,42 +15,26 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldListCell;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.text.CollationElementIterator;
-import java.util.Collections;
 import java.util.Optional;
 
 public class ListenController {
     @FXML private JFXListView<Name> _allNamesList;
     @FXML private JFXListView<Name> _currentPlaylistList;
     @FXML private JFXListView<Playlist> _allPlaylists;
-
+    @FXML private TextField _searchBar;
     @FXML private Label _currentPlaylistName;
-
-    private FilteredList<Name> _filteredNamesList;
-    @FXML private JFXButton _addButton;
-    @FXML private JFXButton _newPlaylistButon;
-    @FXML private JFXButton _deleteButton;
 
     private static final int MAX_NAME_LENGTH = 50;
 
-    @FXML private TextField _searchBar;
-
+    private FilteredList<Name> _filteredNamesList;
     private Playlist _currentPlaylist;
-
     private FrameController _frameController;
-
     private NamesModel _model;
-
 
     /**
      * Injects the model into listen controller from frame and sets up the required bindings
@@ -86,7 +67,6 @@ public class ListenController {
         _allPlaylists.getSelectionModel().select(0);
         _filteredNamesList = new FilteredList<>(nameList, e -> true);
         _allNamesList.setItems(_filteredNamesList);
-
     }
 
 
@@ -96,49 +76,43 @@ public class ListenController {
      */
     private void setUpClickToComplete(){
         // set up double click to add names into search box
-        _allNamesList.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent click) {
-                if (click.getClickCount() == 1){
-                    String searchText = _searchBar.getText();
+        _allNamesList.setOnMouseClicked(click -> {
+            if (click.getClickCount() == 1){
+                String searchText = _searchBar.getText();
 
-                    String lastNameofSearchText;
-                    String beginningOfSearchText;
+                String lastNameofSearchText;
+                String beginningOfSearchText;
 
-                    // remove the last name in the search box and replace it with the name user has selected
-                    if (searchText.contains(" ")) {
-                        lastNameofSearchText = searchText.substring(searchText.lastIndexOf(" ") + 1);
-                        beginningOfSearchText = searchText.substring(0, searchText.lastIndexOf(" ") + 1);
-                    } else if (searchText.contains("-")) {
-                        lastNameofSearchText = searchText.substring(searchText.lastIndexOf("-") + 1);
-                        beginningOfSearchText = searchText.substring(0, searchText.lastIndexOf("-") + 1);
-                    } else {
-                        lastNameofSearchText = searchText;
-                        beginningOfSearchText = "";
-                    }
-
-                    String nameString = _allNamesList.getSelectionModel().getSelectedItem().getName();
-
-                    // append the name user has selected into the search box
-                    if (nameString.toLowerCase().startsWith(lastNameofSearchText.toLowerCase())) {
-                        _searchBar.setText(beginningOfSearchText + nameString + " ");
-                    }
-
-                    // return cursor back to search box
-                    _searchBar.requestFocus();
-                    _searchBar.end();
+                // remove the last name in the search box and replace it with the name user has selected
+                if (searchText.contains(" ")) {
+                    lastNameofSearchText = searchText.substring(searchText.lastIndexOf(" ") + 1);
+                    beginningOfSearchText = searchText.substring(0, searchText.lastIndexOf(" ") + 1);
+                } else if (searchText.contains("-")) {
+                    lastNameofSearchText = searchText.substring(searchText.lastIndexOf("-") + 1);
+                    beginningOfSearchText = searchText.substring(0, searchText.lastIndexOf("-") + 1);
+                } else {
+                    lastNameofSearchText = searchText;
+                    beginningOfSearchText = "";
                 }
+
+                String nameString = _allNamesList.getSelectionModel().getSelectedItem().getName();
+
+                // append the name user has selected into the search box
+                if (nameString.toLowerCase().startsWith(lastNameofSearchText.toLowerCase())) {
+                    _searchBar.setText(beginningOfSearchText + nameString + " ");
+                }
+
+                // return cursor back to search box
+                _searchBar.requestFocus();
+                _searchBar.end();
             }
         });
 
         // set up double click to play a name from the playlist
-        _currentPlaylistList.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent click) {
-                if (click.getClickCount() == 2) {
-                    // play audio recording
-                    onPlayCLicked();
-                }
+        _currentPlaylistList.setOnMouseClicked(click -> {
+            if (click.getClickCount() == 2) {
+                // play audio recording
+                onPlayCLicked();
             }
         });
     }
@@ -200,7 +174,6 @@ public class ListenController {
             }
         }
     }
-
 
     /**
      * Allows playlist names to be edited upon double click
@@ -279,7 +252,6 @@ public class ListenController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     /**
@@ -307,14 +279,13 @@ public class ListenController {
             }
 
         }
-
     }
 
     /**
      * Plays the selected recording in the playlist.
      */
     @FXML
-    public void onPlayCLicked() {
+    public void onPlayCLicked(){
         Name name = _currentPlaylistList.getSelectionModel().getSelectedItem();
         // check if name is null
         if (name != null){
@@ -346,9 +317,7 @@ public class ListenController {
     }
 
     @FXML
-    private void onShuffleClicked(){
-        _currentPlaylist.shufflePlaylist();
-    }
+    private void onShuffleClicked(){ _currentPlaylist.shufflePlaylist(); }
 
     /**
      * Method is called from the NewPlaylist controller, to add a new playlist
@@ -481,7 +450,7 @@ public class ListenController {
     /**
      * Sets up the filtered list so as user types, the list view will update to reflect the changes.
      */
-    private void setUpSearchBar() {
+    private void setUpSearchBar(){
         _searchBar.textProperty().addListener((observable, oldValue, newValue) ->{
             _filteredNamesList.setPredicate(element -> {
                 String item = element.getName();
@@ -512,7 +481,6 @@ public class ListenController {
             _allNamesList.setItems(_filteredNamesList);
         });
     }
-
 
     private void showAlert(String header, String content){
         Alert errorAlert = new Alert(Alert.AlertType.ERROR);

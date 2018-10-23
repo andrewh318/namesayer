@@ -6,7 +6,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.io.File;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -16,21 +15,13 @@ public class Name implements Comparable {
     private ObservableList<Recording> _databaseRecordings = FXCollections.observableArrayList();
     private ObservableList<Recording> _userRecordings = FXCollections.observableArrayList();
 
-    public Name(String name){
-        _name = name;
-    }
+    public Name(String name){ _name = name; }
 
-    public String getName(){
-        return _name;
-    }
+    public String getName(){ return _name; }
 
-    public void addUserRecording(Recording recording){
-        _userRecordings.add(0,recording);
-    }
+    public void addUserRecording(Recording recording){ _userRecordings.add(0,recording); }
 
-    public void addDatabaseRecording(Recording recording){
-        _databaseRecordings.add(recording);
-    }
+    public void addDatabaseRecording(Recording recording){ _databaseRecordings.add(recording); }
 
     /**
      * Overrides toString so name will be printed correctly by list view
@@ -59,7 +50,7 @@ public class Name implements Comparable {
      * the file.
      * @param recording Recording the user wants to delete
      */
-    public void removeUserRecording(Recording recording) {
+    public void removeUserRecording(Recording recording){
         // delete the recording object from this name object
         _userRecordings.remove(recording);
         // delete the actual file from system
@@ -74,7 +65,7 @@ public class Name implements Comparable {
      * the database recordings
      * @return The created recording object.
      */
-    public Recording createRecordingObject() {
+    public Recording createRecordingObject(){
         DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH-mm-ss");
         Date d = new Date();
         String dateAndTime = dateFormat.format(d);
@@ -85,7 +76,7 @@ public class Name implements Comparable {
         String stringName = getName();
 
 
-        String path = NamesModel.USERRECORDINGSDIRECTORY + "/se206_" + date + "_" + time + "_" + stringName + ".wav";
+        String path = NamesModel.USER_RECORDINGS_DIRECTORY + "/se206_" + date + "_" + time + "_" + stringName + ".wav";
 
         String trimmedPath = NamesModel.TRIMMED_NORMALISED_DIRECTORY + "/" + path;
 
@@ -97,7 +88,7 @@ public class Name implements Comparable {
      * @param recording The recording object that represents the name that will be recorded.
      * @return The process created by the ffmpeg command.
      */
-    public Process record(Recording recording) {
+    public Process record(Recording recording){
 
         String audioCommand = "ffmpeg -f alsa -i default -t " + NamesModel.MAX_RECORDING_SECS + " " + "./" + recording.getPath();
         BashCommand create = new BashCommand(audioCommand);
@@ -106,7 +97,7 @@ public class Name implements Comparable {
         return create.getProcess();
     }
 
-    public String getCleanName() {
+    public String getCleanName(){
         return getName();
     }
 
@@ -145,7 +136,7 @@ public class Name implements Comparable {
         return getBestRecording().getRecordingLength();
     }
 
-    public void normaliseBestRecording() {
+    public void normaliseBestRecording(){
         getBestRecording().normaliseAndTrimAudioFile();
     }
 

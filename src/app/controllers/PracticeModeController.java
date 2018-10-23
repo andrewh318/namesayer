@@ -19,14 +19,10 @@ import java.util.Optional;
 
 public class PracticeModeController {
     @FXML private Label _playlistName;
-    private BorderPane _pane;
-    private PracticeMode _practiceMode;
-
     @FXML private Label _nameLabel;
     @FXML private Label _recordingLabel;
     @FXML private JFXButton _nextButton;
     @FXML private JFXButton _previousButton;
-
     @FXML private JFXButton _recordButton;
     @FXML private JFXButton _playButton;
     @FXML private JFXButton _compareButton;
@@ -34,30 +30,26 @@ public class PracticeModeController {
     @FXML private JFXButton _deleteUserRecordingButton;
     @FXML private JFXButton _flagButton;
     @FXML private FontAwesomeIconView _recordIcon;
+    @FXML private JFXComboBox<Recording> _userRecordings;
 
+    private BorderPane _pane;
+    private PracticeMode _practiceMode;
     private NamesModel _model;
     private ShopModel _shopModel;
-    @FXML
-    private JFXComboBox<Recording> _userRecordings;
-
     private FrameController _frameController;
 
     public void initialize(){
         setUpToolTips();
     }
 
-    public void setFrameController(FrameController controller){
-        _frameController = controller;
-    }
+    public void setFrameController(FrameController controller){ _frameController = controller; }
 
     public void setModels(NamesModel model, ShopModel shopModel){
         _model = model;
         _shopModel = shopModel;
     }
 
-    public void setPane(BorderPane pane){
-        _pane = pane;
-    }
+    public void setPane(BorderPane pane){ _pane = pane; }
 
 
     public void setPlaylist(Playlist playlist){
@@ -164,11 +156,11 @@ public class PracticeModeController {
         );
 
     }
-    @FXML
 
     /**
      * Navigate user back to the previous screen so they can change their playlist
      */
+    @FXML
     private void onChangePlaylistButton(){
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/app/views/PracticeSetup.fxml"));
@@ -190,7 +182,7 @@ public class PracticeModeController {
      * Records the audio, changes the behaviour and icon of the record button, handles progress bar
      */
     @FXML
-    private void onRecordPressed() {
+    private void onRecordPressed(){
         // disable all buttons and cha
         setButtonsDisable(true);
         //Chance the icon on the record button to a stop icon
@@ -216,8 +208,6 @@ public class PracticeModeController {
             _frameController.resetProgressBar();
             updateScreen();
         });
-
-
     }
 
     /**
@@ -265,7 +255,6 @@ public class PracticeModeController {
         }
     }
 
-
     /**
      * Play the database recoding followed by the currently selected user recording
      */
@@ -302,12 +291,12 @@ public class PracticeModeController {
         _recordButton.setTooltip(recordToolTip);
     }
 
-    private void startRecordProgress() {
+    private void startRecordProgress(){
         // call the progress bar to run for the length of the max recording time
         _frameController.startProgressBar(NamesModel.MAX_RECORDING_SECS);
     }
 
-    private void setButtonsDisable(Boolean disable) {
+    private void setButtonsDisable(Boolean disable){
         _nextButton.setDisable(disable);
         _previousButton.setDisable(disable);
         _playButton.setDisable(disable);
@@ -336,9 +325,5 @@ public class PracticeModeController {
             return false;
         }
     }
-
-
-
-
 }
 

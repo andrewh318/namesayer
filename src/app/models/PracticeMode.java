@@ -37,17 +37,11 @@ public class PracticeMode {
         _currentName = _playlist.getPlaylist().get(_position);
     }
 
-    public int getNumPlaylistItems(){
-        return _playlist.getNumberOfItems();
-    }
+    public int getNumPlaylistItems(){ return _playlist.getNumberOfItems(); }
 
-    public int getPosition(){
-        return _position;
-    }
+    public int getPosition(){ return _position; }
 
-    public Name getCurrentName(){
-        return _currentName;
-    }
+    public Name getCurrentName(){ return _currentName; }
 
     public void playCurrentName(){
         Task<Void> task = new Task<Void>() {
@@ -120,9 +114,4 @@ public class PracticeMode {
         };
         new Thread(task).start();
     }
-
-
-
-
-
 }

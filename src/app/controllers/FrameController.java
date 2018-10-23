@@ -3,20 +3,15 @@ package app.controllers;
 import app.Main;
 import app.models.BashCommand;
 import app.models.NamesModel;
-
 import app.models.ShopModel;
 import com.jfoenix.controls.JFXProgressBar;
 import com.jfoenix.controls.JFXSlider;
-import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
-import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -55,14 +50,11 @@ public class FrameController {
     @FXML private JFXProgressBar _progressBar;
     @FXML private JFXSlider _volumeSlider;
 
-    @FXML private Label _currentNameLabel;
     @FXML private Label _moneyLabel;
 
     private Parent shopScreen;
 
     private Screen _currentScreen;
-
-
 
     public void initialize(){
         setUpNamesModel();
@@ -79,24 +71,19 @@ public class FrameController {
     private void initializeMoney(){
         SimpleIntegerProperty startingMoney = _shopModel.getMoneyBinding();
         _moneyLabel.textProperty().bind(startingMoney.asString());
-
     }
-
 
     private void setUpNamesModel(){
         _model = new NamesModel();
         _model.setUp();
     }
 
-    private void setUpMoneyModel(){
-        _shopModel = new ShopModel();
-    }
+    private void setUpMoneyModel(){ _shopModel = new ShopModel(); }
 
     public void setStage(Stage stage){
         _stage = stage;
         setUpOnClose();
     }
-
 
     private void setUpOnClose(){
         _stage.setOnCloseRequest(e ->{
@@ -165,9 +152,7 @@ public class FrameController {
     }
 
     @FXML
-    private void onTestMicButtonClicked(){
-        loadTestMic();
-    }
+    private void onTestMicButtonClicked(){ loadTestMic(); }
 
     @FXML
     /**
@@ -349,5 +334,4 @@ public class FrameController {
         errorAlert.setContentText(content);
         errorAlert.showAndWait();
     }
-
 }
