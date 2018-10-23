@@ -438,7 +438,7 @@ public class NamesModel {
     private Name searchListOfName(List<Name> namesList, String stringName){
 
         for (Name name : namesList) {
-            if (name.getName().equals(stringName)) {
+            if (name.getName().toLowerCase().equals(stringName.toLowerCase())) {
                 return name;
             }
         }
