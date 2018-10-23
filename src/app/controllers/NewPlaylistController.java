@@ -4,40 +4,30 @@ import app.models.NamesModel;
 import app.models.Playlist;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
 import java.util.List;
 
 public class NewPlaylistController {
-    private ListenController _controller;
-
     @FXML private JFXButton _submitButton;
     @FXML private JFXTextField _textField;
 
+    private ListenController _controller;
     private NamesModel _model;
 
-    public void initialize(){
-        bindEnterKey();
-    }
+    public void initialize(){ bindEnterKey(); }
 
     /**
      * Allows user to press enter to automatically submit the playlist name they entered
      */
     private void bindEnterKey(){
-        _textField.setOnKeyPressed(new EventHandler<KeyEvent>()
-        {
-            @Override
-            public void handle(KeyEvent ke)
+        _textField.setOnKeyPressed(ke -> {
+            if (ke.getCode().equals(KeyCode.ENTER))
             {
-                if (ke.getCode().equals(KeyCode.ENTER))
-                {
-                    onSubmitButtonClicked();
-                }
+                onSubmitButtonClicked();
             }
         });
     }
@@ -74,9 +64,6 @@ public class NewPlaylistController {
             Stage stage = (Stage) _submitButton.getScene().getWindow();
             stage.close();
         }
-
-
-
     }
 
     /**

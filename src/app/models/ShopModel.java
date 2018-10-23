@@ -6,11 +6,11 @@ import java.io.*;
 
 public class ShopModel {
     private SimpleIntegerProperty currentMoney;
-    private boolean isPurpleUnlocked = false;
-    private boolean isBlueUnlocked = false;
-    private boolean isRedUnlocked = false;
-    private boolean isAquaUnlocked = false;
-    private boolean isYellowUnlocked = false;
+    private boolean _isPurpleUnlocked = false;
+    private boolean _isBlueUnlocked = false;
+    private boolean _isRedUnlocked = false;
+    private boolean _isAquaUnlocked = false;
+    private boolean _isYellowUnlocked = false;
 
     public ShopModel(){
         currentMoney = new SimpleIntegerProperty();
@@ -18,63 +18,35 @@ public class ShopModel {
     }
 
 
-    public int getMoney(){
-        return currentMoney.get();
-    }
-    public void setMoney(int money){
-        currentMoney.set(money);
-    }
+    public int getMoney(){ return currentMoney.get(); }
+
+    public void setMoney(int money){ currentMoney.set(money); }
 
     // returns the IntegerProperty version of the current money so it can be used to bind label
-    public SimpleIntegerProperty getMoneyBinding(){
-        return currentMoney;
-    }
+    public SimpleIntegerProperty getMoneyBinding(){return currentMoney; }
 
+    public boolean getPurpleUnlocked(){ return _isPurpleUnlocked; }
+    public boolean getBlueUnlocked(){ return _isBlueUnlocked; }
+    public boolean getRedUnlocked(){ return _isRedUnlocked; }
+    public boolean getYellowUnlocked(){ return _isYellowUnlocked; }
+    public boolean getAquaUnlocked(){ return _isAquaUnlocked; }
 
-    public boolean getPurpleUnlocked(){
-        return isPurpleUnlocked;
-    }
-    public boolean getBlueUnlocked(){
-        return isBlueUnlocked;
-    }
-    public boolean getRedUnlocked(){
-        return isRedUnlocked;
-    }
-    public boolean getYellowUnlocked(){
-        return isYellowUnlocked;
-    }
-    public boolean getAquaUnlocked(){
-        return isAquaUnlocked;
-    }
-
-    public void setPurpleUnlock(boolean status){
-        isPurpleUnlocked = status;
-    }
-    public void setBlueUnlocked(boolean status){
-        isBlueUnlocked = status;
-    }
-    public void setRedUnlocked(boolean status){
-        isRedUnlocked = status;
-    }
-    public void setYellowUnlocked(boolean status){
-        isYellowUnlocked = status;
-    }
-    public void setAquaUnlocked(boolean status){
-        isAquaUnlocked = status;
-    }
-
-    // in the case that there is no previous application state, this is the default status
+    public void setPurpleUnlock(boolean status){ _isPurpleUnlocked = status; }
+    public void setBlueUnlocked(boolean status){ _isBlueUnlocked = status; }
+    public void setRedUnlocked(boolean status){ _isRedUnlocked = status; }
+    public void setYellowUnlocked(boolean status){ _isYellowUnlocked = status; }
+    public void setAquaUnlocked(boolean status){ _isAquaUnlocked = status; }
 
     /**
      * In case there is no previous application state, the shop state will be set to this default one
      */
     private void setUpDefaultState(){
         currentMoney.set(NamesModel.DEFAULT_MONEY);
-        isPurpleUnlocked = false;
-        isBlueUnlocked = false;
-        isRedUnlocked = false;
-        isAquaUnlocked = false;
-        isYellowUnlocked = false;
+        _isPurpleUnlocked = false;
+        _isBlueUnlocked = false;
+        _isRedUnlocked = false;
+        _isAquaUnlocked = false;
+        _isYellowUnlocked = false;
     }
 
     /**
@@ -98,11 +70,11 @@ public class ShopModel {
                 fileIn.close();
 
                 // build this application state from the proxy object
-                isPurpleUnlocked = save.isPurpleUnlocked();
-                isBlueUnlocked = save.isBlueUnlocked();
-                isRedUnlocked = save.isRedUnlocked();
-                isAquaUnlocked = save.isAquaUnlocked();
-                isYellowUnlocked = save.isYellowUnlocked();
+                _isPurpleUnlocked = save.isPurpleUnlocked();
+                _isBlueUnlocked = save.isBlueUnlocked();
+                _isRedUnlocked = save.isRedUnlocked();
+                _isAquaUnlocked = save.isAquaUnlocked();
+                _isYellowUnlocked = save.isYellowUnlocked();
                 currentMoney.set(save.getMoney());
 
             }
@@ -121,8 +93,8 @@ public class ShopModel {
     public void saveStateToFile(){
         try {
             // create a proxy object that implements serializable to hold application staet
-            ShopSave shopSave = new ShopSave(this.currentMoney.get(), this.isPurpleUnlocked, this.isBlueUnlocked,
-                    this.isRedUnlocked, this.isAquaUnlocked, this.isYellowUnlocked);
+            ShopSave shopSave = new ShopSave(this.currentMoney.get(), this._isPurpleUnlocked, this._isBlueUnlocked,
+                    this._isRedUnlocked, this._isAquaUnlocked, this._isYellowUnlocked);
 
             FileOutputStream fileOut = new FileOutputStream(NamesModel.APPLICATION_STATE);
             ObjectOutputStream out = new ObjectOutputStream(fileOut);

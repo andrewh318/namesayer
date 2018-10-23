@@ -30,6 +30,7 @@ public class Main extends Application {
         primaryStage.setScene(new Scene(root));
         controller.setStage(primaryStage);
         setTheme(Theme.GREEN, programRoot);
+        primaryStage.setResizable(false);
         primaryStage.show();
     }
 

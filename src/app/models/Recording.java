@@ -2,13 +2,10 @@
 
 package app.models;
 
-import javafx.concurrent.Task;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
-import javafx.scene.media.MediaView;
-import javafx.util.Duration;
-
-import javax.sound.sampled.*;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.*;
 
 public class Recording {
@@ -34,7 +31,7 @@ public class Recording {
         // Count of how many bad recordings there are
         int numOfBadRecordings = 0;
         try {
-            br = new BufferedReader(new FileReader(NamesModel.BADNAMESFILE));
+            br = new BufferedReader(new FileReader(NamesModel.BAD_NAMES_FILE));
             String st;
             while ((st = br.readLine()) != null) {
                 // compare the recording to the current name
@@ -72,7 +69,7 @@ public class Recording {
 
     private void writeToFile(){
         try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter(NamesModel.BADNAMESFILE,true));
+            BufferedWriter writer = new BufferedWriter(new FileWriter(NamesModel.BAD_NAMES_FILE,true));
             writer.append(this.toString());
             writer.newLine();
             writer.close();
@@ -109,7 +106,7 @@ public class Recording {
     /**
      * Normalises a recording by max volume to -15db. The new file will always have a peak volume of -15db.
      */
-    private void normaliseRecording() {
+    private void normaliseRecording(){
         //Define the targetDb to be -15db.
         int targetDB = -15;
 
@@ -157,7 +154,7 @@ public class Recording {
     /**
      * Creates a new file containing a version of the recording with all silence quieter than -35db removed.
      */
-    private void trimRecording() {
+    private void trimRecording(){
         //Remove all sounds quieter than -35dB
         String trimCommand = "ffmpeg -y -i ./" + NamesModel.TEMP_PATH + " -af silenceremove=1:0:-35dB" + " ./" + _trimmedPath;
         BashCommand trim = new BashCommand(trimCommand);
@@ -170,7 +167,7 @@ public class Recording {
         }
     }
 
-    public void normaliseAndTrimAudioFile() {
+    public void normaliseAndTrimAudioFile(){
         normaliseRecording();
         trimRecording();
     }
@@ -185,7 +182,7 @@ public class Recording {
 
     //Bad quality is appended to the string representation of the recording when the _bad field is true
     @Override
-    public String toString() {
+    public String toString(){
         String string = _name.replaceAll("%", " ") + " " + _date + " " + _time;
         return string;
     }

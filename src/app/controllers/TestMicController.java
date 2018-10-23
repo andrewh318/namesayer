@@ -8,6 +8,7 @@ import com.jfoenix.controls.JFXProgressBar;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.stage.Stage;
+
 import javax.sound.sampled.*;
 
 public class TestMicController {
@@ -42,7 +43,7 @@ public class TestMicController {
     /**
      * Calculates the rms level of the mic based on a byte array created in setUpMicInput
      */
-    public double calculateRMSLevel(byte[] audioData) {
+    public double calculateRMSLevel(byte[] audioData){
         // audioData might be buffered data read from a data line
         long lSum = 0;
         for(int i=0; i<audioData.length; i++)
@@ -61,7 +62,7 @@ public class TestMicController {
     /**
      * Reads data from the microphone
      */
-    public void setUpMicInput() {
+    public void setUpMicInput(){
 
         // Open a TargetDataLine for getting microphone input & sound level
         _line = null;
@@ -78,14 +79,13 @@ public class TestMicController {
         } catch (LineUnavailableException ex) {
             System.out.println("The TargetDataLine is Unavailable.");
         }
-
     }
 
     /**
      * Gets the current level of the mic
      * @return the mic level as a double
      */
-    public double getMicLevel() {
+    public double getMicLevel(){
         byte[] bytes = new byte[_line.getBufferSize() / 5];
         _line.read(bytes, 0, bytes.length);
         return calculateRMSLevel(bytes);
@@ -95,6 +95,5 @@ public class TestMicController {
     private void onCloseButtonClicked(){
         Stage stage = (Stage) closeButton.getScene().getWindow();
         stage.close();
-
     }
 }

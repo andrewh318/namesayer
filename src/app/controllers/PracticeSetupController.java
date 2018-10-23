@@ -3,7 +3,6 @@ package app.controllers;
 import app.models.NamesModel;
 import app.models.Playlist;
 import app.models.ShopModel;
-import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,14 +13,12 @@ import javafx.scene.layout.BorderPane;
 import java.io.IOException;
 
 public class PracticeSetupController {
-    @FXML private JFXButton _continueButton;
     @FXML private JFXComboBox<Playlist> _comboBox;
-    private BorderPane _borderPane;
 
+    private BorderPane _borderPane;
     private NamesModel _model;
     private ShopModel _shopModel;
     private FrameController _controller;
-
 
     public void setModels(NamesModel model, ShopModel shopModel){
         _model = model;
@@ -35,13 +32,9 @@ public class PracticeSetupController {
         _comboBox.getSelectionModel().select(0);
     }
 
-    public void setPane(BorderPane pane){
-      _borderPane = pane;
-    }
+    public void setPane(BorderPane pane){ _borderPane = pane; }
 
-    public void setFrameController(FrameController controller){
-        _controller = controller;
-    }
+    public void setFrameController(FrameController controller){ _controller = controller; }
 
     @FXML
     public void loadPracticeMode(){
@@ -67,7 +60,6 @@ public class PracticeSetupController {
         } else {
             System.out.println("no playlist selected");
         }
-
     }
 
     private void showAlert(String header, String content){
@@ -76,6 +68,4 @@ public class PracticeSetupController {
         errorAlert.setContentText(content);
         errorAlert.showAndWait();
     }
-
-
 }
