@@ -2,7 +2,7 @@
 
 # Documentation
 
-Welcome to Andrew and Vincent's NameSayer 3 Assignment.
+Welcome to Andrew and Vincent's NameSayer Application.
 
 ## What is Name Sayer?
 
