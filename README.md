@@ -62,8 +62,12 @@ Name Sayer is a software tool to assist users in learning unfamiliar names. User
 - Smart predictive search- easily find and add the names you want to practice
 
 ## Screenshots
-![Main Menu](https://imgur.com/GwKcQVb)
-
+*Main Menu Screen*
+![Main Menu](https://i.imgur.com/GwKcQVb.png)
+*Practice Mode*
+![Practice](https://i.imgur.com/uvVi6Kw.png)
+*Themes!*
+![Shop](https://i.imgur.com/JnOY16e.png)
 ## Soon TM
 - Full volume controls built into application 
 - Currency system allowing you to purchase new colour themes 
