@@ -69,8 +69,8 @@ Name Sayer is a software tool to assist users in learning unfamiliar names. User
 *Themes!*
 ![Shop](https://i.imgur.com/JnOY16e.png)
 ## Soon TM
-- ~~Full volume controls built into application ~~  DONE
-- ~~Currency system allowing you to purchase new colour themes ~~ DONE
+- ~~Full volume controls built into application~~
+- ~~Currency system allowing you to purchase new colour themes~~
 - Login system to enable multiple users on the same machine
 
 
