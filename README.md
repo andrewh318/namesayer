@@ -19,21 +19,21 @@ Name Sayer is a software tool to assist users in learning unfamiliar names. User
 ## How to Use
 **Navigation**
 - The green navigation bar at the top of the application allows you to navigate between the 'Manage' mode and 'Practice' mode, as well as the option to upload a custom list of names.
-- The black playback bar at the bottom of the application is responsible for displaying progress when playing and recording names, as well changing volume controls (not present in BETA).
+- The black playback bar at the bottom of the application is responsible for displaying progress when playing and recording names, as well changing volume controls.
 
 **Manage**
 
 - The program initially loads the manage screen where you can view and manage all your playlists.
 - All existing playlists will be shown on the left of the screen.
-- Create a new playlist by pressing the new button under the list of playlists, and delete a playlist by selecting the desired playlist and pressing delete.
+- Create a new playlist by clicking the new button under the list of playlists, and delete a playlist by selecting the desired playlist and clicking delete.
 - Double click a playlist to rename it and press enter or click on another playlist to confirm.
 - Selecting a playlist displays its contents on the right side of the screen.
 - To add to the selected playlist, enter the name you want to add in the search bar below the list of all names. 
-- As you type, the list of names will be updated to predict what name you want to add. You can double click on a name in the list to complete what you are typing to this name. Pressing the space bar will complete what you are typing by grabbing the first name in the updated list.
+- As you type, the list of names will be updated to predict what name you want to add. You can double click on a name in the list to complete what you are typing to this name. Pressing the space bar will auto-complete what you are typing by grabbing the first name in the updated list.
 - You can combine names into one by simply typing the names separated by spaces or hyphens.
 - Finally, press the add button to add the name in the search bar to the playlist
-- You can press the play button after selecting a name in your playlist to playback the best database recording of the name.
-- You can delete a name from your playlist by selecting the name and pressing delete.
+- You can press the play button after selecting a name in your playlist to hear the best database recording of the name.
+- You can delete a name from your playlist by selecting the name and clicking delete.
 
 **Practice Mode**
 
@@ -51,7 +51,6 @@ Name Sayer is a software tool to assist users in learning unfamiliar names. User
 **Upload**
 
 - Clicking upload allows you to choose a .txt file containing a playlist you wish to add to the program. This will automatically be created as one of your playlists.
-
 - When you close the program, you will be prompted to save your playlists. Choosing "Ok", will save all playlists in the current session to .txt files which will automatically be read in upon the next launch. Choosing "cancel" keeps whatever playlists were saved before you made any changes in your session, meaning on next launch, your edits from the last session will not appear, but older playlists will still be saved.
 
 ## Special Features
