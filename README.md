@@ -14,7 +14,7 @@ Name Sayer is a software tool to assist users in learning unfamiliar names. User
 2. Move the folder "names" (containing the database names- **case sensitive**) to the same directory as the jar file
 3. Open the terminal and navigate to where the jar and Names file are located
 4. Enter the command 'java -jar NameSayer4.jar'
-5. If execution is successful, the following directories will be created: 'userNames', 'combinedNames', 'playlists', and 'trimmedNormalised'. The 'trimmedNormalised' directory should also contain the 'userNames', 'combinedNames', and 'names' directories. The 'BadNames.txt' file should also be created (used to store recordings that have been flagged as bad by the user). 
+5. If execution is successful, the following directories will be created: 'userNames', 'combinedNames', 'playlists', and 'trimmedNormalised'. The 'trimmedNormalised' directory should contain the 'userNames', 'combinedNames', and 'names' directories. The 'BadNames.txt' file should also be created (used to store recordings that have been flagged as bad by the user). 
 
 ## How to Use
 **Navigation**
@@ -41,17 +41,17 @@ Name Sayer is a software tool to assist users in learning unfamiliar names. User
 - Select an existing playlist you would like to practice and then press 'Let's go!' to continue
 - Note: Only **non-empty** playlists can be taken to the practice mode
 - The button with the play arrow plays the best **database** recording for the currently displayed name
-- Clicking on the mic button will give you 5 seconds to make your own recording of the currently displayed name
+- Clicking on the mic button will start the recording- clicking again will stop it.
 - After recording is complete, it will show up in the combo box below.
 - Click play to listen to it, or delete if you are unsatisfied with the recording.
 - Select a recording you have made from the combo box and click compare to hear it played consecutively after the database version. 
-- Clicking the flag button will mark the database recording as bad. The application will then switch the recording out for the **next** best recording.
+- Clicking the flag button will mark the database recording as bad. The application will then switch the recording out for the **next** best recording (least number of flags).
 - You can cycle to the next and previous names in your playlist by pressing the arrow buttons.
 
 **Upload**
 
-- Clicking upload allows you to choose a .txt file containing a playlist you wish to add to the program. This will automatically be created as one of your playlists.
-- When you close the program, you will be prompted to save your playlists. Choosing "Ok", will save all playlists in the current session to .txt files which will automatically be read in upon the next launch. Choosing "cancel" keeps whatever playlists were saved before you made any changes in your session, meaning on next launch, your edits from the last session will not appear, but older playlists will still be saved.
+- Clicking upload allows you to choose a .txt file containing a playlist you wish to add to the program. 
+- When you close the program, you will be prompted to save your playlists. Choosing "Ok", will save all playlists in the current session to .txt files that will automatically be read in upon the next launch. Choosing "cancel" deletes everything created in the current session but keeps any playlists that were made before it. 
 
 ## Special Features
 
