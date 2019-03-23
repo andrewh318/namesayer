@@ -6,7 +6,7 @@ Welcome to Andrew and Vincent's Name Sayer Assignment.
 
 ## What is Name Sayer?
 
-Name Sayer is a software tool to assist users in learning unfamiliar names. Users are able to listen to the correct pronunciation spoken by the owner of the name themselves from the database, as well as record their own version to compare and contrast. If a database recording is deemed of bad quality, users can choose to flag it. 
+Name Sayer is a software tool to assist users in learning unfamiliar names. Users are able to listen to the correct pronunciation spoken by the owner of the name themselves from the database, as well as record their own version to compare and contrast. If a database recording is deemed to be bad quality, users can choose to flag it. 
 
 ## Execution
 
@@ -18,8 +18,9 @@ Name Sayer is a software tool to assist users in learning unfamiliar names. User
 
 ## How to Use
 **Navigation**
-- The green navigation bar at the top of the application allows you to navigate between the 'Manage' mode and 'Practice' mode, as well as the option to upload a custom list of names.
-- The black playback bar at the bottom of the application is responsible for displaying progress when playing and recording names, as well changing volume controls.
+- The green navigation bar at the top of the application allows you to navigate between the 'Manage','Practice' and 'Shop' screens
+- The navigation bar also contains an upload button for users to import a custom list of names
+- The black playback bar at the bottom of the application is responsible for displaying progress when playing and recording names, as well as volume controls.
 
 **Manage**
 
@@ -29,7 +30,7 @@ Name Sayer is a software tool to assist users in learning unfamiliar names. User
 - Double click a playlist to rename it and press enter or click on another playlist to confirm.
 - Selecting a playlist displays its contents on the right side of the screen.
 - To add to the selected playlist, enter the name you want to add in the search bar below the list of all names. 
-- As you type, the list of names will be updated to predict what name you want to add. You can double click on a name in the list to complete what you are typing to this name. Pressing the space bar will auto-complete what you are typing by grabbing the first name in the updated list.
+- As you type, the list of names will be updated to predict what name you want to add. You can double click on a name in the list to auto-complete what you are typing. Similarly, pressing the space bar will grab the first name in the updated list.
 - You can combine names into one by simply typing the names separated by spaces or hyphens.
 - Finally, press the add button to add the name in the search bar to the playlist
 - You can press the play button after selecting a name in your playlist to hear the best database recording of the name.
@@ -44,7 +45,7 @@ Name Sayer is a software tool to assist users in learning unfamiliar names. User
 - Clicking on the mic button will start the recording- clicking again will stop it.
 - After recording is complete, it will show up in the combo box below.
 - Click play to listen to it, or delete if you are unsatisfied with the recording.
-- Select a recording you have made from the combo box and click compare to hear it played consecutively after the database version. 
+- Select a recording you have made from the combo box and click 'compare' to hear it played consecutively after the database version. 
 - Clicking the flag button will mark the database recording as bad. The application will then switch the recording out for the **next** best recording (least number of flags).
 - You can cycle to the next and previous names in your playlist by pressing the arrow buttons.
 
