@@ -6,7 +6,7 @@ Welcome to Andrew and Vincent's Name Sayer Assignment.
 
 ## What is Name Sayer?
 
-Name Sayer is a software tool to assist users in learning unfamiliar names. Users are able to listen to the correct pronunciation spoken by the owner of the name themselves from the database, as well as record their own version to compare and contrast. If a database recording is deemed to be bad quality, users can choose to flag it. 
+Name Sayer is a software tool to assist users in learning unfamiliar names. Users are able to listen to the correct pronunciation spoken by the owner of the name themselves from the database, as well as record their own version to compare and contrast. If a database recording is deemed to be of bad quality, users can choose to flag it. 
 
 ## Execution
 
@@ -64,10 +64,15 @@ Name Sayer is a software tool to assist users in learning unfamiliar names. User
 ## Screenshots
 *Main Menu Screen*
 ![Main Menu](https://i.imgur.com/GwKcQVb.png)
+
+
 *Practice Mode*
 ![Practice](https://i.imgur.com/uvVi6Kw.png)
+
+
 *Themes!*
 ![Shop](https://i.imgur.com/JnOY16e.png)
+
 ## Soon TM
 - ~~Full volume controls built into application~~
 - ~~Currency system allowing you to purchase new colour themes~~
